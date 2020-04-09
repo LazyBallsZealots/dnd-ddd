@@ -1,5 +1,11 @@
-﻿using Dnd.Ddd.Common.ModelFramework;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects;
+using Dnd.Ddd.Model.Character.ValueObjects.Characteristics;
 using Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values;
 
 namespace Dnd.Ddd.Model.Character
@@ -51,5 +57,50 @@ namespace Dnd.Ddd.Model.Character
         internal Intelligence Intelligence { get; set; }
 
         internal Wisdom Wisdom { get; set; }
+
+        internal Race.Race Race { get; set; }
+
+        internal void IncreaseAbilityScoresBasedOnRace()
+        {
+            foreach (var raceCharacteristicModifier in Race.CharacteristicModifiers)
+            {
+                switch (raceCharacteristicModifier.CharacteristicName)
+                {
+                    case nameof(Strength):
+                    {
+                        Strength = Strength.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+                    case nameof(Dexterity):
+                    {
+                        Dexterity = Dexterity.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+                    case nameof(Constitution):
+                    {
+                        Constitution = Constitution.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+                    case nameof(Intelligence):
+                    {
+                        Intelligence = Intelligence.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+                    case nameof(Wisdom):
+                    {
+                        Wisdom = Wisdom.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+                    case nameof(Charisma):
+                    {
+                        Charisma = Charisma.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
+                        continue;
+                    }
+
+                    default:
+                        throw new ArgumentOutOfRangeException(nameof(raceCharacteristicModifier.CharacteristicName));
+                }
+            }
+        }
     }
 }

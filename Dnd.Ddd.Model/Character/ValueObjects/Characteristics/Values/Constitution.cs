@@ -4,7 +4,7 @@ using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 {
-    internal class Constitution : Characteristic
+    internal class Constitution : Characteristic<Constitution>
     {
         private Constitution(int characteristicLevel)
             : base(characteristicLevel)
@@ -17,5 +17,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 
             return new Constitution(constitutionLevel);
         }
+
+        internal override Constitution Raise(int abilityScoreImprovement) => FromInteger(CharacteristicLevel + abilityScoreImprovement);
     }
 }

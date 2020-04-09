@@ -4,7 +4,7 @@ using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 {
-    internal class Charisma : Characteristic
+    internal class Charisma : Characteristic<Charisma>
     {
         private Charisma(int characteristicLevel)
             : base(characteristicLevel)
@@ -17,5 +17,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 
             return new Charisma(charismaLevel);
         }
+
+        internal override Charisma Raise(int abilityScoreImprovement) => FromInteger(CharacteristicLevel + abilityScoreImprovement);
     }
 }

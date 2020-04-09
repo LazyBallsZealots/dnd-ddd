@@ -2,21 +2,24 @@
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
 {
-    internal abstract class Characteristic : ValueObject<Characteristic>
+    internal abstract class Characteristic<TCharacteristic> : ValueObject<Characteristic<TCharacteristic>>
+        where TCharacteristic : Characteristic<TCharacteristic>
     {
-        private readonly int characteristicLevel;
-
         protected Characteristic(int characteristicLevel)
         {
-            this.characteristicLevel = characteristicLevel;
+            CharacteristicLevel = characteristicLevel;
         }
 
-        public int ToInteger() => characteristicLevel;
+        public Modifier Modifier => Modifier.FromInteger(CharacteristicLevel);
 
-        public Modifier Modifier => Modifier.FromInteger(characteristicLevel);
+        protected int CharacteristicLevel { get; }
 
-        protected override bool InternalEquals(Characteristic valueObject) => characteristicLevel == valueObject.characteristicLevel;
+        public int ToInteger() => CharacteristicLevel;
 
-        protected override int InternalGetHashCode() => GetType().GetHashCode() ^ characteristicLevel.GetHashCode();
+        internal abstract TCharacteristic Raise(int abilityScoreImprovement);
+
+        protected override bool InternalEquals(Characteristic<TCharacteristic> valueObject) => CharacteristicLevel == valueObject.CharacteristicLevel;
+
+        protected override int InternalGetHashCode() => GetType().GetHashCode() ^ CharacteristicLevel.GetHashCode();
     }
 }
