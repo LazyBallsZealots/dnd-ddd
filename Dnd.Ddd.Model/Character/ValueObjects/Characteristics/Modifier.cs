@@ -19,14 +19,10 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
 
         public int ModifierValue { get; }
 
-        protected override bool InternalEquals(Modifier valueObject)
-        {
-            throw new NotImplementedException();
-        }
+        protected override bool InternalEquals(Modifier valueObject) =>
+            valueObject.ModifierValue == ModifierValue;
 
-        protected override int InternalGetHashCode()
-        {
-            throw new NotImplementedException();
-        }
+        protected override int InternalGetHashCode() =>
+            HashCode.Combine(GetType(), ModifierValue);
     }
 }
