@@ -10,9 +10,9 @@ namespace Dnd.Ddd.Model.Tests
     [Trait("Category", CharacterTestsCategory)]
     public class CharacterTests : IDisposable
     {
-        public const string CharacterTestsCategory = "Unit tests: character";
-
         public static readonly CharacteristicTheoryDataCollection TheoryData = new CharacteristicTheoryDataCollection();
+
+        private const string CharacterTestsCategory = "Unit tests: character";
 
         private CharacterBuilder characterBuilder;
 
@@ -24,15 +24,14 @@ namespace Dnd.Ddd.Model.Tests
         public void Dispose() => characterBuilder = null;
 
         [Theory, MemberData(nameof(TheoryData))]
-        public void Characteristic_OnSettingValue_ReturnsCorrectlyDefinedModifier(
+        public void Character_OnSettingCharacteristicsValue_ReturnsCorrectlyDefinedStats(
             int characteristicLevel,
             Action<CharacterBuilder, int> characteristicSetter,
-            Func<Character.Character, bool> modifierSelector)
-
+            Func<Character.Character, bool> testResultFunc)
         {
             characteristicSetter(characterBuilder, characteristicLevel);
 
-            Assert.True(modifierSelector(characterBuilder.Build()));
+            Assert.True(testResultFunc(characterBuilder.Build()));
         }
 
         [Fact]

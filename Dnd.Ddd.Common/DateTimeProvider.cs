@@ -1,6 +1,6 @@
-﻿ using System;
+﻿using System;
 
- namespace Dnd.Ddd.Common
+namespace Dnd.Ddd.Common
 {
     public static class DateTimeProvider
     {

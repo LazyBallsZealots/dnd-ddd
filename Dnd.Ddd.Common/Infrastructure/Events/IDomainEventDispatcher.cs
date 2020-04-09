@@ -11,16 +11,16 @@ namespace Dnd.Ddd.Common.Infrastructure.Events
     public interface IDomainEventDispatcher
     {
         /// <summary>
-        ///     Dispatches provided <paramref name="domainEvents"/> to registered event handlers.
+        ///     Dispatches provided <paramref name="domainEvents" /> to registered event handlers.
         /// </summary>
         /// <param name="domainEvents">Events to dispatch.</param>
         void Dispatch(IEnumerable<BaseDomainEvent> domainEvents);
 
         /// <summary>
-        ///     Asynchronously dispatches provided <paramref name="domainEvents"/> to registered event handlers.
+        ///     Asynchronously dispatches provided <paramref name="domainEvents" /> to registered event handlers.
         /// </summary>
         /// <param name="domainEvents">Events to dispatch.</param>
-        /// <returns><see cref="Task"/> representing result of an asynchronous event dispatch operation.</returns>
+        /// <returns><see cref="Task" /> representing result of an asynchronous event dispatch operation.</returns>
         Task DispatchAsync(IEnumerable<BaseDomainEvent> domainEvents);
     }
 }
