@@ -10,9 +10,9 @@ namespace Dnd.Ddd.Common.Infrastructure.Commands
         where TCommand : BaseCommand
     {
         /// <summary>
-        ///     Handles given <paramref name="command"/>.
+        ///     Handles given <paramref name="command" />.
         /// </summary>
-        /// <param name="command"><typeparamref name="TCommand"/> instance to handle.</param>
+        /// <param name="command"><typeparamref name="TCommand" /> instance to handle.</param>
         /// <returns>Unique object identifier, resulting from command execution.</returns>
         Guid Handle(TCommand command);
     }

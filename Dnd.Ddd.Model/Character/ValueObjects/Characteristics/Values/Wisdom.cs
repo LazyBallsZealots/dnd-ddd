@@ -6,9 +6,9 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 {
     internal sealed class Wisdom : Characteristic
     {
-        private Wisdom(int wisdomLevel) : base(wisdomLevel)
+        private Wisdom(int wisdomLevel)
+            : base(wisdomLevel)
         {
-
         }
 
         public static Wisdom FromInteger(int wisdomLevel)
@@ -17,6 +17,5 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 
             return new Wisdom(wisdomLevel);
         }
-
     }
 }

@@ -12,29 +12,29 @@ namespace Dnd.Ddd.Model.Character
 
         public virtual bool Valid { get; protected set; }
 
-        public virtual int StrengthValue => Strength.CharacteristicLevel;
+        public virtual int StrengthValue => Strength.ToInteger();
 
-        public virtual int DexterityValue => Dexterity.CharacteristicLevel;
+        public virtual int DexterityValue => Dexterity.ToInteger();
 
-        public virtual int ConstitutionValue => Constitution.CharacteristicLevel;
+        public virtual int ConstitutionValue => Constitution.ToInteger();
 
-        public virtual int CharismaValue => Charisma.CharacteristicLevel;
+        public virtual int CharismaValue => Charisma.ToInteger();
 
-        public virtual int IntelligenceValue => Intelligence.CharacteristicLevel;
+        public virtual int IntelligenceValue => Intelligence.ToInteger();
 
-        public virtual int WisdomValue => Wisdom.CharacteristicLevel;
+        public virtual int WisdomValue => Wisdom.ToInteger();
 
-        public virtual int StrengthModifierValue => Strength.Modifier.ModifierValue;
+        public virtual int StrengthModifierValue => Strength.Modifier.ToInteger();
 
-        public virtual int DexterityModifierValue => Dexterity.Modifier.ModifierValue;
+        public virtual int DexterityModifierValue => Dexterity.Modifier.ToInteger();
 
-        public virtual int ConstitutionModifierValue => Constitution.Modifier.ModifierValue;
+        public virtual int ConstitutionModifierValue => Constitution.Modifier.ToInteger();
 
-        public virtual int CharismaModifierValue => Charisma.Modifier.ModifierValue;
+        public virtual int CharismaModifierValue => Charisma.Modifier.ToInteger();
 
-        public virtual int IntelligenceModifierValue => Intelligence.Modifier.ModifierValue;
+        public virtual int IntelligenceModifierValue => Intelligence.Modifier.ToInteger();
 
-        public virtual int WisdomModifierValue => Wisdom.Modifier.ModifierValue;
+        public virtual int WisdomModifierValue => Wisdom.Modifier.ToInteger();
 
         public virtual string CharacterName => Name.ToString();
 

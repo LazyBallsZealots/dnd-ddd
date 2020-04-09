@@ -5,7 +5,8 @@ namespace Dnd.Ddd.Common.ModelFramework
 {
     /// <summary>
     ///     Contract for data-access objects for given
-    ///     <typeparam name="TAggregate" />.
+    ///     <typeparam name="TAggregate" />
+    ///     .
     /// </summary>
     /// <typeparam name="TAggregate">Type of aggregate to perform data access operations on.</typeparam>
     /// <typeparam name="TAggregateId">Type of property used for database entry identification.</typeparam>
