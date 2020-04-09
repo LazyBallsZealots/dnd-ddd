@@ -7,7 +7,6 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
         protected Characteristic(int characteristicLevel)
         {
             CharacteristicLevel = characteristicLevel;
-            Modifier = CalculateModifier();
         }
 
         public int CharacteristicLevel { get; }
