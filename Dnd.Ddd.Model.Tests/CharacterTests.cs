@@ -13,6 +13,7 @@ namespace Dnd.Ddd.Model.Tests
         public const string CharacterTestsCategory = "Unit tests: character";
 
         public static readonly CharacteristicTheoryDataCollection TheoryData = new CharacteristicTheoryDataCollection();
+        public static readonly CharacteristicModifiersTheoryDataCollection ModifiersTheoryData = new CharacteristicModifiersTheoryDataCollection();
 
         private CharacterBuilder characterBuilder;
 
@@ -32,6 +33,19 @@ namespace Dnd.Ddd.Model.Tests
             characteristicSetter(characterBuilder, characteristicLevel);
 
             Assert.Equal(characteristicLevel, characteristicSelector(characterBuilder.Build()));
+        }
+
+        [Theory, MemberData(nameof(ModifiersTheoryData))]
+        public void Characteristic_OnSettingValue_ReturnsCorrectlyDefinedModifier(
+            int characteristicLevel,
+            Action<CharacterBuilder, int> characteristicSetter,
+            Func<Character.Character, int> modifierSelector,
+            int modifier)
+
+        {
+            characteristicSetter(characterBuilder, characteristicLevel);
+
+            Assert.Equal(modifier, modifierSelector(characterBuilder.Build()));
         }
 
         [Fact]
