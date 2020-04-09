@@ -9,10 +9,10 @@
         where TQuery : BaseQuery<TResult>
     {
         /// <summary>
-        ///     Handles given <paramref name="query"/>.
+        ///     Handles given <paramref name="query" />.
         /// </summary>
-        /// <param name="query"><typeparamref name="TQuery"/> instance to handle.</param>
-        /// <returns><see cref="TResult"/> instance representing query result.</returns>
+        /// <param name="query"><typeparamref name="TQuery" /> instance to handle.</param>
+        /// <returns><see cref="TResult" /> instance representing query result.</returns>
         TResult Handle(TQuery query);
     }
 }

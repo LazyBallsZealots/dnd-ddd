@@ -15,7 +15,7 @@ namespace Dnd.Ddd.Common.Infrastructure.UnitOfWork
         /// <summary>
         ///     Commits changes asynchronously.
         /// </summary>
-        /// <returns><see cref="Task"/> representing result of an asynchronous operation.</returns>
+        /// <returns><see cref="Task" /> representing result of an asynchronous operation.</returns>
         Task CommitAsync();
 
         /// <summary>
@@ -26,7 +26,7 @@ namespace Dnd.Ddd.Common.Infrastructure.UnitOfWork
         /// <summary>
         ///     Rolls back changes asynchronously.
         /// </summary>
-        /// <returns><see cref="Task"/> representing resul;t of an asynchronous operation.</returns>
+        /// <returns><see cref="Task" /> representing resul;t of an asynchronous operation.</returns>
         Task RollbackAsync();
     }
 }

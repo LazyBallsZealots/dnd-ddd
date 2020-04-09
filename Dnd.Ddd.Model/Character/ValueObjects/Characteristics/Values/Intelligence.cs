@@ -6,9 +6,9 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 {
     internal sealed class Intelligence : Characteristic
     {
-        private Intelligence(int intelligenceLevel) : base(intelligenceLevel)
+        private Intelligence(int intelligenceLevel)
+            : base(intelligenceLevel)
         {
-
         }
 
         public static Intelligence FromInteger(int intelligenceLevel)
@@ -17,6 +17,5 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 
             return new Intelligence(intelligenceLevel);
         }
-
     }
 }

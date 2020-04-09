@@ -4,17 +4,19 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
 {
     internal abstract class Characteristic : ValueObject<Characteristic>
     {
+        private readonly int characteristicLevel;
+
         protected Characteristic(int characteristicLevel)
         {
-            CharacteristicLevel = characteristicLevel;
+            this.characteristicLevel = characteristicLevel;
         }
 
-        public int CharacteristicLevel { get; }
+        public int ToInteger() => characteristicLevel;
 
-        public Modifier Modifier =>
-            Modifier.FromInteger(CharacteristicLevel);
-        protected override bool InternalEquals(Characteristic valueObject) => CharacteristicLevel == valueObject.CharacteristicLevel;
+        public Modifier Modifier => Modifier.FromInteger(characteristicLevel);
 
-        protected override int InternalGetHashCode() => GetType().GetHashCode() ^ CharacteristicLevel.GetHashCode();
+        protected override bool InternalEquals(Characteristic valueObject) => characteristicLevel == valueObject.characteristicLevel;
+
+        protected override int InternalGetHashCode() => GetType().GetHashCode() ^ characteristicLevel.GetHashCode();
     }
 }
