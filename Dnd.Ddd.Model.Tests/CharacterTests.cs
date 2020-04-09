@@ -24,14 +24,15 @@ namespace Dnd.Ddd.Model.Tests
         public void Dispose() => characterBuilder = null;
 
         [Theory, MemberData(nameof(TheoryData))]
-        public void Characteristic_OnSettingValue_ReturnsCorrectlyDefinedLevel(
+        public void Characteristic_OnSettingValue_ReturnsCorrectlyDefinedModifier(
             int characteristicLevel,
             Action<CharacterBuilder, int> characteristicSetter,
-            Func<Character.Character, int> characteristicSelector)
+            Func<Character.Character, bool> modifierSelector)
+
         {
             characteristicSetter(characterBuilder, characteristicLevel);
 
-            Assert.Equal(characteristicLevel, characteristicSelector(characterBuilder.Build()));
+            Assert.True(modifierSelector(characterBuilder.Build()));
         }
 
         [Fact]
