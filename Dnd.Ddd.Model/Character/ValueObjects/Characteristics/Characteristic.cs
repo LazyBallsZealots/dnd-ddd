@@ -12,13 +12,8 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
 
         public int CharacteristicLevel { get; }
 
-        public Modifier Modifier { get; }
-
-        private Modifier CalculateModifier()
-        {
-            return Modifier.FromInteger(CharacteristicLevel);
-        }
-
+        public Modifier Modifier =>
+            Modifier.FromInteger(CharacteristicLevel);
         protected override bool InternalEquals(Characteristic valueObject) => CharacteristicLevel == valueObject.CharacteristicLevel;
 
         protected override int InternalGetHashCode() => GetType().GetHashCode() ^ CharacteristicLevel.GetHashCode();
