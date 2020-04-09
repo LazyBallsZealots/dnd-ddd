@@ -18,7 +18,8 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
 
         internal abstract TCharacteristic Raise(int abilityScoreImprovement);
 
-        protected override bool InternalEquals(Characteristic<TCharacteristic> valueObject) => CharacteristicLevel == valueObject.CharacteristicLevel;
+        protected override bool InternalEquals(Characteristic<TCharacteristic> valueObject) =>
+            GetType() == valueObject.GetType() && CharacteristicLevel == valueObject.CharacteristicLevel;
 
         protected override int InternalGetHashCode() => GetType().GetHashCode() ^ CharacteristicLevel.GetHashCode();
     }

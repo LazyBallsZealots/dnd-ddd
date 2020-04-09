@@ -24,6 +24,7 @@ namespace Dnd.Ddd.Model.Tests
 
         public void Dispose() => characterBuilder = null;
 
+        // TODO: refactor
         [Theory, MemberData(nameof(RacesData))]
         public void Character_OnChoosingRace_HasCorrectRaceSetIfAbilityScoresAreSet(
             Races race,
