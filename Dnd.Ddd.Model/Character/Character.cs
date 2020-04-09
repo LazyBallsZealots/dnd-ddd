@@ -24,6 +24,18 @@ namespace Dnd.Ddd.Model.Character
 
         public virtual int WisdomValue => Wisdom.CharacteristicLevel;
 
+        public virtual int StrengthModifierValue => Strength.Modifier.ModifierValue;
+
+        public virtual int DexterityModifierValue => Dexterity.Modifier.ModifierValue;
+
+        public virtual int ConstitutionModifierValue => Constitution.Modifier.ModifierValue;
+
+        public virtual int CharismaModifierValue => Charisma.Modifier.ModifierValue;
+
+        public virtual int IntelligenceModifierValue => Intelligence.Modifier.ModifierValue;
+
+        public virtual int WisdomModifierValue => Wisdom.Modifier.ModifierValue;
+
         public virtual string CharacterName => Name.ToString();
 
         internal Name Name { get; set; }
