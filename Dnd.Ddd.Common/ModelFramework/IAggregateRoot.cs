@@ -5,9 +5,5 @@
     /// </summary>
     public interface IAggregateRoot
     {
-        /// <summary>
-        ///     Used for soft-deletion of any aggregate.
-        /// </summary>
-        bool Valid { get; }
     }
 }

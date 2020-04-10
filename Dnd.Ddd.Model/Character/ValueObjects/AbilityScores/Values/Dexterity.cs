@@ -2,9 +2,9 @@
 
 using Dnd.Ddd.Common.Guard;
 
-namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
+namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
-    internal sealed class Dexterity : Characteristic
+    internal sealed class Dexterity : AbilityScore<Dexterity>
     {
         private Dexterity(int dexterityLevel)
             : base(dexterityLevel)
@@ -17,5 +17,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
 
             return new Dexterity(dexterityLevel);
         }
+
+        internal override Dexterity Raise(int abilityScoreImprovement) => FromInteger(AbilityScoreLevel + abilityScoreImprovement);
     }
 }

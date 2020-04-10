@@ -1,58 +1,91 @@
 ﻿using Dnd.Ddd.Model.Character.ValueObjects;
-using Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 namespace Dnd.Ddd.Model.Character.Builder.Implementation
 {
     public class CharacterBuilder : ICharacterBuilder
     {
-        private readonly Character character;
+        private Strength strength;
 
-        public CharacterBuilder()
+        private Dexterity dexterity;
+
+        private Constitution constitution;
+
+        private Wisdom wisdom;
+
+        private Intelligence intelligence;
+
+        private Charisma charisma;
+
+        private Name name;
+
+        private Race race;
+
+        public Character Build()
         {
-            character = new Character();
-        }
+            var character = new Character
+            {
+                Name = name,
+                Strength = strength,
+                Charisma = charisma,
+                Constitution = constitution,
+                Dexterity = dexterity,
+                Intelligence = intelligence,
+                Wisdom = wisdom,
+                Race = race
+            };
 
-        public Character Build() => character;
+            character.IncreaseAbilityScoresBasedOnRace();
+
+            return character;
+        }
 
         public ICharacterBuilder SetStrength(int level)
         {
-            character.Strength = Strength.FromInteger(level);
+            strength = Strength.FromInteger(level);
             return this;
         }
 
         public ICharacterBuilder SetDexterity(int level)
         {
-            character.Dexterity = Dexterity.FromInteger(level);
+            dexterity = Dexterity.FromInteger(level);
             return this;
         }
 
         public ICharacterBuilder SetConstitution(int level)
         {
-            character.Constitution = Constitution.FromInteger(level);
+            constitution = Constitution.FromInteger(level);
             return this;
         }
 
         public ICharacterBuilder SetWisdom(int level)
         {
-            character.Wisdom = Wisdom.FromInteger(level);
+            wisdom = Wisdom.FromInteger(level);
             return this;
         }
 
         public ICharacterBuilder SetIntelligence(int level)
         {
-            character.Intelligence = Intelligence.FromInteger(level);
+            intelligence = Intelligence.FromInteger(level);
             return this;
         }
 
         public ICharacterBuilder SetCharisma(int level)
         {
-            character.Charisma = Charisma.FromInteger(level);
+            charisma = Charisma.FromInteger(level);
             return this;
         }
 
-        public ICharacterBuilder Named(string name)
+        public ICharacterBuilder Named(string characterName)
         {
-            character.Name = Name.FromString(name);
+            name = Name.FromString(characterName);
+            return this;
+        }
+
+        public ICharacterBuilder OfRace(Races characterRace)
+        {
+            race = Race.FromEnumeration(characterRace);
             return this;
         }
     }
