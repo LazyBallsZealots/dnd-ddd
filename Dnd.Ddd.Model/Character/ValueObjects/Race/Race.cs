@@ -2,6 +2,7 @@
 
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
 using Dnd.Ddd.Model.Race.Main;
 
 namespace Dnd.Ddd.Model.Race
@@ -9,6 +10,8 @@ namespace Dnd.Ddd.Model.Race
     internal abstract class Race : ValueObject<Race>
     {
         internal abstract CharacteristicBonusCollection CharacteristicModifiers { get; }
+
+        internal abstract Speed Speed { get; }
 
         public static Race FromEnumeration(Races race)
         {
