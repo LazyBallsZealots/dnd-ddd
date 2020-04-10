@@ -1,12 +1,15 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus.Type;
+﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses.Type;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits.Sizes;
 
-namespace Dnd.Ddd.Model.Race.Main
+namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class Tiefling : Race
     {
         internal override Speed Speed => Speed.FromInteger(30);
+
+        internal override Size Size => Medium.New();
 
         private Tiefling()
         {
@@ -14,8 +17,8 @@ namespace Dnd.Ddd.Model.Race.Main
 
         public static Tiefling New() => new Tiefling();
 
-        internal override CharacteristicBonusCollection CharacteristicModifiers => new CharacteristicBonusCollection(
-            new CharacteristicBonus[]
+        internal override AbilityScoreBonusCollection AbilityScoreModifiers => new AbilityScoreBonusCollection(
+            new AbilityScoreBonus[]
             {
                 CharismaBonus.FromInteger(2),
                 IntelligenceBonus.FromInteger(1)

@@ -2,9 +2,9 @@
 
 using Dnd.Ddd.Common.Guard;
 
-namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
+namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
-    internal sealed class Intelligence : Characteristic<Intelligence>
+    internal sealed class Intelligence : AbilityScore<Intelligence>
     {
         private Intelligence(int intelligenceLevel)
             : base(intelligenceLevel)
@@ -18,6 +18,6 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values
             return new Intelligence(intelligenceLevel);
         }
 
-        internal override Intelligence Raise(int abilityScoreImprovement) => FromInteger(CharacteristicLevel + abilityScoreImprovement);
+        internal override Intelligence Raise(int abilityScoreImprovement) => FromInteger(AbilityScoreLevel + abilityScoreImprovement);
     }
 }

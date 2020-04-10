@@ -1,19 +1,22 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus.Type;
+﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses.Type;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits.Sizes;
 
-namespace Dnd.Ddd.Model.Race.Main
+namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class Gnome : Race
     {
         internal override Speed Speed => Speed.FromInteger(25);
 
+        internal override Size Size => Small.New();
+
         private Gnome()
         {
         }
 
-        internal override CharacteristicBonusCollection CharacteristicModifiers =>
-            new CharacteristicBonusCollection(
+        internal override AbilityScoreBonusCollection AbilityScoreModifiers =>
+            new AbilityScoreBonusCollection(
                 new[]
                 {
                     IntelligenceBonus.FromInteger(2)

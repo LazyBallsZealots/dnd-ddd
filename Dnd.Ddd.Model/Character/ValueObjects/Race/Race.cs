@@ -1,17 +1,19 @@
 ﻿using System;
 
 using Dnd.Ddd.Common.ModelFramework;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Main;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
-using Dnd.Ddd.Model.Race.Main;
 
-namespace Dnd.Ddd.Model.Race
+namespace Dnd.Ddd.Model.Character.ValueObjects.Race
 {
     internal abstract class Race : ValueObject<Race>
     {
-        internal abstract CharacteristicBonusCollection CharacteristicModifiers { get; }
+        internal abstract AbilityScoreBonusCollection AbilityScoreModifiers { get; }
 
         internal abstract Speed Speed { get; }
+
+        internal abstract Size Size { get; }
 
         public static Race FromEnumeration(Races race)
         {
@@ -42,6 +44,6 @@ namespace Dnd.Ddd.Model.Race
 
         protected override bool InternalEquals(Race valueObject) => valueObject.GetType() == GetType();
 
-        protected override int InternalGetHashCode() => HashCode.Combine(GetType(), CharacteristicModifiers);
+        protected override int InternalGetHashCode() => HashCode.Combine(GetType(), AbilityScoreModifiers);
     }
 }

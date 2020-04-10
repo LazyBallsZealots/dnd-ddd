@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects;
-using Dnd.Ddd.Model.Character.ValueObjects.Characteristics;
-using Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
 
 namespace Dnd.Ddd.Model.Character
 {
     public class Character : Entity, IAggregateRoot
     {
+        // TODO: refactor this to a different type
+        private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
+
         internal Character()
         {
+            abilityScoreIncreases = new Dictionary<string, Action<AbilityScoreBonus>>
+            {
+                [nameof(Strength)] = bonus => Strength = Strength.Raise(bonus.AbilityScoreModifierLevel),
+                [nameof(Dexterity)] = bonus => Dexterity = Dexterity.Raise(bonus.AbilityScoreModifierLevel),
+                [nameof(Constitution)] = bonus => Constitution = Constitution.Raise(bonus.AbilityScoreModifierLevel),
+                [nameof(Intelligence)] = bonus => Intelligence = Intelligence.Raise(bonus.AbilityScoreModifierLevel),
+                [nameof(Wisdom)] = bonus => Wisdom = Wisdom.Raise(bonus.AbilityScoreModifierLevel),
+                [nameof(Charisma)] = bonus => Charisma = Charisma.Raise(bonus.AbilityScoreModifierLevel)
+            };
         }
-
-        public virtual bool Valid { get; protected set; }
 
         public virtual int StrengthValue => Strength.ToInteger();
 
@@ -46,6 +56,8 @@ namespace Dnd.Ddd.Model.Character
 
         public virtual int SpeedValue => Race.Speed.ToInteger();
 
+        public virtual string SizeName => Race.Size.SizeName;
+
         internal Name Name { get; set; }
 
         internal Strength Strength { get; set; }
@@ -60,48 +72,15 @@ namespace Dnd.Ddd.Model.Character
 
         internal Wisdom Wisdom { get; set; }
 
-        internal Race.Race Race { get; set; }
+        internal Race Race { get; set; }
+
+        internal Size Size => Race.Size;
 
         internal void IncreaseAbilityScoresBasedOnRace()
         {
-            foreach (var raceCharacteristicModifier in Race.CharacteristicModifiers)
+            foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
             {
-                switch (raceCharacteristicModifier.CharacteristicName)
-                {
-                    case nameof(Strength):
-                    {
-                        Strength = Strength.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-                    case nameof(Dexterity):
-                    {
-                        Dexterity = Dexterity.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-                    case nameof(Constitution):
-                    {
-                        Constitution = Constitution.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-                    case nameof(Intelligence):
-                    {
-                        Intelligence = Intelligence.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-                    case nameof(Wisdom):
-                    {
-                        Wisdom = Wisdom.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-                    case nameof(Charisma):
-                    {
-                        Charisma = Charisma.Raise(raceCharacteristicModifier.CharacteristicModifierLevel);
-                        continue;
-                    }
-
-                    default:
-                        throw new ArgumentOutOfRangeException(nameof(raceCharacteristicModifier.CharacteristicName));
-                }
+                abilityScoreIncreases[raceAbilityScoreModifier.AbilityScoreName](raceAbilityScoreModifier);
             }
         }
     }

@@ -1,12 +1,15 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus.Type;
+﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses.Type;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits.Sizes;
 
-namespace Dnd.Ddd.Model.Race.Main
+namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class HalfOrc : Race
     {
         internal override Speed Speed => Speed.FromInteger(30);
+
+        internal override Size Size => Medium.New();
 
         private HalfOrc()
         {
@@ -14,9 +17,9 @@ namespace Dnd.Ddd.Model.Race.Main
 
         public static HalfOrc New() => new HalfOrc();
 
-        internal override CharacteristicBonusCollection CharacteristicModifiers =>
-            new CharacteristicBonusCollection(
-                new CharacteristicBonus[]
+        internal override AbilityScoreBonusCollection AbilityScoreModifiers =>
+            new AbilityScoreBonusCollection(
+                new AbilityScoreBonus[]
                 {
                     StrengthBonus.FromInteger(2),
                     ConstitutionBonus.FromInteger(1)

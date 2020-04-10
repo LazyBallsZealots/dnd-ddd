@@ -1,19 +1,23 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.CharacteristicBonus.Type;
+﻿using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses.Type;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
+using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits.Sizes;
 
-namespace Dnd.Ddd.Model.Race.Main
+namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class Elf : Race
     {
         internal override Speed Speed => Speed.FromInteger(30);
+
+        internal override Size Size => Medium.New();
+
         private Elf()
         {
         }
 
         public static Elf New() => new Elf();
 
-        internal override CharacteristicBonusCollection CharacteristicModifiers => new CharacteristicBonusCollection(
+        internal override AbilityScoreBonusCollection AbilityScoreModifiers => new AbilityScoreBonusCollection(
             new[]
             {
                 DexterityBonus.FromInteger(2)

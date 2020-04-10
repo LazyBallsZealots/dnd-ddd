@@ -2,18 +2,18 @@
 
 using Dnd.Ddd.Common.ModelFramework;
 
-namespace Dnd.Ddd.Model.Character.ValueObjects.Characteristics
+namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 {
     internal class Modifier : ValueObject<Modifier>
     {
         private readonly int modifierValue;
 
-        private Modifier(int characteristicLevel)
+        private Modifier(int abilityScoreLevel)
         {
-            modifierValue = characteristicLevel / 2 - 5;
+            modifierValue = abilityScoreLevel / 2 - 5;
         }
 
-        public static Modifier FromInteger(int characteristicLevel) => new Modifier(characteristicLevel);
+        public static Modifier FromInteger(int abilityScoreLevel) => new Modifier(abilityScoreLevel);
 
         public int ToInteger() => modifierValue;
 

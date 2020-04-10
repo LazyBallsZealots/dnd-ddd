@@ -1,5 +1,6 @@
 ﻿using Dnd.Ddd.Model.Character.ValueObjects;
-using Dnd.Ddd.Model.Character.ValueObjects.Characteristics.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 namespace Dnd.Ddd.Model.Character.Builder.Implementation
 {
@@ -19,11 +20,7 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
 
         private Name name;
 
-        private Race.Race race;
-
-        public CharacterBuilder()
-        {
-        }
+        private Race race;
 
         public Character Build()
         {
@@ -88,7 +85,7 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
 
         public ICharacterBuilder OfRace(Races characterRace)
         {
-            race = Race.Race.FromEnumeration(characterRace);
+            race = Race.FromEnumeration(characterRace);
             return this;
         }
     }

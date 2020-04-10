@@ -24,14 +24,11 @@ namespace Dnd.Ddd.Model.Tests
 
         public void Dispose() => characterBuilder = null;
 
-        // TODO: refactor
         [Theory, MemberData(nameof(RacesData))]
         public void Character_OnChoosingRace_HasCorrectRaceSetIfAbilityScoresAreSet(
             Races race,
             IList<int> abilityScores,
-            Func<Character.Character, bool> testResult,
-            int speed)
-            
+            Func<Character.Character, bool> testResult)
         {
             const string Name = "Argh";
 
@@ -47,7 +44,6 @@ namespace Dnd.Ddd.Model.Tests
 
             Assert.True(testResult(character));
             Assert.Equal(Name, character.CharacterName);
-            Assert.Equal(speed, character.SpeedValue);
         }
     }
 }
