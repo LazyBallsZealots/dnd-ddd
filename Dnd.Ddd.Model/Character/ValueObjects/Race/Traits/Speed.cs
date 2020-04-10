@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
+
 using Dnd.Ddd.Common.ModelFramework;
+using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Traits
 {
