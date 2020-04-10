@@ -44,6 +44,8 @@ namespace Dnd.Ddd.Model.Character
 
         public virtual string CharacterName => Name.ToString();
 
+        public virtual int SpeedValue => Race.Speed.ToInteger();
+
         internal Name Name { get; set; }
 
         internal Strength Strength { get; set; }
