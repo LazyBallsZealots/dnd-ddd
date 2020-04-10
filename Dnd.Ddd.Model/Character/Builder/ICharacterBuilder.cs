@@ -17,5 +17,7 @@ namespace Dnd.Ddd.Model.Character.Builder
         ICharacterBuilder SetCharisma(int level);
 
         ICharacterBuilder Named(string name);
+
+        ICharacterBuilder OfRace(Races race);
     }
 }
