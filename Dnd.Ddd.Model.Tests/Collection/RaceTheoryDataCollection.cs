@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Dnd.Ddd.Model.Tests.Collection
 {
-    public class RaceTheoryDataCollection : TheoryData<Races, IList<int>, Func<Character.Character, bool>>
+    public class RaceTheoryDataCollection : TheoryData<Races, IList<int>, Func<Character.Character, bool>, int>
     {
         public RaceTheoryDataCollection()
         {
@@ -21,7 +21,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                         var expectedStats = new List<int>(stats);
                         expectedStats[0] += 2;
                         expectedStats[5] += 1;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -29,7 +30,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                     {
                         var expectedStats = new List<int>(stats);
                         expectedStats[2] += 2;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 25;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -37,7 +39,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                     {
                         var expectedStats = new List<int>(stats);
                         expectedStats[1] += 2;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -45,7 +48,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                     {
                         var expectedStats = new List<int>(stats);
                         expectedStats[3] += 2;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 25;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -53,7 +57,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                     {
                         var expectedStats = new List<int>(stats);
                         expectedStats[5] += 2;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -61,7 +66,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                     {
                         var expectedStats = new List<int>(stats);
                         expectedStats[1] += 2;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 25;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -70,14 +76,16 @@ namespace Dnd.Ddd.Model.Tests.Collection
                         var expectedStats = new List<int>(stats);
                         expectedStats[0] += 2;
                         expectedStats[2] += 1;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
                     case Races.Human:
                     {
                         var expectedStats = new List<int>(stats.Select(stat => stat + 1));
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
@@ -86,7 +94,8 @@ namespace Dnd.Ddd.Model.Tests.Collection
                         var expectedStats = new List<int>(stats);
                         expectedStats[5] += 2;
                         expectedStats[3] += 1;
-                        Add(race, stats, character => CheckStats(character, expectedStats));
+                        var expectedSpeed = 30;
+                        Add(race, stats, character => CheckStats(character, expectedStats), expectedSpeed);
                         continue;
                     }
 
