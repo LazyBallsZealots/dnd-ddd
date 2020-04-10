@@ -14,7 +14,11 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Traits
             speedValue = speed;
         }
 
-        public static Speed FromInteger(int speed) => new Speed(speed);
+        public static Speed FromInteger(int speed)
+        {
+            Guard.With<ArgumentOutOfRangeException>().Against(speed < 0, nameof(speed));
+            return new Speed(speed);
+        }
         public int ToInteger() => speedValue;
         protected override bool InternalEquals(Speed valueObject) => valueObject.speedValue == speedValue;
         protected override int InternalGetHashCode() => HashCode.Combine(GetType(), speedValue);
