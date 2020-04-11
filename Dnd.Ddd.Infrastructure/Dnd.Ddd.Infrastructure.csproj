@@ -1,13 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <AssemblyName>Dnd.Ddd.Model</AssemblyName>
-    <RootNamespace>Dnd.Ddd.Model</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
+    <PackageReference Include="NHibernate" Version="5.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Dnd.Ddd.Model.Dto\Dnd.Ddd.Common.Dto.csproj" />
   </ItemGroup>
 
