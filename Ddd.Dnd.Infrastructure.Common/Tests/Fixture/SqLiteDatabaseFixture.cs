@@ -142,7 +142,9 @@ namespace Ddd.Dnd.Infrastructure.Common.Tests.Fixture
                     }
 
                     if (!script.StartsWith("ALTER", StringComparison.CurrentCultureIgnoreCase))
+                    {
                         return;
+                    }
 
                     var tableName = ScriptAdjustments.GetTableNameFromAlterStatement(script);
                     var creationScript = generateSchemaScripts.First(statement => statement.Contains($"create table {tableName}"));
