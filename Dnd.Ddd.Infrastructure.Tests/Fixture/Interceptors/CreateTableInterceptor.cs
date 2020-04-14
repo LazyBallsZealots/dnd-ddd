@@ -6,9 +6,9 @@ using System.Linq;
 using NHibernate;
 using NHibernate.SqlCommand;
 
-using ScriptAdjustments = Ddd.Dnd.Infrastructure.Common.Tests.Fixture.SqlScriptAdjustments.SqLiteScriptAdjustments;
+using ScriptAdjustments = Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments.SqLiteScriptAdjustments;
 
-namespace Ddd.Dnd.Infrastructure.Common.Tests.Fixture.Interceptors
+namespace Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors
 {
     [ExcludeFromCodeCoverage]
     internal class CreateTableInterceptor : EmptyInterceptor
@@ -26,7 +26,7 @@ namespace Ddd.Dnd.Infrastructure.Common.Tests.Fixture.Interceptors
         {
             var script = sql.ToString().Trim();
 
-            return SqLiteDatabaseFixture.DisallowedExpressionsDuringSchemaDeploy.Any(script.Contains) ||
+            return IntegrationTestsFixture.DisallowedExpressionsDuringSchemaDeploy.Any(script.Contains) ||
                    !script.StartsWith("create", StringComparison.InvariantCultureIgnoreCase) ?
                        sql :
                        new SqlString(Adjustments.Aggregate(script, (s, func) => func(s)));

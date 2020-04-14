@@ -5,7 +5,7 @@ using System.Reflection;
 using NHibernate.Cfg;
 using NHibernate.Mapping.ByCode;
 
-namespace Ddd.Dnd.Infrastructure.Common.Extensions
+namespace Dnd.Ddd.Infrastructure.Common.Extensions
 {
     public static class ConfigurationExtensions
     {

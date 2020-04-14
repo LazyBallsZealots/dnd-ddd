@@ -2,6 +2,6 @@
 {
     internal class TestCollectionNames
     {
-        public const string ModelDatabaseTestsCollection = "ModelDatabaseTests";
+        public const string IntegrationTestsCollection = "IntegrationTestsFixture";
     }
 }

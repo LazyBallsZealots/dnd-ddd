@@ -5,8 +5,8 @@ using Xunit;
 
 namespace Dnd.Ddd.Infrastructure.Tests.TestsCollection
 {
-    [CollectionDefinition(TestCollectionNames.ModelDatabaseTestsCollection)]
-    public class ModelDatabaseFixtureCollection : ICollectionFixture<ModelDatabaseFixture>
+    [CollectionDefinition(TestCollectionNames.IntegrationTestsCollection)]
+    public class IntegrationTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture>
     {
     }
 }

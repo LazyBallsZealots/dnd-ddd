@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
-namespace Ddd.Dnd.Infrastructure.Common.Tests.Fixture.SqlScriptAdjustments
+namespace Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments
 {
     [ExcludeFromCodeCoverage]
     internal static class SqLiteScriptAdjustments

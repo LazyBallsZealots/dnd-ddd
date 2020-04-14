@@ -15,13 +15,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Model", "Dnd.Ddd.Mo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{EC580601-6BE3-4D67-A811-1059D72B3981}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.Infrastructure", "Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.csproj", "{AB91518E-AD5A-471A-84E5-93304AEB013D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure", "Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.csproj", "{AB91518E-AD5A-471A-84E5-93304AEB013D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.Infrastructure.Tests", "Dnd.Ddd.Infrastructure.Tests\Dnd.Ddd.Infrastructure.Tests.csproj", "{898B9EE5-35D0-498A-BBD6-EDDEFBA8BFBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.Tests", "Dnd.Ddd.Infrastructure.Tests\Dnd.Ddd.Infrastructure.Tests.csproj", "{898B9EE5-35D0-498A-BBD6-EDDEFBA8BFBC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ddd.Dnd.Infrastructure.Common", "Ddd.Dnd.Infrastructure.Common\Ddd.Dnd.Infrastructure.Common.csproj", "{1E5B8204-E98C-4388-A85F-DC81762AF3CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.Common", "Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Common.csproj", "{1E5B8204-E98C-4388-A85F-DC81762AF3CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.Common.Dto", "Dnd.Ddd.Model.Dto\Dnd.Ddd.Common.Dto.csproj", "{C86959FB-B456-4877-85E7-B023EC217C13}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Common.Dto", "Dnd.Ddd.Model.Dto\Dnd.Ddd.Common.Dto.csproj", "{C86959FB-B456-4877-85E7-B023EC217C13}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.Infrastructure.DomainEventsDispatch", "Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj", "{C74EF617-7BE9-4096-8E49-952C9CE425D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{C86959FB-B456-4877-85E7-B023EC217C13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C86959FB-B456-4877-85E7-B023EC217C13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C86959FB-B456-4877-85E7-B023EC217C13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74EF617-7BE9-4096-8E49-952C9CE425D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74EF617-7BE9-4096-8E49-952C9CE425D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74EF617-7BE9-4096-8E49-952C9CE425D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74EF617-7BE9-4096-8E49-952C9CE425D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -69,6 +75,7 @@ Global
 		{898B9EE5-35D0-498A-BBD6-EDDEFBA8BFBC} = {EC580601-6BE3-4D67-A811-1059D72B3981}
 		{1E5B8204-E98C-4388-A85F-DC81762AF3CE} = {EC580601-6BE3-4D67-A811-1059D72B3981}
 		{C86959FB-B456-4877-85E7-B023EC217C13} = {A5B73010-C044-4FBC-886F-1BA526903882}
+		{C74EF617-7BE9-4096-8E49-952C9CE425D0} = {EC580601-6BE3-4D67-A811-1059D72B3981}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB047733-E73A-4552-89DC-92A0D6D484BE}

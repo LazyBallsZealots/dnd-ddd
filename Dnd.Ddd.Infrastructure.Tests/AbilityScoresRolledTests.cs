@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
+using Autofac;
+
 using Dnd.Ddd.Common.Dto.Character.Events;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Infrastructure.Tests.Fixture;
 using Dnd.Ddd.Infrastructure.Tests.TestsCollection.Names;
-using Dnd.Ddd.Model.Character.DomainEvents;
 
 using FizzWare.NBuilder;
 
@@ -14,17 +16,19 @@ using Xunit;
 
 namespace Dnd.Ddd.Infrastructure.Tests
 {
-    [Collection(TestCollectionNames.ModelDatabaseTestsCollection)]
+    [Collection(TestCollectionNames.IntegrationTestsCollection), Trait("Category", TestCategory)]
     public class AbilityScoresRolledTests : IDisposable
     {
+        private const string TestCategory = "AbilityScoresRolled tests";
+
         private readonly ISession session;
 
-        private readonly ITransaction transaction;
+        private readonly IUnitOfWork unitOfWork;
 
-        public AbilityScoresRolledTests(ModelDatabaseFixture fixture)
+        public AbilityScoresRolledTests(IntegrationTestsFixture fixture)
         {
-            session = fixture.SessionFactory.OpenSession();
-            transaction = session.BeginTransaction();
+            session = fixture.Session;
+            unitOfWork = fixture.UnitOfWork;
         }
 
         [Fact]
@@ -39,8 +43,14 @@ namespace Dnd.Ddd.Infrastructure.Tests
 
         public void Dispose()
         {
-            transaction.Rollback();
-            session.Close();
+            unitOfWork.Rollback();
+            if (unitOfWork is IDisposable disposableResource)
+            {
+                disposableResource.Dispose();
+            }
+            
+            var connection = session.Close();
+            connection?.Close();
         }
     }
 }

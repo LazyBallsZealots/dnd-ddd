@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="NBuilder" Version="6.1.0" />
     <PackageReference Include="NHibernate" Version="5.2.7" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.1" />
@@ -16,7 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Ddd.Dnd.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Common.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
   </ItemGroup>
