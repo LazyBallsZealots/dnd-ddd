@@ -6,4 +6,8 @@
     <RootNamespace>Dnd.Ddd.Common.Dto</RootNamespace>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -28,35 +28,38 @@ namespace Dnd.Ddd.Model.Character
             };
         }
 
-        public virtual int StrengthValue => Strength.ToInteger();
+        public int StrengthValue => Strength.ToInteger();
 
-        public virtual int DexterityValue => Dexterity.ToInteger();
+        public int DexterityValue => Dexterity.ToInteger();
 
-        public virtual int ConstitutionValue => Constitution.ToInteger();
+        public int ConstitutionValue => Constitution.ToInteger();
 
-        public virtual int CharismaValue => Charisma.ToInteger();
+        public int CharismaValue => Charisma.ToInteger();
 
-        public virtual int IntelligenceValue => Intelligence.ToInteger();
+        public int IntelligenceValue => Intelligence.ToInteger();
 
-        public virtual int WisdomValue => Wisdom.ToInteger();
+        public int WisdomValue => Wisdom.ToInteger();
 
-        public virtual int StrengthModifierValue => Strength.Modifier.ToInteger();
+        public int StrengthModifierValue => Strength.Modifier.ToInteger();
 
-        public virtual int DexterityModifierValue => Dexterity.Modifier.ToInteger();
+        public int DexterityModifierValue => Dexterity.Modifier.ToInteger();
 
-        public virtual int ConstitutionModifierValue => Constitution.Modifier.ToInteger();
+        public int ConstitutionModifierValue => Constitution.Modifier.ToInteger();
 
-        public virtual int CharismaModifierValue => Charisma.Modifier.ToInteger();
+        public int CharismaModifierValue => Charisma.Modifier.ToInteger();
 
-        public virtual int IntelligenceModifierValue => Intelligence.Modifier.ToInteger();
+        public int IntelligenceModifierValue => Intelligence.Modifier.ToInteger();
 
-        public virtual int WisdomModifierValue => Wisdom.Modifier.ToInteger();
+        public int WisdomModifierValue => Wisdom.Modifier.ToInteger();
 
-        public virtual string CharacterName => Name.ToString();
+        public string CharacterName => Name.ToString();
 
-        public virtual int SpeedValue => Race.Speed.ToInteger();
+        // TODO: refactor to a correct domain property
+        public string RaceName => Race.GetType().Name;
 
-        public virtual string SizeName => Race.Size.SizeName;
+        public int SpeedValue => Race.Speed.ToInteger();
+
+        public string SizeName => Race.Size.SizeName;
 
         internal Name Name { get; set; }
 

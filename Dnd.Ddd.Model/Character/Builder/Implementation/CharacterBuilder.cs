@@ -1,4 +1,7 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects;
+﻿using System;
+
+using Dnd.Ddd.Common.Dto.Character;
+using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
@@ -86,6 +89,20 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
         public ICharacterBuilder OfRace(Races characterRace)
         {
             race = Race.FromEnumeration(characterRace);
+            return this;
+        }
+
+        public ICharacterBuilder FromDto(CharacterDto dto)
+        {
+            _ = SetStrength(dto.StrengthValue);
+            _ = SetDexterity(dto.DexterityValue);
+            _ = SetConstitution(dto.ConstitutionValue);
+            _ = SetIntelligence(dto.IntelligenceValue);
+            _ = SetWisdom(dto.WisdomValue);
+            _ = SetCharisma(dto.CharismaValue);
+            _ = Named(dto.CharacterName);
+            _ = OfRace(Enum.Parse<Races>(dto.RaceName));
+
             return this;
         }
     }

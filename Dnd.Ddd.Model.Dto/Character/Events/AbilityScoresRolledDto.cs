@@ -1,6 +1,6 @@
 ﻿using System;
 
-using Dnd.Ddd.Common.Dto.DomainEvents;
+using Dnd.Ddd.Common.Dto.Events;
 
 namespace Dnd.Ddd.Common.Dto.Character.Events
 {

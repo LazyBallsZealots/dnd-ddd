@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
+using Dnd.Ddd.Common.Dto.Entities;
 using Dnd.Ddd.Common.Infrastructure.Events;
-using Dnd.Ddd.Common.ModelFramework;
 
 using NHibernate.Event;
 
@@ -17,21 +17,24 @@ namespace Dnd.Ddd.Infrastructure.Middleware
             this.eventDispatcher = eventDispatcher;
         }
 
-        public async Task OnPostDeleteAsync(PostDeleteEvent @event, CancellationToken cancellationToken) => await PostCommitAsync(@event.Entity, cancellationToken);
+        public async Task OnPostDeleteAsync(PostDeleteEvent @event, CancellationToken cancellationToken) =>
+            await PostCommitAsync(@event.Entity, cancellationToken);
 
         public void OnPostDelete(PostDeleteEvent @event) => PostCommit(@event.Entity);
 
-        public async Task OnPostUpdateAsync(PostUpdateEvent @event, CancellationToken cancellationToken) => await PostCommitAsync(@event.Entity, cancellationToken);
-
-        public void OnPostUpdate(PostUpdateEvent @event) => PostCommit(@event.Entity);
-
-        public async Task OnPostInsertAsync(PostInsertEvent @event, CancellationToken cancellationToken) => await PostCommitAsync(@event.Entity, cancellationToken);
+        public async Task OnPostInsertAsync(PostInsertEvent @event, CancellationToken cancellationToken) =>
+            await PostCommitAsync(@event.Entity, cancellationToken);
 
         public void OnPostInsert(PostInsertEvent @event) => PostCommit(@event.Entity);
 
+        public async Task OnPostUpdateAsync(PostUpdateEvent @event, CancellationToken cancellationToken) =>
+            await PostCommitAsync(@event.Entity, cancellationToken);
+
+        public void OnPostUpdate(PostUpdateEvent @event) => PostCommit(@event.Entity);
+
         private async Task PostCommitAsync(object entity, CancellationToken cancellationToken)
         {
-            if (!(entity is Entity domainEntity))
+            if (!(entity is BaseEntityDto domainEntity))
             {
                 return;
             }
@@ -41,7 +44,7 @@ namespace Dnd.Ddd.Infrastructure.Middleware
 
         private void PostCommit(object entity)
         {
-            if (!(entity is Entity domainEntity))
+            if (!(entity is BaseEntityDto domainEntity))
             {
                 return;
             }

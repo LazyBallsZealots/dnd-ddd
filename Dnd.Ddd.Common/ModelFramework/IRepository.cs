@@ -5,26 +5,25 @@ namespace Dnd.Ddd.Common.ModelFramework
 {
     /// <summary>
     ///     Contract for data-access objects for given
-    ///     <typeparam name="TAggregate" />
-    ///     .
+    ///     <typeparam name="TAggregate" />.
     /// </summary>
     /// <typeparam name="TAggregate">Type of aggregate to perform data access operations on.</typeparam>
     /// <typeparam name="TAggregateId">Type of property used for database entry identification.</typeparam>
-    public interface IRepository<TAggregate, in TAggregateId>
+    public interface IRepository<TAggregate, TAggregateId>
         where TAggregate : Entity, IAggregateRoot
     {
         /// <summary>
         ///     Saves new <typeparamref name="TAggregate" />.
         /// </summary>
         /// <param name="aggregate">Aggregate to save.</param>
-        void Save(TAggregate aggregate);
+        TAggregateId Save(TAggregate aggregate);
 
         /// <summary>
         ///     Saves new <typeparamref name="TAggregate" /> asynchronously.
         /// </summary>
         /// <param name="aggregate">Aggregate to save.</param>
         /// <returns><see cref="Task" /> representing result of an asynchronous 'save' operation.</returns>
-        Task SaveAsync(TAggregate aggregate);
+        Task<TAggregateId> SaveAsync(TAggregate aggregate);
 
         /// <summary>
         ///     Returns <typeparamref name="TAggregate" /> instance associated with provided <paramref name="id" />.

@@ -13,6 +13,7 @@ using Dnd.Ddd.Infrastructure.DomainEventsDispatch;
 using Dnd.Ddd.Infrastructure.Middleware;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments;
+using Dnd.Ddd.Infrastructure.UnitOfWork;
 
 using NHibernate;
 using NHibernate.Bytecode;
@@ -59,7 +60,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         internal IContainer Container { get; }
 
-        internal IUnitOfWork UnitOfWork => Container.Resolve<IUnitOfWork>();
+        internal IUnitOfWork UnitOfWork => new NHibernateUnitOfWork(Session);
 
         internal ISession Session => Container.Resolve<ISessionFactory>().OpenSession();
 

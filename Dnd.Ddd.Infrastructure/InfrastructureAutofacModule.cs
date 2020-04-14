@@ -2,7 +2,6 @@
 
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Infrastructure.Middleware;
-using Dnd.Ddd.Infrastructure.UnitOfWork;
 
 using NHibernate;
 using NHibernate.Cfg;
@@ -22,8 +21,6 @@ namespace Dnd.Ddd.Infrastructure
                 .SingleInstance();
 
             builder.Register(context => CreateSessionFactory(context.Resolve<Configuration>())).As<ISessionFactory>().SingleInstance();
-
-            builder.RegisterType<NHibernateUnitOfWork>().AsImplementedInterfaces().InstancePerLifetimeScope();
         }
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);

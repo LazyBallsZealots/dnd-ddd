@@ -1,23 +1,20 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-using Dnd.Ddd.Infrastructure.UnitOfWork.Contract;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 
 using NHibernate;
 
 namespace Dnd.Ddd.Infrastructure.UnitOfWork
 {
-    internal class NHibernateUnitOfWork : INHibernateUnitOfWork, IDisposable
+    public class NHibernateUnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly ITransaction transaction;
 
-        public NHibernateUnitOfWork(ISessionFactory sessionFactory)
+        public NHibernateUnitOfWork(ISession session)
         {
-            Session = sessionFactory.OpenSession();
-            transaction = Session.BeginTransaction();
+            transaction = session.BeginTransaction();
         }
-
-        public ISession Session { get; }
 
         public void Commit()
         {
@@ -58,7 +55,6 @@ namespace Dnd.Ddd.Infrastructure.UnitOfWork
             }
 
             transaction?.Dispose();
-            Session?.Dispose();
         }
     }
 }
