@@ -7,7 +7,7 @@ namespace Dnd.Ddd.Infrastructure.Repository.Character
 {
     internal class CharacterRepository : NHibernateRepository<Model.Character.Character>
     {
-        protected CharacterRepository(ISession session)
+        public CharacterRepository(ISession session)
             : base(session)
         {
         }
