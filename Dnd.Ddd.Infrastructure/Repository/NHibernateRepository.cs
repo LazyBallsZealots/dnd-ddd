@@ -7,7 +7,7 @@ using NHibernate;
 
 namespace Dnd.Ddd.Infrastructure.Repository
 {
-    internal class NHibernateRepository<TAggregateType> : IRepository<TAggregateType, Guid>
+    internal abstract class NHibernateRepository<TAggregateType> : IRepository<TAggregateType, Guid>
         where TAggregateType : Entity, IAggregateRoot
     {
         protected NHibernateRepository(ISession session)
@@ -19,18 +19,18 @@ namespace Dnd.Ddd.Infrastructure.Repository
 
         public Guid Save(TAggregateType aggregate) => (Guid)Session.Save(aggregate);
 
-        public Task<Guid> SaveAsync(TAggregateType aggregate) => throw new NotImplementedException();
+        public async Task<Guid> SaveAsync(TAggregateType aggregate) => (Guid)await Session.SaveAsync(aggregate);
 
-        public TAggregateType Get(Guid id) => throw new NotImplementedException();
+        public TAggregateType Get(Guid id) => Session.Get<TAggregateType>(id);
 
-        public Task<TAggregateType> GetAsync(Guid id) => throw new NotImplementedException();
+        public async Task<TAggregateType> GetAsync(Guid id) => await Session.GetAsync<TAggregateType>(id);
 
-        public void Update(TAggregateType aggregate) => throw new NotImplementedException();
+        public void Update(TAggregateType aggregate) => Session.Update(aggregate);
 
-        public Task UpdateAsync(TAggregateType aggregate) => throw new NotImplementedException();
+        public async Task UpdateAsync(TAggregateType aggregate) => await Session.UpdateAsync(aggregate);
 
-        public void Delete(TAggregateType aggregate) => throw new NotImplementedException();
+        public void Delete(TAggregateType aggregate) => Session.Delete(aggregate);
 
-        public Task DeleteAsync(TAggregateType aggregate) => throw new NotImplementedException();
+        public async Task DeleteAsync(TAggregateType aggregate) => await Session.DeleteAsync(aggregate);
     }
 }
