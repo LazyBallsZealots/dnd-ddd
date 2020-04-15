@@ -1,5 +1,4 @@
-﻿using Dnd.Ddd.Common.Dto.Character;
-using Dnd.Ddd.Common.ModelFramework;
+﻿using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.Builder
 {
@@ -20,7 +19,5 @@ namespace Dnd.Ddd.Model.Character.Builder
         ICharacterBuilder Named(string name);
 
         ICharacterBuilder OfRace(Races race);
-
-        ICharacterBuilder FromDto(CharacterDto dto);
     }
 }

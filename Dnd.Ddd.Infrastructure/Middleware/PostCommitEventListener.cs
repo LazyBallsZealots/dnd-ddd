@@ -1,8 +1,8 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 
-using Dnd.Ddd.Common.Dto.Entities;
 using Dnd.Ddd.Common.Infrastructure.Events;
+using Dnd.Ddd.Common.ModelFramework;
 
 using NHibernate.Event;
 
@@ -34,7 +34,7 @@ namespace Dnd.Ddd.Infrastructure.Middleware
 
         private async Task PostCommitAsync(object entity, CancellationToken cancellationToken)
         {
-            if (!(entity is BaseEntityDto domainEntity))
+            if (!(entity is Entity domainEntity))
             {
                 return;
             }
@@ -44,7 +44,7 @@ namespace Dnd.Ddd.Infrastructure.Middleware
 
         private void PostCommit(object entity)
         {
-            if (!(entity is BaseEntityDto domainEntity))
+            if (!(entity is Entity domainEntity))
             {
                 return;
             }

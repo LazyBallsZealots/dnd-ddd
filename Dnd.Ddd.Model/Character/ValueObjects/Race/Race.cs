@@ -42,6 +42,8 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race
             }
         }
 
+        public override string ToString() => GetType().Name;
+
         protected override bool InternalEquals(Race valueObject) => valueObject.GetType() == GetType();
 
         protected override int InternalGetHashCode() => HashCode.Combine(GetType(), AbilityScoreModifiers);

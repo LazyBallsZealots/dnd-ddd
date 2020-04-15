@@ -33,6 +33,8 @@ namespace Dnd.Ddd.Common.ModelFramework
         /// </summary>
         public virtual Guid UiD { get; protected set; }
 
+        public virtual bool IsDeleted { get; set; }
+
         public static bool operator ==(Entity first, Entity second)
         {
             if (first is null && second is null)

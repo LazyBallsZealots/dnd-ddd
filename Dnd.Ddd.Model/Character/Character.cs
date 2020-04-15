@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects;
@@ -8,12 +9,33 @@ using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
 
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
+
 namespace Dnd.Ddd.Model.Character
 {
     public class Character : Entity, IAggregateRoot
     {
         // TODO: refactor this to a different type
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
+
+        private string name;
+
+        private int strength;
+
+        private int dexterity;
+
+        private int constitution;
+
+        private int intelligence;
+
+        private int wisdom;
+
+        private int charisma;
+
+        private string race;
+
+        private Guid creatorId;
 
         internal Character()
         {
@@ -40,46 +62,71 @@ namespace Dnd.Ddd.Model.Character
 
         public int WisdomValue => Wisdom.ToInteger();
 
-        public int StrengthModifierValue => Strength.Modifier.ToInteger();
-
-        public int DexterityModifierValue => Dexterity.Modifier.ToInteger();
-
-        public int ConstitutionModifierValue => Constitution.Modifier.ToInteger();
-
-        public int CharismaModifierValue => Charisma.Modifier.ToInteger();
-
-        public int IntelligenceModifierValue => Intelligence.Modifier.ToInteger();
-
-        public int WisdomModifierValue => Wisdom.Modifier.ToInteger();
-
         public string CharacterName => Name.ToString();
 
-        // TODO: refactor to a correct domain property
-        public string RaceName => Race.GetType().Name;
+        public string RaceName => Race.ToString();
 
         public int SpeedValue => Race.Speed.ToInteger();
 
         public string SizeName => Race.Size.SizeName;
 
-        internal Name Name { get; set; }
+        internal CreatorId Creator
+        {
+            get => CreatorId.FromUiD(creatorId);
+            set => creatorId = value.ToUiD();
+        }
 
-        internal Strength Strength { get; set; }
+        internal Name Name
+        {
+            get => Name.FromString(name);
+            set => name = value.ToString();
+        }
 
-        internal Dexterity Dexterity { get; set; }
+        internal Strength Strength
+        {
+            get => Strength.FromInteger(strength);
+            set => strength = value.ToInteger();
+        }
 
-        internal Constitution Constitution { get; set; }
+        internal Dexterity Dexterity
+        {
+            get => Dexterity.FromInteger(dexterity);
+            set => dexterity = value.ToInteger();
+        }
 
-        internal Charisma Charisma { get; set; }
+        internal Constitution Constitution
+        {
+            get => Constitution.FromInteger(constitution);
+            set => constitution = value.ToInteger();
+        }
 
-        internal Intelligence Intelligence { get; set; }
+        internal Charisma Charisma
+        {
+            get => Charisma.FromInteger(charisma);
+            set => charisma = value.ToInteger();
+        }
 
-        internal Wisdom Wisdom { get; set; }
+        internal Intelligence Intelligence
+        {
+            get => Intelligence.FromInteger(intelligence);
+            set => intelligence = value.ToInteger();
+        }
 
-        internal Race Race { get; set; }
+        internal Wisdom Wisdom
+        {
+            get => Wisdom.FromInteger(wisdom);
+            set => wisdom = value.ToInteger();
+        }
+
+        internal Race Race
+        {
+            get => Race.FromEnumeration(Enum.Parse<Races>(race));
+            set => race = value.ToString();
+        }
 
         internal Size Size => Race.Size;
 
-        internal void IncreaseAbilityScoresBasedOnRace()
+        protected internal void IncreaseAbilityScoresBasedOnRace()
         {
             foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
             {

@@ -39,7 +39,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         private static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
         {
-            Assembly.Load("Dnd.Ddd.Infrastructure")
+            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
         };
 
         private IDbConnection connection;
