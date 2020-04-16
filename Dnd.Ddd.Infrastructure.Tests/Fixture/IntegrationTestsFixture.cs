@@ -153,6 +153,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
                 config.EventListeners.PostCommitDeleteEventListeners = new IPostDeleteEventListener[] { eventListener };
                 config.EventListeners.PostCommitInsertEventListeners = new IPostInsertEventListener[] { eventListener };
                 config.EventListeners.PostCommitUpdateEventListeners = new IPostUpdateEventListener[] { eventListener };
+                config.EventListeners.DeleteEventListeners = new[] { new SoftDeleteEventListener() };
 
                 return config;
             }

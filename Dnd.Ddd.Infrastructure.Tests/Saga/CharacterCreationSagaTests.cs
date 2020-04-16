@@ -39,9 +39,16 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
 
         public void Dispose()
         {
-            if (unitOfWork is IDisposable disposableUnitOfWork)
+            try
             {
-                disposableUnitOfWork.Dispose();
+                unitOfWork.Rollback();
+            }
+            finally
+            {
+                if (unitOfWork is IDisposable disposableUnitOfWork)
+                {
+                    disposableUnitOfWork.Dispose();
+                }
             }
         }
 
@@ -61,11 +68,18 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
 
             sagaRepository.Update(characterCreationSaga);
 
-            unitOfWork.Commit();
-
             var character = session.QueryOver<Character>().List().FirstOrDefault();
 
             Assert.NotNull(character);
+        }
+
+        [Fact]
+        public void CharacterCreationSaga_OnDeletion_MarksSagaAsDeleted()
+        {
+            var characterCreationSaga = new CharacterCreationSaga(Guid.NewGuid());
+            var sagaId = sagaRepository.Save(characterCreationSaga);
+            sagaRepository.Delete(characterCreationSaga);
+            Assert.True(sagaRepository.Get(sagaId).IsDeleted);
         }
     }
 }
