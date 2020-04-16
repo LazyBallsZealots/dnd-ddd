@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
 
 namespace Dnd.Ddd.Common.ModelFramework
 {
@@ -21,6 +24,7 @@ namespace Dnd.Ddd.Common.ModelFramework
         {
             domainEvents = new List<BaseDomainEvent>();
             UiD = Guid.NewGuid();
+            Version = 0;
         }
 
         /// <summary>
@@ -33,7 +37,9 @@ namespace Dnd.Ddd.Common.ModelFramework
         /// </summary>
         public virtual Guid UiD { get; protected set; }
 
-        public virtual bool IsDeleted { get; set; }
+        protected internal virtual bool IsDeleted { get; set; }
+
+        protected internal virtual long Version { get; protected set; }
 
         public static bool operator ==(Entity first, Entity second)
         {

@@ -10,7 +10,16 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Entities
     {
         protected BaseEntityMap()
         {
+            OptimisticLock(OptimisticLockMode.Version);
+            DynamicUpdate(true);
             Id(x => x.UiD, mapper => mapper.Generator(Generators.Assigned));
+            Version(
+                x => x.Version,
+                versionMapping =>
+                {
+                    versionMapping.Generated(VersionGeneration.Never);
+                    versionMapping.UnsavedValue(0L);
+                });
             Property(x => x.IsDeleted);
         }
     }
