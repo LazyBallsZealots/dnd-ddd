@@ -24,13 +24,15 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             builder.Register(context => CreateSessionFactory(context.Resolve<Configuration>())).As<ISessionFactory>().SingleInstance();
 
+            builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
+
             builder.Register(context => new CharacterRepository(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
-                .SingleInstance();
+                .InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterCreationSagaRepository(context.Resolve<ISessionFactory>().OpenSession()))
+            builder.Register(context => new CharacterCreationSagaRepository(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
-                .SingleInstance();
+                .InstancePerLifetimeScope();
         }
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);

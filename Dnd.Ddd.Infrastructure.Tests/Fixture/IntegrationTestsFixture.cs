@@ -43,6 +43,8 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
             Assembly.Load("Dnd.Ddd.Infrastructure.Database")
         };
 
+        private readonly IContainer container;
+
         private IDbConnection connection;
 
         public IntegrationTestsFixture()
@@ -54,20 +56,22 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
             containerBuilder.RegisterModule(new TestInfrastructureAutofacModule(DefaultConnectionString, MappingAssemblies));
             containerBuilder.RegisterModule(new DomainEventDispatchAutofacModule());
 
-            Container = containerBuilder.Build();
+            container = containerBuilder.Build();
+            LifetimeScope = container.BeginLifetimeScope();
 
             GenerateDatabaseSchema();
         }
 
-        internal IContainer Container { get; }
+        internal ILifetimeScope LifetimeScope { get; }
 
-        internal IUnitOfWork UnitOfWork => Container.Resolve<IUnitOfWork>();
+        internal IUnitOfWork UnitOfWork => LifetimeScope.Resolve<IUnitOfWork>();
 
-        internal ISession Session => Container.Resolve<ISession>();
+        internal ISession Session => LifetimeScope.Resolve<ISession>();
 
         public void Dispose()
         {
-            Container?.Dispose();
+            LifetimeScope.Dispose();
+            container.Dispose();
             connection.Dispose();
             connection = null;
         }
@@ -76,7 +80,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
         {
             var generatedSchemaScripts = GenerateSchemaCreationScripts();
 
-            using var schemaDeploySession = Container.Resolve<ISessionFactory>().WithOptions().Interceptor(new CreateTableInterceptor()).OpenSession();
+            using var schemaDeploySession = LifetimeScope.Resolve<ISessionFactory>().WithOptions().Interceptor(new CreateTableInterceptor()).OpenSession();
             generatedSchemaScripts.ToList().ForEach(schemaScript => schemaDeploySession.CreateSQLQuery(schemaScript).ExecuteUpdate());
         }
 
@@ -84,7 +88,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
         {
             var generateSchemaScripts = new List<string>();
 
-            new SchemaExport(Container.Resolve<Configuration>()).Execute(
+            new SchemaExport(LifetimeScope.Resolve<Configuration>()).Execute(
                 script =>
                 {
                     if (script.TrimStart().StartsWith("create", StringComparison.CurrentCultureIgnoreCase) &&
@@ -119,8 +123,6 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
             {
                 base.Load(builder);
 
-                builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
-
                 builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
                     .AsImplementedInterfaces()
                     .InstancePerDependency();
@@ -153,7 +155,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
                 config.EventListeners.PostCommitDeleteEventListeners = new IPostDeleteEventListener[] { eventListener };
                 config.EventListeners.PostCommitInsertEventListeners = new IPostInsertEventListener[] { eventListener };
                 config.EventListeners.PostCommitUpdateEventListeners = new IPostUpdateEventListener[] { eventListener };
-                config.EventListeners.DeleteEventListeners = new[] { new SoftDeleteEventListener() };
+                config.EventListeners.DeleteEventListeners = new IDeleteEventListener[] { new SoftDeleteEventListener() };
 
                 return config;
             }

@@ -31,8 +31,8 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
 
         public CharacterCreationSagaTests(IntegrationTestsFixture fixture)
         {
-            characterRepository = fixture.Container.Resolve<ICharacterRepository>();
-            sagaRepository = fixture.Container.Resolve<ICharacterCreationSagaRepository>();
+            characterRepository = fixture.LifetimeScope.Resolve<ICharacterRepository>();
+            sagaRepository = fixture.LifetimeScope.Resolve<ICharacterCreationSagaRepository>();
             session = fixture.Session;
             unitOfWork = fixture.UnitOfWork;
         }
