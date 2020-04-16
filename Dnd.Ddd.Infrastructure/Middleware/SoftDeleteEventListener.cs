@@ -11,27 +11,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
     {
         public override void OnDelete(DeleteEvent @event)
         {
-            if (@event.Entity is Entity domainEntity)
-            {
-                base.CascadeBeforeDelete(
-                    @event.Session,
-                    @event.Session.GetEntityPersister(@event.EntityName, @event.Entity),
-                    @event.Entity,
-                    @event.Session.PersistenceContext.GetEntry(@event.Entity),
-                    null);
-
-                domainEntity.IsDeleted = true;
-                
-                base.CascadeAfterDelete(
-                    @event.Session,
-                    @event.Session.GetEntityPersister(@event.EntityName, @event.Entity),
-                    @event.Entity,
-                    null);
-            }
-            else
-            {
-                base.OnDelete(@event);
-            }
+            OnDelete(@event, null);
         }
 
         public override void OnDelete(DeleteEvent @event, ISet<object> transientEntities)
@@ -61,30 +41,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
 
         public override async Task OnDeleteAsync(DeleteEvent @event, CancellationToken cancellationToken)
         {
-            if (@event.Entity is Entity domainEntity)
-            {
-                await base.CascadeBeforeDeleteAsync(
-                    @event.Session,
-                    @event.Session.GetEntityPersister(@event.EntityName, @event.Entity),
-                    @event.Entity,
-                    @event.Session.PersistenceContext.GetEntry(@event.Entity),
-                    null,
-                    cancellationToken);
-
-                domainEntity.IsDeleted = true;
-
-                await base.CascadeAfterDeleteAsync(
-                    @event.Session,
-                    @event.Session.GetEntityPersister(@event.EntityName, @event.Entity),
-                    @event.Entity,
-                    null,
-                    cancellationToken);
-            }
-
-            else
-            {
-                await base.OnDeleteAsync(@event, cancellationToken);
-            }
+            await OnDeleteAsync(@event, null, cancellationToken);
         }
 
         public override async Task OnDeleteAsync(DeleteEvent @event, ISet<object> transientEntities, CancellationToken cancellationToken)
