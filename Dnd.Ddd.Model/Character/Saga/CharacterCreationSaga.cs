@@ -36,21 +36,21 @@ namespace Dnd.Ddd.Model.Character.Saga
             return this;
         }
 
-        public virtual async void NameCharacter(string name)
+        public virtual void NameCharacter(string name)
         {
             CharacterNameChosen = new CharacterNameChosen(name, UiD);
             RegisterDomainEvent(CharacterNameChosen);
-            await CheckForCompletion();
+            CheckForCompletion();
         }
 
-        public virtual async void SetCharacterRace(string race)
+        public virtual void SetCharacterRace(string race)
         {
             CharacterRaceChosen = new CharacterRaceChosen(race, UiD);
             RegisterDomainEvent(CharacterRaceChosen);
-            await CheckForCompletion();
+            CheckForCompletion();
         }
 
-        public virtual async void RollAbilityScores(
+        public virtual void RollAbilityScores(
             int strength,
             int dexterity,
             int constitution,
@@ -60,14 +60,14 @@ namespace Dnd.Ddd.Model.Character.Saga
         {
             AbilityScoresRolled = new AbilityScoresRolled(UiD, strength, dexterity, constitution, intelligence, wisdom, charisma);
             RegisterDomainEvent(AbilityScoresRolled);
-            await CheckForCompletion();
+            CheckForCompletion();
         }
 
-        protected override async Task Complete()
+        protected override void Complete()
         {
             var newCharacter = BuildCharacter();
             newCharacter.RegisterDomainEvent(new CharacterCreated(newCharacter.UiD, CreatorId));
-            _ = await CharacterRepository.SaveAsync(newCharacter);
+            CharacterRepository.Save(newCharacter);
         }
 
         private Character BuildCharacter() =>

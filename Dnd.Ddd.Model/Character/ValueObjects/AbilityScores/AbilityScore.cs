@@ -5,6 +5,10 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
     internal abstract class AbilityScore<TAbilityScore> : ValueObject<AbilityScore<TAbilityScore>>
         where TAbilityScore : AbilityScore<TAbilityScore>
     {
+        protected AbilityScore()
+        {
+        }
+
         protected AbilityScore(int abilityScoreLevel)
         {
             AbilityScoreLevel = abilityScoreLevel;
@@ -12,7 +16,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 
         public Modifier Modifier => Modifier.FromInteger(AbilityScoreLevel);
 
-        protected int AbilityScoreLevel { get; }
+        protected internal int AbilityScoreLevel { get; }
 
         public int ToInteger() => AbilityScoreLevel;
 

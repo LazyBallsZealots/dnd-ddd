@@ -46,26 +46,26 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
         }
 
         // TODO: finish this spec
-        //[Fact]
-        //public void CharacterCreationSaga_OnCompletion_SavesNewCharacter()
-        //{
-        //    const string CharacterName = "I really hope this works...";
-        //    var characterCreationSaga = new CharacterCreationSaga(Guid.NewGuid());
+        [Fact]
+        public void CharacterCreationSaga_OnCompletion_SavesNewCharacter()
+        {
+            const string CharacterName = "I really hope this works...";
+            var characterCreationSaga = new CharacterCreationSaga(Guid.NewGuid());
 
-        //    var sagaId = sagaRepository.Save(characterCreationSaga);
-        //    characterCreationSaga = characterCreationSaga.InitializeRepository(characterRepository);
+            var sagaId = sagaRepository.Save(characterCreationSaga);
+            characterCreationSaga = characterCreationSaga.InitializeRepository(characterRepository);
 
-        //    characterCreationSaga.RollAbilityScores(10, 10, 10, 10, 10, 10);
-        //    characterCreationSaga.NameCharacter(CharacterName);
-        //    characterCreationSaga.SetCharacterRace("Elf");
+            characterCreationSaga.RollAbilityScores(10, 10, 10, 10, 10, 10);
+            characterCreationSaga.NameCharacter(CharacterName);
+            characterCreationSaga.SetCharacterRace("Elf");
 
-        //    sagaRepository.Update(characterCreationSaga);
+            sagaRepository.Update(characterCreationSaga);
 
-        //    unitOfWork.Commit();
+            unitOfWork.Commit();
 
-        //    var character = session.QueryOver<Character>().List().FirstOrDefault();
+            var character = session.QueryOver<Character>().List().FirstOrDefault();
 
-        //    Assert.NotNull(character);
-        //}
+            Assert.NotNull(character);
+        }
     }
 }

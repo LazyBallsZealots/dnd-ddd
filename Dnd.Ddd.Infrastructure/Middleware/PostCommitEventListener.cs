@@ -6,7 +6,7 @@ using Dnd.Ddd.Common.ModelFramework;
 
 using NHibernate.Event;
 
-namespace Dnd.Ddd.Infrastructure.Middleware
+namespace Dnd.Ddd.Infrastructure.Database.Middleware
 {
     public class PostCommitEventListener : IPostDeleteEventListener, IPostUpdateEventListener, IPostInsertEventListener
     {

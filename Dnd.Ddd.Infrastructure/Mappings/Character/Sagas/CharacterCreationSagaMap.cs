@@ -1,11 +1,11 @@
 ﻿using System;
 
-using Dnd.Ddd.Infrastructure.Mappings.Sagas;
+using Dnd.Ddd.Infrastructure.Database.Mappings.Sagas;
 using Dnd.Ddd.Model.Character.Saga;
 
 using NHibernate.Mapping.ByCode;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Character.Sagas
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character.Sagas
 {
     public class CharacterCreationSagaMap : SagaMap<CharacterCreationSaga>
     {

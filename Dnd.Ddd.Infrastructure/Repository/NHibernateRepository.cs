@@ -5,7 +5,7 @@ using Dnd.Ddd.Common.ModelFramework;
 
 using NHibernate;
 
-namespace Dnd.Ddd.Infrastructure.Repository
+namespace Dnd.Ddd.Infrastructure.Database.Repository
 {
     internal abstract class NHibernateRepository<TAggregateType> : IRepository<TAggregateType, Guid>
         where TAggregateType : Entity, IAggregateRoot

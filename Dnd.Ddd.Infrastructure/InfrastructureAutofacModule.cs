@@ -1,14 +1,14 @@
 ﻿using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
-using Dnd.Ddd.Infrastructure.Middleware;
-using Dnd.Ddd.Infrastructure.Repository.Character;
-using Dnd.Ddd.Infrastructure.Repository.Character.Saga;
+using Dnd.Ddd.Infrastructure.Database.Middleware;
+using Dnd.Ddd.Infrastructure.Database.Repository.Character;
+using Dnd.Ddd.Infrastructure.Database.Repository.Character.Saga;
 
 using NHibernate;
 using NHibernate.Cfg;
 
-namespace Dnd.Ddd.Infrastructure
+namespace Dnd.Ddd.Infrastructure.Database
 {
     public abstract class InfrastructureAutofacModule : Module
     {
@@ -24,7 +24,7 @@ namespace Dnd.Ddd.Infrastructure
 
             builder.Register(context => CreateSessionFactory(context.Resolve<Configuration>())).As<ISessionFactory>().SingleInstance();
 
-            builder.Register(context => new CharacterRepository(context.Resolve<ISessionFactory>().OpenSession()))
+            builder.Register(context => new CharacterRepository(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
                 .SingleInstance();
 

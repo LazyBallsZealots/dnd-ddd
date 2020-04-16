@@ -6,7 +6,7 @@ using Dnd.Ddd.Model.Character.Saga;
 
 using NHibernate;
 
-namespace Dnd.Ddd.Infrastructure.Repository.Character.Saga
+namespace Dnd.Ddd.Infrastructure.Database.Repository.Character.Saga
 {
     internal class CharacterCreationSagaRepository : NHibernateRepository<CharacterCreationSaga>, ICharacterCreationSagaRepository
     {

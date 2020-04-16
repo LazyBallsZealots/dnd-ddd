@@ -15,6 +15,8 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race
 
         internal abstract Size Size { get; }
 
+        protected internal virtual string RaceName => ToString();
+
         public static Race FromEnumeration(Races race)
         {
             switch (race)

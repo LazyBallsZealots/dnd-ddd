@@ -8,12 +8,13 @@ using System.Reflection;
 using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
-using Dnd.Ddd.Infrastructure.Common.Extensions;
+using Dnd.Ddd.Infrastructure.Database;
+using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
+using Dnd.Ddd.Infrastructure.Database.Middleware;
+using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
 using Dnd.Ddd.Infrastructure.DomainEventsDispatch;
-using Dnd.Ddd.Infrastructure.Middleware;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments;
-using Dnd.Ddd.Infrastructure.UnitOfWork;
 
 using NHibernate;
 using NHibernate.Bytecode;
@@ -60,9 +61,9 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         internal IContainer Container { get; }
 
-        internal IUnitOfWork UnitOfWork => new NHibernateUnitOfWork(Session);
+        internal IUnitOfWork UnitOfWork => Container.Resolve<IUnitOfWork>();
 
-        internal ISession Session => Container.Resolve<ISessionFactory>().OpenSession();
+        internal ISession Session => Container.Resolve<ISession>();
 
         public void Dispose()
         {
@@ -114,6 +115,17 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         private class TestInfrastructureAutofacModule : InfrastructureAutofacModule
         {
+            protected override void Load(ContainerBuilder builder)
+            {
+                base.Load(builder);
+
+                builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
+
+                builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
+                    .AsImplementedInterfaces()
+                    .InstancePerDependency();
+            } 
+
             private static readonly Dictionary<string, string> ConfigurationOptions = new Dictionary<string, string>
             {
                 [Environment.ProxyFactoryFactoryClass] = typeof(StaticProxyFactoryFactory).AssemblyQualifiedName,

@@ -1,9 +1,9 @@
-﻿using Dnd.Ddd.Infrastructure.Mappings.Events;
+﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Events;
 using Dnd.Ddd.Model.Character.DomainEvents;
 
 using NHibernate.Mapping.ByCode;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Character.Events
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character.Events
 {
     public class CharacterRaceChosenMap : BaseDomainEventMap<CharacterRaceChosen>
     {

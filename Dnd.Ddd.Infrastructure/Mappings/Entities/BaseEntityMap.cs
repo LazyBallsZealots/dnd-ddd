@@ -3,7 +3,7 @@
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Entities
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Entities
 {
     public abstract class BaseEntityMap<TEntityType> : ClassMapping<TEntityType>
         where TEntityType : Entity

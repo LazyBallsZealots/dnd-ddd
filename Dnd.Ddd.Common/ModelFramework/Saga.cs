@@ -6,17 +6,17 @@ namespace Dnd.Ddd.Common.ModelFramework
     {
         public abstract bool IsComplete { get; }
 
-        protected virtual async Task CheckForCompletion()
+        protected virtual void CheckForCompletion()
         {
             if (!IsComplete)
             {
             }
             else
             {
-                await Complete();
+                Complete();
             }
         }
 
-        protected abstract Task Complete();
+        protected abstract void Complete();
     }
 }

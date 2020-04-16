@@ -6,6 +6,10 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
     internal sealed class Intelligence : AbilityScore<Intelligence>
     {
+        protected Intelligence()
+        {
+        }
+
         private Intelligence(int intelligenceLevel)
             : base(intelligenceLevel)
         {

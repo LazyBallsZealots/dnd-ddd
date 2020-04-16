@@ -3,7 +3,7 @@
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Events
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Events
 {
     public abstract class BaseDomainEventMap<TEvent> : ClassMapping<TEvent>
         where TEvent : BaseDomainEvent

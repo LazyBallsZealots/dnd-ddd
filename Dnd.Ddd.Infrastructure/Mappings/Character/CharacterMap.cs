@@ -2,69 +2,105 @@
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Character
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
 {
     public class CharacterMap : ClassMapping<Model.Character.Character>
     {
+        // TODO: Optimistic locking
         public CharacterMap()
         {
             Lazy(false);
             Id(x => x.UiD, map => map.Generator(Generators.Assigned));
-            Property(
+            Component(
                 x => x.Strength,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Strength));
+                        });
                 });
-            Property(
+            Component(
                 x => x.Dexterity,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Dexterity));
+                        });
                 });
-            Property(
+            Component(
                 x => x.Constitution,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Constitution));
+                        });
                 });
-            Property(
+            Component(
                 x => x.Intelligence,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Intelligence));
+                        });
                 });
-            Property(
+            Component(
                 x => x.Wisdom,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Wisdom));
+                        });
                 });
-            Property(
+            Component(
                 x => x.Charisma,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.Int32);
+                    componentMapper.Property(
+                        x => x.AbilityScoreLevel,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Charisma));
+                        });
                 });
             Property(
                 x => x.Race,
-                mapper =>
+                pm =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.String);
+                    pm.Access(Accessor.Field);
+                    pm.Type(NHibernateUtil.String);
                 });
-            Property(
+            Component(
                 x => x.Name,
-                mapper =>
+                componentMapper =>
                 {
-                    mapper.Access(Accessor.Field);
-                    mapper.Type(NHibernateUtil.String);
+                    componentMapper.Property(
+                        x => x.CharacterName,
+                        pm =>
+                        {
+                            pm.Access(Accessor.ReadOnly);
+                            pm.Column(nameof(Model.Character.Character.Name));
+                        });
                 });
         }
     }

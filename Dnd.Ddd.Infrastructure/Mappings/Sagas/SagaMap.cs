@@ -3,7 +3,7 @@
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
-namespace Dnd.Ddd.Infrastructure.Mappings.Sagas
+namespace Dnd.Ddd.Infrastructure.Database.Mappings.Sagas
 {
     public abstract class SagaMap<TSaga> : ClassMapping<TSaga>
         where TSaga : Saga

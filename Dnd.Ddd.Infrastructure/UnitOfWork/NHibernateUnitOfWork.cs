@@ -5,7 +5,7 @@ using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 
 using NHibernate;
 
-namespace Dnd.Ddd.Infrastructure.UnitOfWork
+namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
 {
     public class NHibernateUnitOfWork : IUnitOfWork, IDisposable
     {

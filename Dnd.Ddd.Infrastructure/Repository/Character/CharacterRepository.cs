@@ -2,7 +2,7 @@
 
 using NHibernate;
 
-namespace Dnd.Ddd.Infrastructure.Repository.Character
+namespace Dnd.Ddd.Infrastructure.Database.Repository.Character
 {
     internal class CharacterRepository : NHibernateRepository<Model.Character.Character>, ICharacterRepository
     {
