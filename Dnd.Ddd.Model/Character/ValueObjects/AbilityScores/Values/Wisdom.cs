@@ -4,7 +4,7 @@ using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
-    internal sealed class Wisdom : AbilityScore<Wisdom>
+    internal class Wisdom : AbilityScore<Wisdom>
     {
         protected Wisdom()
         {

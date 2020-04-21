@@ -27,7 +27,6 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
                 transaction.Rollback();
                 throw;
             }
-            
         }
 
         public async Task CommitAsync()

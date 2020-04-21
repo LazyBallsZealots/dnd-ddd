@@ -1,5 +1,6 @@
 ﻿using Dnd.Ddd.Common.ModelFramework;
 
+using NHibernate;
 using NHibernate.Mapping.ByCode;
 using NHibernate.Mapping.ByCode.Conformist;
 
@@ -17,6 +18,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Entities
                 x => x.Version,
                 versionMapping =>
                 {
+                    versionMapping.Type(NHibernateUtil.Int64);
                     versionMapping.Generated(VersionGeneration.Never);
                     versionMapping.UnsavedValue(0L);
                 });

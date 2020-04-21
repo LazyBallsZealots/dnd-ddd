@@ -1,4 +1,6 @@
-﻿using Dnd.Ddd.Common.ModelFramework;
+﻿using System;
+
+using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 {
@@ -16,7 +18,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 
         public Modifier Modifier => Modifier.FromInteger(AbilityScoreLevel);
 
-        protected internal int AbilityScoreLevel { get; }
+        protected internal int AbilityScoreLevel { get; private set; }
 
         public int ToInteger() => AbilityScoreLevel;
 
@@ -25,6 +27,6 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
         protected override bool InternalEquals(AbilityScore<TAbilityScore> valueObject) =>
             GetType() == valueObject.GetType() && AbilityScoreLevel == valueObject.AbilityScoreLevel;
 
-        protected override int InternalGetHashCode() => GetType().GetHashCode() ^ AbilityScoreLevel.GetHashCode();
+        protected override int InternalGetHashCode() => HashCode.Combine(GetType(), AbilityScoreLevel);
     }
 }

@@ -8,7 +8,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Traits
         { 
         }
 
-        internal string SizeName => GetType().Name;
+        public override string ToString() => GetType().Name;
 
         protected override bool InternalEquals(Size valueObject) => GetType() == valueObject.GetType();
 

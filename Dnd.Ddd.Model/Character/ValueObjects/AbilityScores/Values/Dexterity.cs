@@ -4,7 +4,7 @@ using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
-    internal sealed class Dexterity : AbilityScore<Dexterity>
+    internal class Dexterity : AbilityScore<Dexterity>
     {
         protected Dexterity()
         {

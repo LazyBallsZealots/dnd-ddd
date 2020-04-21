@@ -1,12 +1,13 @@
-﻿using NHibernate;
+﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Entities;
+using Dnd.Ddd.Infrastructure.Database.Middleware;
+
+using NHibernate;
 using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
 {
-    public class CharacterMap : ClassMapping<Model.Character.Character>
+    public class CharacterMap : BaseEntityMap<Model.Character.Character>
     {
-        // TODO: Optimistic locking
         public CharacterMap()
         {
             Lazy(false);
@@ -17,11 +18,13 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Strength));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Strength)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
             Component(
                 x => x.Dexterity,
@@ -29,11 +32,13 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Dexterity));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Dexterity)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
             Component(
                 x => x.Constitution,
@@ -41,11 +46,13 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Constitution));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Constitution)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
             Component(
                 x => x.Intelligence,
@@ -53,11 +60,13 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Intelligence));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Intelligence)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
             Component(
                 x => x.Wisdom,
@@ -65,11 +74,13 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Wisdom));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Wisdom)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
             Component(
                 x => x.Charisma,
@@ -77,30 +88,28 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Charisma));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Charisma)));
+                            mapper.Type(NHibernateUtil.Int32);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
-            Property(
-                x => x.Race,
-                pm =>
-                {
-                    pm.Access(Accessor.Field);
-                    pm.Type(NHibernateUtil.String);
-                });
+            Property(x => x.Race, pm => pm.Type<RaceType>());
             Component(
                 x => x.Name,
                 componentMapper =>
                 {
                     componentMapper.Property(
                         x => x.CharacterName,
-                        pm =>
+                        mapper =>
                         {
-                            pm.Access(Accessor.ReadOnly);
-                            pm.Column(nameof(Model.Character.Character.Name));
+                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Name)));
+                            mapper.Type(NHibernateUtil.String);
                         });
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
                 });
         }
     }

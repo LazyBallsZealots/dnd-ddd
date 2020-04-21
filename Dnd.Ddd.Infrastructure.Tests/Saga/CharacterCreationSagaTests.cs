@@ -1,26 +1,28 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Infrastructure.Tests.Fixture;
 using Dnd.Ddd.Infrastructure.Tests.TestsCollection.Names;
+using Dnd.Ddd.Model;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.Repository;
 using Dnd.Ddd.Model.Character.Saga;
+using Dnd.Ddd.Model.Character.ValueObjects;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 using NHibernate;
-using NHibernate.Criterion;
 
 using Xunit;
 
 namespace Dnd.Ddd.Infrastructure.Tests.Saga
 {
-    [Collection(TestCollectionNames.IntegrationTestsCollection)]
+    [Collection(TestCollectionNames.IntegrationTestsCollection), Trait("Category", TestCategory)]
     public class CharacterCreationSagaTests : IDisposable
     {
+        private const string TestCategory = "Integration tests: CharacterCreationSaga";
+
         private readonly ICharacterRepository characterRepository;
 
         private readonly ICharacterCreationSagaRepository sagaRepository;
@@ -52,7 +54,6 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
             }
         }
 
-        // TODO: finish this spec
         [Fact]
         public void CharacterCreationSaga_OnCompletion_SavesNewCharacter()
         {
@@ -68,7 +69,10 @@ namespace Dnd.Ddd.Infrastructure.Tests.Saga
 
             sagaRepository.Update(characterCreationSaga);
 
-            var character = session.QueryOver<Character>().List().FirstOrDefault();
+            var character = session.QueryOver<Character>()
+                .Where(c => c.Name == Name.FromString(CharacterName))
+                .And(c => c.Race == Race.FromEnumeration(Races.Elf))
+                .SingleOrDefault();
 
             Assert.NotNull(character);
         }
