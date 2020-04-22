@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 
 using Dnd.Ddd.Model.Character.Builder.Implementation;
 using Dnd.Ddd.Model.Character.DomainEvents;
@@ -11,22 +10,22 @@ namespace Dnd.Ddd.Model.Character.Saga
     {
         public CharacterCreationSaga(Guid creatorId)
         {
-            CreatorId = creatorId;
+            PlayerId = creatorId;
         }
 
         protected CharacterCreationSaga()
         {
         }
 
-        public virtual Guid CreatorId { get; }
+        public virtual Guid PlayerId { get; protected set; }
+
+        public override bool IsComplete => AbilityScoresRolled != null && CharacterRaceChosen != null && CharacterNameChosen != null;
 
         public virtual AbilityScoresRolled AbilityScoresRolled { get; protected set; }
 
         public virtual CharacterRaceChosen CharacterRaceChosen { get; protected set; }
 
         public virtual CharacterNameChosen CharacterNameChosen { get; protected set; }
-
-        public override bool IsComplete => AbilityScoresRolled != null && CharacterRaceChosen != null && CharacterNameChosen != null;
 
         protected virtual ICharacterRepository CharacterRepository { get; set; }
 
@@ -50,13 +49,7 @@ namespace Dnd.Ddd.Model.Character.Saga
             CheckForCompletion();
         }
 
-        public virtual void RollAbilityScores(
-            int strength,
-            int dexterity,
-            int constitution,
-            int intelligence,
-            int wisdom,
-            int charisma)
+        public virtual void RollAbilityScores(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
         {
             AbilityScoresRolled = new AbilityScoresRolled(UiD, strength, dexterity, constitution, intelligence, wisdom, charisma);
             RegisterDomainEvent(AbilityScoresRolled);
@@ -66,7 +59,7 @@ namespace Dnd.Ddd.Model.Character.Saga
         protected override void Complete()
         {
             var newCharacter = BuildCharacter();
-            newCharacter.RegisterDomainEvent(new CharacterCreated(newCharacter.UiD, CreatorId));
+            newCharacter.RegisterDomainEvent(new CharacterCreated(newCharacter.UiD, PlayerId));
             CharacterRepository.Save(newCharacter);
         }
 
@@ -79,6 +72,7 @@ namespace Dnd.Ddd.Model.Character.Saga
                 .SetCharisma(AbilityScoresRolled.Charisma)
                 .Named(CharacterNameChosen.CharacterName)
                 .OfRace(Enum.Parse<Races>(CharacterRaceChosen.CharacterRace))
+                .ForPlayer(PlayerId)
                 .Build();
     }
 }

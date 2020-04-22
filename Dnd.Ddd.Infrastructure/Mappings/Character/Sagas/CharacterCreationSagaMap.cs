@@ -13,7 +13,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character.Sagas
         {
             Lazy(true);
             Table("CharacterCreationSagas");
-            Property(x => x.CreatorId, map => map.Access(Accessor.ReadOnly));
+            Property(x => x.PlayerId);
             ManyToOne(x => x.AbilityScoresRolled, EventMapping("AbilityScoresRolledUiD"));
             ManyToOne(x => x.CharacterRaceChosen, EventMapping("CharacterRaceChosenUiD"));
             ManyToOne(x => x.CharacterNameChosen, EventMapping("CharacterNameChosenUiD"));

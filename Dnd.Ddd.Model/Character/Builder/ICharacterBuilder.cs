@@ -1,4 +1,6 @@
-﻿using Dnd.Ddd.Common.ModelFramework;
+﻿using System;
+
+using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.Builder
 {
@@ -19,5 +21,7 @@ namespace Dnd.Ddd.Model.Character.Builder
         ICharacterBuilder Named(string name);
 
         ICharacterBuilder OfRace(Races race);
+
+        ICharacterBuilder ForPlayer(Guid playerId);
     }
 }

@@ -19,8 +19,6 @@ namespace Dnd.Ddd.Model.Character
         // TODO: refactor this to a different type
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
 
-        private Guid creatorId;
-
         internal Character()
         {
             abilityScoreIncreases = new Dictionary<string, Action<AbilityScoreBonus>>
@@ -34,11 +32,7 @@ namespace Dnd.Ddd.Model.Character
             };
         }
 
-        internal CreatorId Creator
-        {
-            get => CreatorId.FromUiD(creatorId);
-            set => creatorId = value.ToUiD();
-        }
+        internal PlayerId PlayerId { get; set; }
 
         internal Name Name { get; set; }
 

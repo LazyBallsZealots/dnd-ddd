@@ -1,7 +1,6 @@
 ﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Entities;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 
-using NHibernate;
 using NHibernate.Mapping.ByCode;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
@@ -18,11 +17,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Strength)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Strength))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -32,11 +28,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Dexterity)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Dexterity))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -46,11 +39,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Constitution)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Constitution))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -60,11 +50,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Intelligence)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Intelligence))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -74,11 +61,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Wisdom)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Wisdom))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -88,11 +72,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.AbilityScoreLevel,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Charisma)));
-                            mapper.Type(NHibernateUtil.Int32);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Charisma))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
@@ -103,11 +84,19 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 {
                     componentMapper.Property(
                         x => x.CharacterName,
-                        mapper =>
-                        {
-                            mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Name)));
-                            mapper.Type(NHibernateUtil.String);
-                        });
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.Name))));
+
+                    componentMapper.Insert(true);
+                    componentMapper.Update(true);
+                });
+            Component(
+                x => x.PlayerId,
+                componentMapper =>
+                {
+                    componentMapper.Property(
+                        x => x.Id,
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.PlayerId))));
+
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });

@@ -17,7 +17,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Repository.Character.Saga
 
         public IEnumerable<CharacterCreationSaga> GetCharacterCreationSagasByCreatorId(Guid creatorId) =>
             Session.QueryOver<CharacterCreationSaga>()
-                .Where(saga => saga.CreatorId == creatorId)
+                .Where(saga => saga.PlayerId == creatorId)
                 .And(saga => !saga.IsDeleted)
                 .List();
     }
