@@ -63,6 +63,6 @@ namespace Dnd.Ddd.Common.ModelFramework
 
         public override bool Equals(object obj) => obj is Entity entity && obj.GetType() == GetType() && entity.UiD == UiD;
 
-        public override int GetHashCode() => UiD.GetHashCode() ^ GetType().GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(UiD, GetType());
     }
 }
