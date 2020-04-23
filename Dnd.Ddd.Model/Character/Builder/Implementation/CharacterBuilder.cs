@@ -1,4 +1,6 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects;
+﻿using System;
+
+using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
@@ -22,6 +24,8 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
 
         private Race race;
 
+        private PlayerId playerId;
+
         public Character Build()
         {
             var character = new Character
@@ -33,7 +37,8 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
                 Dexterity = dexterity,
                 Intelligence = intelligence,
                 Wisdom = wisdom,
-                Race = race
+                Race = race,
+                PlayerId = playerId
             };
 
             character.IncreaseAbilityScoresBasedOnRace();
@@ -86,6 +91,12 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
         public ICharacterBuilder OfRace(Races characterRace)
         {
             race = Race.FromEnumeration(characterRace);
+            return this;
+        }
+
+        public ICharacterBuilder ForPlayer(Guid playerUid)
+        {
+            playerId = PlayerId.FromUiD(playerUid);
             return this;
         }
     }

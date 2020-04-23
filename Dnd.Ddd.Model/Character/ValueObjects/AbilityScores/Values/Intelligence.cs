@@ -4,8 +4,12 @@ using Dnd.Ddd.Common.Guard;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
-    internal sealed class Intelligence : AbilityScore<Intelligence>
+    internal class Intelligence : AbilityScore<Intelligence>
     {
+        protected Intelligence()
+        {
+        }
+
         private Intelligence(int intelligenceLevel)
             : base(intelligenceLevel)
         {

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="NBuilder" Version="6.1.0" />
+    <PackageReference Include="NHibernate" Version="5.2.7" />
+    <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.1" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.Database.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
+  </ItemGroup>
+
+</Project>

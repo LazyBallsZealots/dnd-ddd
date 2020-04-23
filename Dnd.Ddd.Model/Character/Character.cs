@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
-using Dnd.Ddd.Model.Character.ValueObjects.Race.Traits;
+
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
+[assembly: InternalsVisibleTo("Dnd.Ddd.Model.Tests")]
 
 namespace Dnd.Ddd.Model.Character
 {
@@ -28,35 +32,7 @@ namespace Dnd.Ddd.Model.Character
             };
         }
 
-        public virtual int StrengthValue => Strength.ToInteger();
-
-        public virtual int DexterityValue => Dexterity.ToInteger();
-
-        public virtual int ConstitutionValue => Constitution.ToInteger();
-
-        public virtual int CharismaValue => Charisma.ToInteger();
-
-        public virtual int IntelligenceValue => Intelligence.ToInteger();
-
-        public virtual int WisdomValue => Wisdom.ToInteger();
-
-        public virtual int StrengthModifierValue => Strength.Modifier.ToInteger();
-
-        public virtual int DexterityModifierValue => Dexterity.Modifier.ToInteger();
-
-        public virtual int ConstitutionModifierValue => Constitution.Modifier.ToInteger();
-
-        public virtual int CharismaModifierValue => Charisma.Modifier.ToInteger();
-
-        public virtual int IntelligenceModifierValue => Intelligence.Modifier.ToInteger();
-
-        public virtual int WisdomModifierValue => Wisdom.Modifier.ToInteger();
-
-        public virtual string CharacterName => Name.ToString();
-
-        public virtual int SpeedValue => Race.Speed.ToInteger();
-
-        public virtual string SizeName => Race.Size.SizeName;
+        internal PlayerId PlayerId { get; set; }
 
         internal Name Name { get; set; }
 
@@ -74,9 +50,7 @@ namespace Dnd.Ddd.Model.Character
 
         internal Race Race { get; set; }
 
-        internal Size Size => Race.Size;
-
-        internal void IncreaseAbilityScoresBasedOnRace()
+        protected internal void IncreaseAbilityScoresBasedOnRace()
         {
             foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
             {

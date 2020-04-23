@@ -6,6 +6,10 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
     internal class Charisma : AbilityScore<Charisma>
     {
+        protected Charisma()
+        {
+        }
+
         private Charisma(int abilityScoreLevel)
             : base(abilityScoreLevel)
         {
