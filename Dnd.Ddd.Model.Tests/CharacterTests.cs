@@ -13,7 +13,7 @@ namespace Dnd.Ddd.Model.Tests
     {
         public static readonly RaceTheoryDataCollection RacesData = new RaceTheoryDataCollection();
 
-        private const string CharacterTestsCategory = "Unit tests: character";
+        private const string CharacterTestsCategory = "Unit tests: Character";
 
         private CharacterBuilder characterBuilder;
 
@@ -43,7 +43,7 @@ namespace Dnd.Ddd.Model.Tests
                 .Build();
 
             Assert.True(testResult(character));
-            Assert.Equal(Name, character.CharacterName);
+            Assert.Equal(character.Name, Character.ValueObjects.Name.FromString(Name));
         }
     }
 }

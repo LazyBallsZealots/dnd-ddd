@@ -46,14 +46,14 @@ namespace Dnd.Ddd.Model.Tests.Collection
         }
 
         private static bool CheckStats(Character.Character character, IList<int> expectedStats, string size) =>
-            expectedStats[0] == character.StrengthValue &&
-                expectedStats[1] == character.DexterityValue &&
-                expectedStats[2] == character.ConstitutionValue &&
-                expectedStats[3] == character.IntelligenceValue &&
-                expectedStats[4] == character.WisdomValue &&
-                expectedStats[5] == character.CharismaValue &&
-                expectedStats[6] == character.SpeedValue &&
-                size == character.SizeName;
+            expectedStats[0] == character.Strength.ToInteger() &&
+                expectedStats[1] == character.Dexterity.ToInteger() &&
+                expectedStats[2] == character.Constitution.ToInteger() &&
+                expectedStats[3] == character.Intelligence.ToInteger() &&
+                expectedStats[4] == character.Wisdom.ToInteger() &&
+                expectedStats[5] == character.Charisma.ToInteger() &&
+                expectedStats[6] == character.Race.Speed.ToInteger() &&
+                size == character.Race.Size.ToString();
 
         private static IList<int> PrepareDragonbornAbilityScoresAndSpeed(IList<int> abilityScores)
         {

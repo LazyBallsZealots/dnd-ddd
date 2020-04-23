@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 
+using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.Main;
@@ -9,38 +11,35 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race
 {
     internal abstract class Race : ValueObject<Race>
     {
+        private static readonly IDictionary<Races, Func<Race>> RacesFactoryMethods = new Dictionary<Races, Func<Race>>
+        {
+            [Races.Dragonborn] = Dragonborn.New,
+            [Races.Dwarf] = Dwarf.New,
+            [Races.Elf] = Elf.New,
+            [Races.Gnome] = Gnome.New,
+            [Races.HalfElf] = HalfElf.New,
+            [Races.HalfOrc] = HalfOrc.New,
+            [Races.Halfling] = Halfling.New,
+            [Races.Human] = Human.New,
+            [Races.Tiefling] = Tiefling.New
+        };
+
         internal abstract AbilityScoreBonusCollection AbilityScoreModifiers { get; }
 
         internal abstract Speed Speed { get; }
 
         internal abstract Size Size { get; }
 
+        protected internal virtual string RaceName => ToString();
+
         public static Race FromEnumeration(Races race)
         {
-            switch (race)
-            {
-                case Races.Dragonborn:
-                    return Dragonborn.New();
-                case Races.Dwarf:
-                    return Dwarf.New();
-                case Races.Elf:
-                    return Elf.New();
-                case Races.Gnome:
-                    return Gnome.New();
-                case Races.HalfElf:
-                    return HalfElf.New();
-                case Races.HalfOrc:
-                    return HalfOrc.New();
-                case Races.Halfling:
-                    return Halfling.New();
-                case Races.Human:
-                    return Human.New();
-                case Races.Tiefling:
-                    return Tiefling.New();
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(race), race, null);
-            }
+            Guard.With<ArgumentOutOfRangeException>().Against(!RacesFactoryMethods.ContainsKey(race), nameof(race));
+
+            return RacesFactoryMethods[race]();
         }
+
+        public override string ToString() => GetType().Name;
 
         protected override bool InternalEquals(Race valueObject) => valueObject.GetType() == GetType();
 

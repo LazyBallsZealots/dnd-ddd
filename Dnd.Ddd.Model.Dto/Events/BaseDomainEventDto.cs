@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dnd.Ddd.Common.Dto.DomainEvents
+namespace Dnd.Ddd.Common.Dto.Events
 {
     public abstract class BaseDomainEventDto
     {

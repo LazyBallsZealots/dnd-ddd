@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
+[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
 
 namespace Dnd.Ddd.Common.ModelFramework
 {
@@ -21,6 +25,7 @@ namespace Dnd.Ddd.Common.ModelFramework
         {
             domainEvents = new List<BaseDomainEvent>();
             UiD = Guid.NewGuid();
+            Version = 0;
         }
 
         /// <summary>
@@ -32,6 +37,10 @@ namespace Dnd.Ddd.Common.ModelFramework
         ///     Unique surrogate entity identifier.
         /// </summary>
         public virtual Guid UiD { get; protected set; }
+
+        protected internal virtual bool IsDeleted { get; set; }
+
+        protected internal virtual long Version { get; protected set; }
 
         public static bool operator ==(Entity first, Entity second)
         {
@@ -54,6 +63,6 @@ namespace Dnd.Ddd.Common.ModelFramework
 
         public override bool Equals(object obj) => obj is Entity entity && obj.GetType() == GetType() && entity.UiD == UiD;
 
-        public override int GetHashCode() => UiD.GetHashCode() ^ GetType().GetHashCode();
+        public override int GetHashCode() => HashCode.Combine(UiD, GetType());
     }
 }

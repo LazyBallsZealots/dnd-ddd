@@ -1,14 +1,17 @@
 ﻿using System;
 
-using Dnd.Ddd.Common.Dto.Character.Events;
 using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.DomainEvents
 {
     public class AbilityScoresRolled : BaseDomainEvent
     {
+        protected AbilityScoresRolled()
+        {
+        }
+
         public AbilityScoresRolled(
-            Guid characterUiD,
+            Guid sagaUiD,
             int strength,
             int dexterity,
             int constitution,
@@ -22,7 +25,7 @@ namespace Dnd.Ddd.Model.Character.DomainEvents
             Intelligence = intelligence;
             Wisdom = wisdom;
             Charisma = charisma;
-            CharacterUiD = characterUiD;
+            SagaUiD = sagaUiD;
         }
 
         public int Strength { get; }
@@ -37,9 +40,6 @@ namespace Dnd.Ddd.Model.Character.DomainEvents
 
         public int Charisma { get; }
 
-        public Guid CharacterUiD { get; }
-
-        public AbilityScoresRolledDto ToDto() =>
-            new AbilityScoresRolledDto(CharacterUiD, Strength, Dexterity, Constitution, Intelligence, Wisdom, Charisma);
+        public Guid SagaUiD { get; }
     }
 }

@@ -6,6 +6,10 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values
 {
     internal class Constitution : AbilityScore<Constitution>
     {
+        protected Constitution()
+        {
+        }
+
         private Constitution(int abilityScoreLevel)
             : base(abilityScoreLevel)
         {

@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
-    <ProjectReference Include="..\Dnd.Ddd.Model.Dto\Dnd.Ddd.Common.Dto.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
   </ItemGroup>
 
 </Project>

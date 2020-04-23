@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
@@ -8,9 +9,11 @@ using System.Reflection;
 using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
-using Dnd.Ddd.Infrastructure.Common.Extensions;
+using Dnd.Ddd.Infrastructure.Database;
+using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
+using Dnd.Ddd.Infrastructure.Database.Middleware;
+using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
 using Dnd.Ddd.Infrastructure.DomainEventsDispatch;
-using Dnd.Ddd.Infrastructure.Middleware;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors;
 using Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments;
 
@@ -38,8 +41,10 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         private static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
         {
-            Assembly.Load("Dnd.Ddd.Infrastructure")
+            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
         };
+
+        private readonly IContainer container;
 
         private IDbConnection connection;
 
@@ -52,20 +57,22 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
             containerBuilder.RegisterModule(new TestInfrastructureAutofacModule(DefaultConnectionString, MappingAssemblies));
             containerBuilder.RegisterModule(new DomainEventDispatchAutofacModule());
 
-            Container = containerBuilder.Build();
+            container = containerBuilder.Build();
+            LifetimeScope = container.BeginLifetimeScope();
 
             GenerateDatabaseSchema();
         }
 
-        internal IContainer Container { get; }
+        internal ILifetimeScope LifetimeScope { get; }
 
-        internal IUnitOfWork UnitOfWork => Container.Resolve<IUnitOfWork>();
+        internal IUnitOfWork UnitOfWork => LifetimeScope.Resolve<IUnitOfWork>();
 
-        internal ISession Session => Container.Resolve<ISessionFactory>().OpenSession();
+        internal ISession Session => LifetimeScope.Resolve<ISession>();
 
         public void Dispose()
         {
-            Container?.Dispose();
+            LifetimeScope.Dispose();
+            container.Dispose();
             connection.Dispose();
             connection = null;
         }
@@ -74,7 +81,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
         {
             var generatedSchemaScripts = GenerateSchemaCreationScripts();
 
-            using var schemaDeploySession = Container.Resolve<ISessionFactory>().WithOptions().Interceptor(new CreateTableInterceptor()).OpenSession();
+            using var schemaDeploySession = LifetimeScope.Resolve<ISessionFactory>().WithOptions().Interceptor(new CreateTableInterceptor()).OpenSession();
             generatedSchemaScripts.ToList().ForEach(schemaScript => schemaDeploySession.CreateSQLQuery(schemaScript).ExecuteUpdate());
         }
 
@@ -82,7 +89,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
         {
             var generateSchemaScripts = new List<string>();
 
-            new SchemaExport(Container.Resolve<Configuration>()).Execute(
+            new SchemaExport(LifetimeScope.Resolve<Configuration>()).Execute(
                 script =>
                 {
                     if (script.TrimStart().StartsWith("create", StringComparison.CurrentCultureIgnoreCase) &&
@@ -113,6 +120,15 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
 
         private class TestInfrastructureAutofacModule : InfrastructureAutofacModule
         {
+            protected override void Load(ContainerBuilder builder)
+            {
+                base.Load(builder);
+
+                builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
+                    .AsImplementedInterfaces()
+                    .InstancePerDependency();
+            } 
+
             private static readonly Dictionary<string, string> ConfigurationOptions = new Dictionary<string, string>
             {
                 [Environment.ProxyFactoryFactoryClass] = typeof(StaticProxyFactoryFactory).AssemblyQualifiedName,
@@ -140,6 +156,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture
                 config.EventListeners.PostCommitDeleteEventListeners = new IPostDeleteEventListener[] { eventListener };
                 config.EventListeners.PostCommitInsertEventListeners = new IPostInsertEventListener[] { eventListener };
                 config.EventListeners.PostCommitUpdateEventListeners = new IPostUpdateEventListener[] { eventListener };
+                config.EventListeners.DeleteEventListeners = new IDeleteEventListener[] { new SoftDeleteEventListener() };
 
                 return config;
             }
