@@ -6,8 +6,7 @@ using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Entities
 {
-    public abstract class BaseEntityMap<TEntityType> : ClassMapping<TEntityType>
-        where TEntityType : Entity
+    public abstract class BaseEntityMap<TEntityType> : ClassMapping<TEntityType> where TEntityType : Entity
     {
         protected BaseEntityMap()
         {

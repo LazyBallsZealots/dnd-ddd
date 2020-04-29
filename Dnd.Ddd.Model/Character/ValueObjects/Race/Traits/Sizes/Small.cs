@@ -7,6 +7,5 @@
         }
 
         internal static Small New() => new Small();
-
     }
 }

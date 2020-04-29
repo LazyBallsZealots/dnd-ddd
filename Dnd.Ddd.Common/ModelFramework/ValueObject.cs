@@ -1,7 +1,6 @@
 ﻿namespace Dnd.Ddd.Common.ModelFramework
 {
-    public abstract class ValueObject<T>
-        where T : ValueObject<T>
+    public abstract class ValueObject<T> where T : ValueObject<T>
     {
         public static bool operator ==(ValueObject<T> first, ValueObject<T> second)
         {

@@ -1,0 +1,7 @@
+{
+  "modules": [
+    {
+      "type": "Dnd.Ddd.Services.DomainServicesAutofacModule, Dnd.Ddd.Services"
+    }
+  ] 
+}

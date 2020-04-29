@@ -1,4 +1,4 @@
-﻿namespace Dnd.Ddd.Infrastructure.Tests.TestsCollection.Names
+﻿namespace Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names
 {
     internal class TestCollectionNames
     {

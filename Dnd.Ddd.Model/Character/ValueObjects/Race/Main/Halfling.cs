@@ -7,13 +7,13 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class Halfling : Race
     {
-        internal override Speed Speed => Speed.FromInteger(25);
-
-        internal override Size Size => Small.New();
-
         private Halfling()
         {
         }
+
+        internal override Speed Speed => Speed.FromInteger(25);
+
+        internal override Size Size => Small.New();
 
         internal override AbilityScoreBonusCollection AbilityScoreModifiers =>
             new AbilityScoreBonusCollection(

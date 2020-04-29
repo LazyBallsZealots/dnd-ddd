@@ -15,7 +15,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects
             Id = id;
         }
 
-        protected internal Guid Id { get; private set; }
+        protected internal Guid Id { get; }
 
         public static PlayerId FromUiD(Guid id) => new PlayerId(id);
 

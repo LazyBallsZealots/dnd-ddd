@@ -18,7 +18,6 @@
         Elf,
 
         /// <summary>
-        ///     
         /// </summary>
         Gnome,
 

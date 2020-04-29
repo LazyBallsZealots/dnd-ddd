@@ -2,8 +2,7 @@
 
 namespace Dnd.Ddd.Common.Guard
 {
-    public interface IGuardContext<TException>
-        where TException : Exception
+    public interface IGuardContext<TException> where TException : Exception
     {
         /// <summary>
         ///     Specifies assertion (if an <paramref name="expression" /> is true, <typeparamref name="TException" /> instance is

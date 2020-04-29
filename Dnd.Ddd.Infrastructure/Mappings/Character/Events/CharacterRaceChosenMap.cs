@@ -1,5 +1,5 @@
 ﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Events;
-using Dnd.Ddd.Model.Character.DomainEvents;
+using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 
 using NHibernate.Mapping.ByCode;
 
@@ -11,7 +11,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character.Events
         {
             Table("CharacterRaceChosenEvents");
             Property(x => x.CharacterRace, map => map.Access(Accessor.ReadOnly));
-            Property(x => x.SagaUiD, map => map.Access(Accessor.ReadOnly));
+            Property(x => x.CharacterUiD, map => map.Access(Accessor.ReadOnly));
         }
     }
 }

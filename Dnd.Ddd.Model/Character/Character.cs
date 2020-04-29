@@ -14,12 +14,12 @@ using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
 
 namespace Dnd.Ddd.Model.Character
 {
-    public class Character : Entity, IAggregateRoot
+    public abstract class Character : Entity, IAggregateRoot
     {
         // TODO: refactor this to a different type
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
 
-        internal Character()
+        protected Character()
         {
             abilityScoreIncreases = new Dictionary<string, Action<AbilityScoreBonus>>
             {

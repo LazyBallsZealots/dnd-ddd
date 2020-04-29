@@ -24,13 +24,13 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race
             [Races.Tiefling] = Tiefling.New
         };
 
+        protected internal virtual string RaceName => ToString();
+
         internal abstract AbilityScoreBonusCollection AbilityScoreModifiers { get; }
 
         internal abstract Speed Speed { get; }
 
         internal abstract Size Size { get; }
-
-        protected internal virtual string RaceName => ToString();
 
         public static Race FromEnumeration(Races race)
         {

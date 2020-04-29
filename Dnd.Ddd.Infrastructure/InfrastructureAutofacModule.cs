@@ -1,12 +1,17 @@
-﻿using Autofac;
+﻿using System.IO;
+using System.Reflection;
+
+using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
+using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 using Dnd.Ddd.Infrastructure.Database.Repository.Character;
-using Dnd.Ddd.Infrastructure.Database.Repository.Character.Saga;
 
 using NHibernate;
 using NHibernate.Cfg;
+
+using Module = Autofac.Module;
 
 namespace Dnd.Ddd.Infrastructure.Database
 {
@@ -26,17 +31,20 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterRepository(context.Resolve<ISession>()))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+            builder.Register(context => new CharacterRepository(context.Resolve<ISession>())).As<ISession>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterCreationSagaRepository(context.Resolve<ISession>()))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+            builder.Register(context => CreateEventStore(context.Resolve<ISessionFactory>()))
+                .As<IDomainEventHandler<BaseDomainEvent>>()
+                .SingleInstance();
         }
+
+        protected virtual string HibernateConfigFilePath =>
+            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);
 
         protected abstract Configuration BuildConfiguration(PostCommitEventListener eventListener);
+
+        protected abstract IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory);
     }
 }
