@@ -3,6 +3,7 @@
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Model.Character;
+using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Repository;
 
 namespace Dnd.Ddd.Services.Commands.Handlers
@@ -30,6 +31,16 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                 .SetWisdom(command.Wisdom)
                 .SetConstitution(command.Constitution)
                 .SetIntelligence(command.Intelligence);
+
+            characterWithRolledAbilityScores.RegisterDomainEvent(
+                new AbilityScoresRolled(
+                    command.CharacterUiD,
+                    command.Strength,
+                    command.Dexterity,
+                    command.Constitution,
+                    command.Intelligence,
+                    command.Wisdom,
+                    command.Charisma));
 
             repository.Update(characterWithRolledAbilityScores);
         }
