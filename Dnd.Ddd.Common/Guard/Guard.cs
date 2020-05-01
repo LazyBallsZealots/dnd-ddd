@@ -12,16 +12,13 @@ namespace Dnd.Ddd.Common.Guard
         /// </summary>
         /// <typeparam name="TException">Type of exception to be thrown upon assertion failure.</typeparam>
         /// <returns>Internal implementation of <see cref="IGuardContext{TException}" />, used to verify assertion.</returns>
-        public static IGuardContext<TException> With<TException>()
-            where TException : Exception =>
-            new GuardContext<TException>();
+        public static IGuardContext<TException> With<TException>() where TException : Exception => new GuardContext<TException>();
 
         /// <summary>
         ///     Verifies assertion.
         /// </summary>
         /// <typeparam name="TException">Type of exception to be thrown upon assertion failure.</typeparam>
-        private class GuardContext<TException> : IGuardContext<TException>
-            where TException : Exception
+        private class GuardContext<TException> : IGuardContext<TException> where TException : Exception
         {
             /// <summary>
             ///     Verifies assertion.

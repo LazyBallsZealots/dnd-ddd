@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 
-namespace Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments
+namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.SqlScriptAdjustments
 {
     [ExcludeFromCodeCoverage]
     internal static class SqLiteScriptAdjustments
@@ -14,7 +14,9 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments
         public static string GetUidConstraint(string createStatement)
         {
             while (createStatement.Contains("UNIQUEIDENTIFIER"))
+            {
                 createStatement = createStatement.Replace("UNIQUEIDENTIFIER", "BLOB").Replace("NEWID()", PseudoGuidGenerationFunction);
+            }
 
             return createStatement;
         }

@@ -1,23 +1,18 @@
 ﻿using System;
 
-using Dnd.Ddd.Common.ModelFramework;
-
-namespace Dnd.Ddd.Model.Character.DomainEvents
+namespace Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents
 {
-    public class AbilityScoresRolled : BaseDomainEvent
+    public class AbilityScoresRolled : CharacterEvent
     {
-        protected AbilityScoresRolled()
-        {
-        }
-
         public AbilityScoresRolled(
-            Guid sagaUiD,
+            Guid characterUiD,
             int strength,
             int dexterity,
             int constitution,
             int intelligence,
             int wisdom,
             int charisma)
+            : base(characterUiD)
         {
             Strength = strength;
             Dexterity = dexterity;
@@ -25,7 +20,10 @@ namespace Dnd.Ddd.Model.Character.DomainEvents
             Intelligence = intelligence;
             Wisdom = wisdom;
             Charisma = charisma;
-            SagaUiD = sagaUiD;
+        }
+
+        protected AbilityScoresRolled()
+        {
         }
 
         public int Strength { get; }
@@ -39,7 +37,5 @@ namespace Dnd.Ddd.Model.Character.DomainEvents
         public int Wisdom { get; }
 
         public int Charisma { get; }
-
-        public Guid SagaUiD { get; }
     }
 }

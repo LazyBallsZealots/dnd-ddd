@@ -6,9 +6,9 @@ using System.Linq;
 using NHibernate;
 using NHibernate.SqlCommand;
 
-using ScriptAdjustments = Dnd.Ddd.Infrastructure.Tests.Fixture.SqlScriptAdjustments.SqLiteScriptAdjustments;
+using ScriptAdjustments = Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.SqlScriptAdjustments.SqLiteScriptAdjustments;
 
-namespace Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors
+namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.Interceptors
 {
     [ExcludeFromCodeCoverage]
     internal class CreateTableInterceptor : EmptyInterceptor
@@ -19,7 +19,7 @@ namespace Dnd.Ddd.Infrastructure.Tests.Fixture.Interceptors
             ScriptAdjustments.AdjustVarbinaryType,
             ScriptAdjustments.GetUidConstraint,
             ScriptAdjustments.AdjustNvarcharSqlType,
-            ScriptAdjustments.AdjustVarcharSqlType,
+            ScriptAdjustments.AdjustVarcharSqlType
         };
 
         public override SqlString OnPrepareStatement(SqlString sql)

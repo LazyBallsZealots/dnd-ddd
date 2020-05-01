@@ -1,0 +1,10 @@
+{
+  "modules": [
+    {
+      "type": "Dnd.Ddd.Infrastructure.Database.MsSqlAutofacModule, Dnd.Ddd.Infrastructure.Database"
+    },
+    {
+      "type": "Dnd.Ddd.Infrastructure.DomainEventsDispatch.DomainEventDispatchAutofacModule, Dnd.Ddd.Infrastructure.DomainEventsDispatch"
+    }
+  ] 
+}

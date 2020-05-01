@@ -4,8 +4,7 @@
     ///     Contract for command handlers which do not return any value.
     /// </summary>
     /// <typeparam name="TCommand">Type of command to handle.</typeparam>
-    public interface IEmptyResultCommandHandler<in TCommand> : ICommandHandler<TCommand>
-        where TCommand : BaseCommand
+    public interface IEmptyResultCommandHandler<in TCommand> : ICommandHandler<TCommand> where TCommand : BaseCommand
     {
         /// <summary>
         ///     Handles given command.

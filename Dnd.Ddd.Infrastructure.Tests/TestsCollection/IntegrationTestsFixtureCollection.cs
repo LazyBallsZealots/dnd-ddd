@@ -1,9 +1,9 @@
-﻿using Dnd.Ddd.Infrastructure.Tests.Fixture;
-using Dnd.Ddd.Infrastructure.Tests.TestsCollection.Names;
+﻿using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture;
+using Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names;
 
 using Xunit;
 
-namespace Dnd.Ddd.Infrastructure.Tests.TestsCollection
+namespace Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection
 {
     [CollectionDefinition(TestCollectionNames.IntegrationTestsCollection)]
     public class IntegrationTestsFixtureCollection : ICollectionFixture<IntegrationTestsFixture>

@@ -1,7 +1,9 @@
 ﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Entities;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
+using Dnd.Ddd.Model.Character;
 
 using NHibernate.Mapping.ByCode;
+using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
 {
@@ -11,6 +13,12 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
         {
             Lazy(false);
             Id(x => x.UiD, map => map.Generator(Generators.Assigned));
+            Discriminator(
+                x =>
+                {
+                    x.Force(true);
+                    x.Column("CharacterType");
+                });
             Component(
                 x => x.Strength,
                 componentMapper =>
@@ -93,13 +101,29 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 x => x.PlayerId,
                 componentMapper =>
                 {
-                    componentMapper.Property(
-                        x => x.Id,
-                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.PlayerId))));
+                    componentMapper.Property(x => x.Id, mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.PlayerId))));
 
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
+        }
+
+        public class CharacterDraftMap : SubclassMapping<CharacterDraft>
+        {
+            public CharacterDraftMap()
+            {
+                Lazy(false);
+                DiscriminatorValue(nameof(CharacterDraft));
+            }
+        }
+
+        public class CompletedCharacterMap : SubclassMapping<CompletedCharacter>
+        {
+            public CompletedCharacterMap()
+            {
+                Lazy(false);
+                DiscriminatorValue(nameof(CompletedCharacter));
+            }
         }
     }
 }

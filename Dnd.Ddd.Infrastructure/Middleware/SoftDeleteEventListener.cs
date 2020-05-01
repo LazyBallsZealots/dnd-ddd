@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Dnd.Ddd.Common.ModelFramework;
+
 using NHibernate.Event;
 using NHibernate.Event.Default;
 
@@ -9,10 +11,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
 {
     public class SoftDeleteEventListener : DefaultDeleteEventListener
     {
-        public override void OnDelete(DeleteEvent @event)
-        {
-            OnDelete(@event, null);
-        }
+        public override void OnDelete(DeleteEvent @event) => OnDelete(@event, null);
 
         public override void OnDelete(DeleteEvent @event, ISet<object> transientEntities)
         {
@@ -26,7 +25,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
                     transientEntities);
 
                 domainEntity.IsDeleted = true;
-                
+
                 base.CascadeAfterDelete(
                     @event.Session,
                     @event.Session.GetEntityPersister(@event.EntityName, @event.Entity),
@@ -39,10 +38,8 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
             }
         }
 
-        public override async Task OnDeleteAsync(DeleteEvent @event, CancellationToken cancellationToken)
-        {
+        public override async Task OnDeleteAsync(DeleteEvent @event, CancellationToken cancellationToken) =>
             await OnDeleteAsync(@event, null, cancellationToken);
-        }
 
         public override async Task OnDeleteAsync(DeleteEvent @event, ISet<object> transientEntities, CancellationToken cancellationToken)
         {

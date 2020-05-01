@@ -5,8 +5,7 @@ using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Events
 {
-    public abstract class BaseDomainEventMap<TEvent> : ClassMapping<TEvent>
-        where TEvent : BaseDomainEvent
+    public abstract class BaseDomainEventMap<TEvent> : ClassMapping<TEvent> where TEvent : BaseDomainEvent
     {
         protected BaseDomainEventMap()
         {

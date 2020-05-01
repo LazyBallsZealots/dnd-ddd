@@ -16,13 +16,13 @@ namespace Dnd.Ddd.Common.ModelFramework
         }
 
         /// <summary>
-        ///     Unique identifier of a domain event.
-        /// </summary>
-        public Guid Guid { get; protected set; }
-
-        /// <summary>
         ///     Date of event occurence.
         /// </summary>
         public DateTime OccuredOn { get; }
+
+        /// <summary>
+        ///     Unique identifier of a domain event.
+        /// </summary>
+        public Guid Guid { get; protected set; }
     }
 }

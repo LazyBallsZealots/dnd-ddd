@@ -6,8 +6,7 @@ namespace Dnd.Ddd.Common.Infrastructure.Commands
     ///     Base contract for command handlers which return unique object identifier.
     /// </summary>
     /// <typeparam name="TCommand">Type of the command.</typeparam>
-    public interface IIdResultCommandHandler<in TCommand> : ICommandHandler<TCommand>
-        where TCommand : BaseCommand
+    public interface IIdResultCommandHandler<in TCommand> : ICommandHandler<TCommand> where TCommand : BaseCommand
     {
         /// <summary>
         ///     Handles given <paramref name="command" />.
