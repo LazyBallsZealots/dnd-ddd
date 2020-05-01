@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Dnd.Ddd.Model.Character.ValueObjects.Race;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 

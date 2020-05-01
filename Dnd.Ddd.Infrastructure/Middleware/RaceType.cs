@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
-
-using Dnd.Ddd.Model;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 using NHibernate;

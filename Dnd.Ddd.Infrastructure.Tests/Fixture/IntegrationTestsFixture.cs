@@ -12,7 +12,6 @@ using Autofac;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.Interceptors;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.SqlScriptAdjustments;
 using Dnd.Ddd.Common.Infrastructure.Events;
-using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database;
 using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
@@ -54,50 +53,42 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 
         public IntegrationTestsFixture()
         {
-            var containerBuilder = new ContainerBuilder();
-
             connection = TestInfrastructureAutofacModule.CreateAndOpenSqLiteConnection();
 
+            var containerBuilder = new ContainerBuilder();
             containerBuilder.RegisterModule(new TestInfrastructureAutofacModule(DefaultConnectionString, MappingAssemblies));
             containerBuilder.RegisterModule(new DomainEventDispatchAutofacModule());
             containerBuilder.RegisterModule(new DomainServicesAutofacModule());
 
             container = containerBuilder.Build();
-            LifetimeScope = container.BeginLifetimeScope();
+            using var lifetimeScope = container.BeginLifetimeScope();
 
-            GenerateDatabaseSchema();
+            GenerateDatabaseSchema(lifetimeScope);
         }
-
-        internal ILifetimeScope LifetimeScope { get; }
-
-        internal IUnitOfWork UnitOfWork => LifetimeScope.Resolve<IUnitOfWork>();
-
-        internal ISession Session => LifetimeScope.Resolve<ISession>();
 
         public void Dispose()
         {
-            LifetimeScope.Dispose();
             container.Dispose();
             connection.Dispose();
             connection = null;
         }
 
-        private void GenerateDatabaseSchema()
+        private void GenerateDatabaseSchema(ILifetimeScope lifetimeScope)
         {
-            var generatedSchemaScripts = GenerateSchemaCreationScripts();
+            var generatedSchemaScripts = GenerateSchemaCreationScripts(lifetimeScope);
 
-            using var schemaDeploySession = LifetimeScope.Resolve<ISessionFactory>()
+            using var schemaDeploySession = lifetimeScope.Resolve<ISessionFactory>()
                 .WithOptions()
                 .Interceptor(new CreateTableInterceptor())
                 .OpenSession();
             generatedSchemaScripts.ToList().ForEach(schemaScript => schemaDeploySession.CreateSQLQuery(schemaScript).ExecuteUpdate());
         }
 
-        private IEnumerable<string> GenerateSchemaCreationScripts()
+        private IEnumerable<string> GenerateSchemaCreationScripts(ILifetimeScope lifetimeScope)
         {
             var generateSchemaScripts = new List<string>();
 
-            new SchemaExport(LifetimeScope.Resolve<Configuration>()).Execute(
+            new SchemaExport(lifetimeScope.Resolve<Configuration>()).Execute(
                 script =>
                 {
                     if (script.TrimStart().StartsWith("create", StringComparison.CurrentCultureIgnoreCase) &&
@@ -176,25 +167,23 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
                 return config;
             }
 
-            protected override IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory) =>
-                new FakeEventStore(sessionFactory);
+            protected override IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory) => new FakeEventStore(sessionFactory);
 
             private static Configuration
-                BuildBaseNHibernateConfiguration(string connectionString, IEnumerable<Assembly> mappingAssemblies) =>
-                new Configuration().SetProperties(ConfigurationOptions)
-                    .DataBaseIntegration(
-                        db =>
-                        {
-                            db.ConnectionString = connectionString;
-                            db.Driver<SQLite20Driver>();
-                            db.Dialect<SQLiteDialect>();
-                            db.ConnectionReleaseMode = ConnectionReleaseMode.AfterTransaction;
-                            db.ConnectionProvider<DriverConnectionProvider>();
-                            db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                            db.LogSqlInConsole = true;
-                            db.LogFormattedSql = true;
-                        })
-                    .AddAssemblies(mappingAssemblies);
+                BuildBaseNHibernateConfiguration(string connectionString, IEnumerable<Assembly> mappingAssemblies) => new Configuration().SetProperties(ConfigurationOptions)
+.DataBaseIntegration(
+db =>
+{
+    db.ConnectionString = connectionString;
+    db.Driver<SQLite20Driver>();
+    db.Dialect<SQLiteDialect>();
+    db.ConnectionReleaseMode = ConnectionReleaseMode.AfterTransaction;
+    db.ConnectionProvider<DriverConnectionProvider>();
+    db.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+    db.LogSqlInConsole = true;
+    db.LogFormattedSql = true;
+})
+.AddAssemblies(mappingAssemblies);
 
             private class FakeEventStore : IDomainEventHandler<BaseDomainEvent>, IDisposable
             {

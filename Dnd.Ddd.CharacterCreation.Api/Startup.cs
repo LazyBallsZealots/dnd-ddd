@@ -1,19 +1,14 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Configuration;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Dnd.Ddd.CharacterCreation.Api
 {
@@ -43,12 +38,12 @@ namespace Dnd.Ddd.CharacterCreation.Api
         /// <param name="builder"></param>
         public virtual void ConfigureContainer(ContainerBuilder builder)
         {
-            var domainModulesConfigurationBuilder = new ConfigurationBuilder();
+            ConfigurationBuilder domainModulesConfigurationBuilder = new ConfigurationBuilder();
             domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
 
             builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
 
-            var infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
+            ConfigurationBuilder infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
             infrastructureModulesConfigurationBuilder.AddJsonFile("autofacInfrastructureModules.json");
             builder.RegisterModule(new ConfigurationModule(infrastructureModulesConfigurationBuilder.Build()));
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Dnd.Ddd.Common.ModelFramework;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 namespace Dnd.Ddd.Model.Character.Builder
 {
