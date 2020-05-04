@@ -25,11 +25,9 @@ namespace Dnd.Ddd.CharacterCreation.Api
         ///     This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services.AddControllers(options => options.Filters.Add(new ProducesAttribute("application/json")))
                 .AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
-        }
 
         /// <summary>
         ///     This method gets called after ConfigureServices.
@@ -38,12 +36,12 @@ namespace Dnd.Ddd.CharacterCreation.Api
         /// <param name="builder"></param>
         public virtual void ConfigureContainer(ContainerBuilder builder)
         {
-            ConfigurationBuilder domainModulesConfigurationBuilder = new ConfigurationBuilder();
+            var domainModulesConfigurationBuilder = new ConfigurationBuilder();
             domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
 
             builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
 
-            ConfigurationBuilder infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
+            var infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
             infrastructureModulesConfigurationBuilder.AddJsonFile("autofacInfrastructureModules.json");
             builder.RegisterModule(new ConfigurationModule(infrastructureModulesConfigurationBuilder.Build()));
         }
@@ -68,10 +66,7 @@ namespace Dnd.Ddd.CharacterCreation.Api
 
             // app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
 
             if (!env.IsDevelopment())
             {

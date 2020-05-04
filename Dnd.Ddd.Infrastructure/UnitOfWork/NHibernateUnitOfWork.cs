@@ -9,19 +9,19 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
 {
     public class NHibernateUnitOfWork : IUnitOfWork, IDisposable
     {
-        private readonly ISession session;
-
         private readonly ITransaction transaction;
 
         public NHibernateUnitOfWork(ISession session)
         {
-            this.session = session;
+            Session = session;
             transaction = session.BeginTransaction();
         }
 
+        internal ISession Session { get; }
+
         public void Dispose()
         {
-            session.Dispose();
+            Session.Dispose();
             if (transaction.IsActive || !transaction.WasCommitted)
             {
                 transaction.Rollback();

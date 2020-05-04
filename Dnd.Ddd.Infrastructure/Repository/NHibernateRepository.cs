@@ -2,7 +2,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Common.ModelFramework;
+using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
 
 using NHibernate;
 
@@ -11,9 +13,12 @@ namespace Dnd.Ddd.Infrastructure.Database.Repository
     internal abstract class NHibernateRepository<TAggregateType> : IRepository<TAggregateType, Guid>
         where TAggregateType : Entity, IAggregateRoot
     {
-        protected NHibernateRepository(ISession session)
+        protected NHibernateRepository(IUnitOfWork unitOfWork)
         {
-            Session = session;
+            if (unitOfWork is NHibernateUnitOfWork nHibernateUnitOfWork)
+            {
+                Session = nHibernateUnitOfWork.Session;
+            }
         }
 
         protected ISession Session { get; }

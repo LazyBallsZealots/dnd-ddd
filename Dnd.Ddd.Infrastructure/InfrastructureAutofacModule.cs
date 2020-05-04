@@ -4,9 +4,11 @@ using System.Reflection;
 using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 using Dnd.Ddd.Infrastructure.Database.Repository.Character;
+using Dnd.Ddd.Model.Character.Repository;
 
 using NHibernate;
 using NHibernate.Cfg;
@@ -31,7 +33,7 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterRepository(context.Resolve<ISession>())).As<ISession>().InstancePerLifetimeScope();
+            builder.Register(context => new CharacterRepository(context.Resolve<IUnitOfWork>())).As<ICharacterRepository>().InstancePerLifetimeScope();
 
             builder.Register(context => CreateEventStore(context.Resolve<ISessionFactory>()))
                 .As<IDomainEventHandler<BaseDomainEvent>>()

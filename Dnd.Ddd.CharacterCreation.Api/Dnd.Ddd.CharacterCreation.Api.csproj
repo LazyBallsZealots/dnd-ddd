@@ -20,9 +20,5 @@
     <ProjectReference Include="..\Dnd.Ddd.Services\Dnd.Ddd.Services.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 
 </Project>
