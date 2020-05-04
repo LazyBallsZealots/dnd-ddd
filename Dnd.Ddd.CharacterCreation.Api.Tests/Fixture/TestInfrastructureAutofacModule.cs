@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SQLite;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-
-using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database;
 using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
-using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
 
 using NHibernate;
 using NHibernate.Bytecode;
@@ -46,22 +41,6 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
         public TestInfrastructureAutofacModule(string connectionString, IEnumerable<Assembly> mappingAssemblies)
         {
             baseConfiguration = BuildBaseNHibernateConfiguration(connectionString, mappingAssemblies);
-        }
-
-        public static IDbConnection CreateAndOpenSqLiteConnection()
-        {
-            var dbConnection = new SQLiteConnection(DatabaseManager.DefaultConnectionString);
-            dbConnection.Open();
-            return dbConnection;
-        }
-
-        protected override void Load(ContainerBuilder builder)
-        {
-            base.Load(builder);
-
-            builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
         }
 
         protected override ISessionFactory CreateSessionFactory(Configuration configuration) => configuration.BuildSessionFactory();

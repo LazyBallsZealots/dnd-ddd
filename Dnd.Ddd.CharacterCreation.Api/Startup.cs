@@ -66,7 +66,7 @@ namespace Dnd.Ddd.CharacterCreation.Api
 
             // app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             if (!env.IsDevelopment())
             {

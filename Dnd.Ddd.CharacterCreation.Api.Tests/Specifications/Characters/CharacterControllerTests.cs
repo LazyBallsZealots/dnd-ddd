@@ -3,32 +3,36 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
-using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateDraft;
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture;
+using Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names;
 
 using Xunit;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 {
-    public class CharacterControllerTests : BaseIntegrationTest
+    [Collection(TestCollectionNames.IntegrationTestsCollection)]
+    public class CharacterControllerTests
     {
+        private readonly HttpClient client;
+
         public CharacterControllerTests(IntegrationTestsFixture fixture)
-            : base(fixture)
         {
+            client = fixture.Client;
         }
 
         [Fact]
         public async Task ControllerExists()
         {
             var playerId = Guid.NewGuid();
-            var request = new CreateDraftRequest
+            var request = new CreateCharacterDraftRequest
             {
                 PlayerId = playerId
             };
             var requestBody = JsonSerializer.Serialize(request);
 
-            _ = await Client.PostAsync("api/character/new", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            var response = await client.PostAsync("api/character", new StringContent(requestBody, Encoding.UTF8, "application/json"));
+            response.EnsureSuccessStatusCode();
         }
     }
 }

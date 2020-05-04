@@ -16,7 +16,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects
             CharacterName = name;
         }
 
-        protected internal string CharacterName { get; }
+        protected internal string CharacterName { get; private set; }
 
         public static Name FromString(string name)
         {

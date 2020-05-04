@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.SQLite;
 using System.Linq;
 using System.Reflection;
 
@@ -24,7 +25,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 
         internal const string DefaultConnectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
 
-        private static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
+        internal static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
         {
             Assembly.Load("Dnd.Ddd.Infrastructure.Database")
         };
@@ -35,16 +36,16 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
         {
             using var nestedLifetimeScope = lifetimeScope.BeginLifetimeScope();
 
-            connection = TestInfrastructureAutofacModule.CreateAndOpenSqLiteConnection();
+            connection = CreateAndOpenSqLiteConnection();
 
-            //var containerBuilder = new ContainerBuilder();
-            //containerBuilder.RegisterModule(new TestInfrastructureAutofacModule(DefaultConnectionString, MappingAssemblies));
-            //containerBuilder.RegisterModule(new DomainEventDispatchAutofacModule());
-            //containerBuilder.RegisterModule(new DomainServicesAutofacModule());
-
-            //container = containerBuilder.Build();
-            
             GenerateDatabaseSchema(nestedLifetimeScope);
+        }
+
+        public static IDbConnection CreateAndOpenSqLiteConnection()
+        {
+            var dbConnection = new SQLiteConnection(DefaultConnectionString);
+            dbConnection.Open();
+            return dbConnection;
         }
 
         public void Dispose()

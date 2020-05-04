@@ -17,7 +17,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.Database", "Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.Database.csproj", "{AB91518E-AD5A-471A-84E5-93304AEB013D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.Api.Tests", "Dnd.Ddd.Infrastructure.Tests\Dnd.Ddd.CharacterCreation.Api.Tests.csproj", "{898B9EE5-35D0-498A-BBD6-EDDEFBA8BFBC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.Api.Tests", "Dnd.Ddd.CharacterCreation.Api.Tests\Dnd.Ddd.CharacterCreation.Api.Tests.csproj", "{898B9EE5-35D0-498A-BBD6-EDDEFBA8BFBC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.Database.Common", "Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj", "{1E5B8204-E98C-4388-A85F-DC81762AF3CE}"
 EndProject

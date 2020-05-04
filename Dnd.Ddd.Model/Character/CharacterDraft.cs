@@ -9,6 +9,10 @@ namespace Dnd.Ddd.Model.Character
 {
     public class CharacterDraft : Character
     {
+        protected CharacterDraft()
+        {
+        }
+
         internal CharacterDraft(PlayerId playerId)
         {
             PlayerId = playerId;

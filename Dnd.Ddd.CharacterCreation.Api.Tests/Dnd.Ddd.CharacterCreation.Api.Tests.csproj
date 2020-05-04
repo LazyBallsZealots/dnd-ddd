@@ -29,4 +29,10 @@
     <ProjectReference Include="..\Dnd.Ddd.Services\Dnd.Ddd.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

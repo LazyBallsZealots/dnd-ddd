@@ -6,6 +6,11 @@ namespace Dnd.Ddd.Services.Commands
 {
     public class CreateCharacterDraftCommand : BaseCommand
     {
-        public Guid PlayerId { get; set; }
+        public CreateCharacterDraftCommand(Guid playerId)
+        {
+            PlayerId = playerId;
+        }
+
+        public Guid PlayerId { get; }
     }
 }
