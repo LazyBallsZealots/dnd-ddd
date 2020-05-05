@@ -7,9 +7,9 @@ using Dnd.Ddd.Common.ModelFramework;
 
 using NHibernate;
 
-namespace Dnd.Ddd.Infrastructure.Database.EventStore
+namespace Dnd.Ddd.Infrastructure.EventBus.EventStore
 {
-    internal class EventStore : IDomainEventHandler<BaseDomainEvent>
+    public class EventStore : IDomainEventHandler<BaseDomainEvent>
     {
         private readonly ISessionFactory sessionFactory;
 

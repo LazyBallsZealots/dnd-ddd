@@ -14,12 +14,15 @@ using Xunit;
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 {
     [Collection(TestCollectionNames.IntegrationTestsCollection), Trait("Category", "Integration tests: controllers")]
-    public class CharacterControllerTests
+    public class CharacterControllerTests : IDisposable
     {
-        private readonly HttpClient client;
+        private readonly IntegrationTestsFixture fixture;
 
+        private readonly HttpClient client;
+        
         public CharacterControllerTests(IntegrationTestsFixture fixture)
         {
+            this.fixture = fixture;
             client = fixture.CreateClient();
         }
 
@@ -44,10 +47,13 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         [Fact]
         public async Task CharacterController_OnPostingInvalidCreateCharacterDraftRequest_ReturnsBadRequest()
         {
-            var requestBody = JsonSerializer.Serialize<CreateCharacterDraftRequest>(null);
+            var request = new CreateCharacterDraftRequest { PlayerId = Guid.Empty };
+            var requestBody = JsonSerializer.Serialize(request);
 
             var response = await client.PostAsync("api/character", new StringContent(requestBody, Encoding.UTF8, "application/json"));
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
+
+        public void Dispose() => fixture.ClearDatabase();
     }
 }

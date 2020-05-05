@@ -21,15 +21,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.Database.Common", "Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj", "{1E5B8204-E98C-4388-A85F-DC81762AF3CE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.DomainEventsDispatch", "Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj", "{C74EF617-7BE9-4096-8E49-952C9CE425D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Infrastructure.EventBus", "Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.EventBus.csproj", "{C74EF617-7BE9-4096-8E49-952C9CE425D0}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{ABF4D685-69F5-4C05-AB57-75F970CF12B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.Services", "Dnd.Ddd.Services\Dnd.Ddd.Services.csproj", "{DEAD8B3F-372E-41EB-90B6-391832994D90}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Services", "Dnd.Ddd.Services\Dnd.Ddd.Services.csproj", "{DEAD8B3F-372E-41EB-90B6-391832994D90}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{FFA5C951-A878-41CE-B545-5C37483D59F9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dnd.Ddd.CharacterCreation.Api", "Dnd.Ddd.CharacterCreation.Api\Dnd.Ddd.CharacterCreation.Api.csproj", "{7A53AC35-8017-4398-B2E1-510E0E5CF469}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.Api", "Dnd.Ddd.CharacterCreation.Api\Dnd.Ddd.CharacterCreation.Api.csproj", "{7A53AC35-8017-4398-B2E1-510E0E5CF469}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

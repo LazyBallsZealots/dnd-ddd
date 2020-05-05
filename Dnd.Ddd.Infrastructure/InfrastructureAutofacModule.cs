@@ -40,16 +40,12 @@ namespace Dnd.Ddd.Infrastructure.Database
             builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
-
-            builder.Register(context => CreateEventStore(context.Resolve<ISessionFactory>()))
-                .As<IDomainEventHandler<BaseDomainEvent>>()
-                .SingleInstance();
         }
 
         protected virtual string HibernateConfigFilePath =>
             $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
 
-        protected IEnumerable<Assembly> MappingAssemblies => new List<Assembly>
+        protected virtual IEnumerable<Assembly> MappingAssemblies => new List<Assembly>
         {
             Assembly.Load("Dnd.Ddd.Infrastructure.Database")
         };
@@ -57,7 +53,5 @@ namespace Dnd.Ddd.Infrastructure.Database
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);
 
         protected abstract Configuration BuildConfiguration(PostCommitEventListener eventListener);
-
-        protected abstract IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory);
     }
 }

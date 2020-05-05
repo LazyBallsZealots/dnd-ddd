@@ -1,5 +1,6 @@
 ﻿using Autofac;
 
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Model.Character.Repository;
 using Dnd.Ddd.Services.Commands.Handlers;
 
@@ -17,7 +18,7 @@ namespace Dnd.Ddd.Services
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            builder.Register(context => new CreateChatacterDraftCommandHandler(context.Resolve<ICharacterRepository>()))
+            builder.Register(context => new CreateChatacterDraftCommandHandler(context.Resolve<ICharacterRepository>(), context.Resolve<IUnitOfWork>()))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 

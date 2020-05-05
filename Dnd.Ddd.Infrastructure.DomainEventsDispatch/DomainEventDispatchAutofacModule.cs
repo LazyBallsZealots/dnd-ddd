@@ -9,7 +9,7 @@ using Dnd.Ddd.Common.Infrastructure.Events;
 
 using MediatR;
 
-namespace Dnd.Ddd.Infrastructure.DomainEventsDispatch
+namespace Dnd.Ddd.Infrastructure.EventBus
 {
     public class DomainEventDispatchAutofacModule : Module
     {
@@ -47,8 +47,8 @@ namespace Dnd.Ddd.Infrastructure.DomainEventsDispatch
                         .Where(
                             type => type.GetInterfaces()
                                         .Any(i => i == @interface || i.IsGenericType && i.GetGenericTypeDefinition() == @interface) &&
-                                    !type.IsAbstract &&
                                     !string.IsNullOrWhiteSpace(type.Namespace) &&
+                                    !type.IsAbstract &&
                                     type.Namespace.StartsWith("Dnd")))
                 .ToList();
     }

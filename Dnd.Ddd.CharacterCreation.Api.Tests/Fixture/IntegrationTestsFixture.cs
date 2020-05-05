@@ -26,6 +26,8 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
             GC.SuppressFinalize(this);
         }
 
+        public void ClearDatabase() => databaseManager.ClearDatabase();
+
         internal HttpClient CreateClient() =>
             webApplicationFactory.CreateClient(
                 new WebApplicationFactoryClientOptions

@@ -23,7 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.CharacterCreation.Api\Dnd.Ddd.CharacterCreation.Api.csproj" />
-    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.EventBus.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Services\Dnd.Ddd.Services.csproj" />

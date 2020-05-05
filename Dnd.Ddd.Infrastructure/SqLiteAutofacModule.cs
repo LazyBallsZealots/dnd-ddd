@@ -55,9 +55,6 @@ namespace Dnd.Ddd.Infrastructure.Database
             return config;
         }
 
-        protected override IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory) =>
-            new FakeEventStore(sessionFactory);
-
         private static Configuration BuildBaseNHibernateConfiguration(string connectionString, IEnumerable<Assembly> mappingAssemblies) =>
             new Configuration().SetProperties(ConfigurationOptions)
                 .DataBaseIntegration(
@@ -73,29 +70,5 @@ namespace Dnd.Ddd.Infrastructure.Database
                         db.LogFormattedSql = true;
                     })
                 .AddAssemblies(mappingAssemblies);
-
-        private class FakeEventStore : IDomainEventHandler<BaseDomainEvent>, IDisposable
-        {
-            private readonly ISessionFactory sessionFactory;
-
-            public FakeEventStore(ISessionFactory sessionFactory)
-            {
-                this.sessionFactory = sessionFactory;
-            }
-
-            public void Dispose() => sessionFactory?.Dispose();
-
-            public async Task Handle(BaseDomainEvent notification, CancellationToken cancellationToken)
-            {
-                if (sessionFactory.GetClassMetadata(notification.GetType()) == null)
-                {
-                    return;
-                }
-
-                using var statelessSession = sessionFactory.OpenStatelessSession();
-
-                await statelessSession.InsertAsync(notification, cancellationToken);
-            }
-        }
     }
 }

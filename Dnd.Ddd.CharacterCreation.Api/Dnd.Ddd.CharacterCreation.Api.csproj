@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.EventBus.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Services\Dnd.Ddd.Services.csproj" />
   </ItemGroup>

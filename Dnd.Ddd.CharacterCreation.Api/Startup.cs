@@ -4,7 +4,7 @@ using Autofac;
 using Autofac.Configuration;
 
 using Dnd.Ddd.Infrastructure.Database;
-using Dnd.Ddd.Infrastructure.DomainEventsDispatch;
+using Dnd.Ddd.Infrastructure.EventBus;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -55,8 +55,8 @@ namespace Dnd.Ddd.CharacterCreation.Api
             domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
 
             builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
-            builder.RegisterModule(new SqLiteAutofacModule());
             builder.RegisterModule(new DomainEventDispatchAutofacModule());
+            builder.RegisterModule(new SqLiteAutofacModule());
         }
 
         /// <summary>

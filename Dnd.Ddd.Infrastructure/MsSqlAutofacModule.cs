@@ -27,8 +27,5 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             return configuration;
         }
-
-        protected override IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory) =>
-            new EventStore.EventStore(sessionFactory);
     }
 }

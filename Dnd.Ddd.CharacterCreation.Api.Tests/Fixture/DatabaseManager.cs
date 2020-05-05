@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Linq;
-using System.Reflection;
 
 using Autofac;
 
@@ -23,12 +22,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
             "drop", "PRAGMA", "create index", "ALTER"
         };
 
-        internal const string DefaultConnectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
-
-        internal static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
-        {
-            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
-        };
+        private const string DefaultConnectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
 
         private IDbConnection connection;
 
@@ -41,17 +35,32 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
             GenerateDatabaseSchema(nestedLifetimeScope);
         }
 
-        public static IDbConnection CreateAndOpenSqLiteConnection()
-        {
-            var dbConnection = new SQLiteConnection(DefaultConnectionString);
-            dbConnection.Open();
-            return dbConnection;
-        }
-
         public void Dispose()
         {
             connection.Dispose();
             connection = null;
+        }
+
+        public void ClearDatabase()
+        {
+            var command = connection.CreateCommand();
+            command.CommandText = "select name from sqlite_master where type = 'table'";
+            var reader = command.ExecuteReader();
+
+            while (reader.Read())
+            {
+                var tableName = reader.GetString(0);
+                var dropCommand = connection.CreateCommand();
+                dropCommand.CommandText = $"delete from {tableName}";
+                dropCommand.ExecuteNonQuery();
+            }
+        }
+
+        private static IDbConnection CreateAndOpenSqLiteConnection()
+        {
+            var dbConnection = new SQLiteConnection(DefaultConnectionString);
+            dbConnection.Open();
+            return dbConnection;
         }
 
         private static IEnumerable<string> GenerateSchemaCreationScripts(ILifetimeScope lifetimeScope)
