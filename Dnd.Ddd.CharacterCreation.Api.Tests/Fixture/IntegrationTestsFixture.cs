@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
+
 using Autofac.Extensions.DependencyInjection;
+
 using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
@@ -18,17 +20,18 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
             databaseManager = new DatabaseManager(lifetimeScope);
         }
 
-        internal HttpClient Client => webApplicationFactory.CreateClient(
-            new WebApplicationFactoryClientOptions
-            {
-                AllowAutoRedirect = false
-            });
-
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        internal HttpClient CreateClient() =>
+            webApplicationFactory.CreateClient(
+                new WebApplicationFactoryClientOptions
+                {
+                    AllowAutoRedirect = false
+                });
 
         protected virtual void Dispose(bool disposing)
         {

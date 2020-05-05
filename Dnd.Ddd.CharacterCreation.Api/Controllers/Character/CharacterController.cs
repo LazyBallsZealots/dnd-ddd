@@ -1,4 +1,4 @@
-﻿using System.Text.Json;
+﻿using System;
 
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.Common.Infrastructure.Commands;
@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 {
-    [Route("api/[controller]")]
-    [Produces("application/json")]
-    [ApiController]
+    [Route("api/[controller]"), ApiController]
     public class CharacterController : ControllerBase
     {
         private readonly IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler;
@@ -20,10 +18,14 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             this.createDraftCommandHandler = createDraftCommandHandler;
         }
 
-        [HttpPost]
-        [Produces("application/json")]
+        [HttpPost, ProducesResponseType(201, Type = typeof(CreateCharacterDraftResponse)), ProducesResponseType(400, Type = typeof(string))]
         public IActionResult CreateDraft([FromBody] CreateCharacterDraftRequest request)
         {
+            if (request == null || request.PlayerId == Guid.Empty)
+            {
+                return BadRequest("Not enough information provided to create CharacterDraft!");
+            }
+
             var command = new CreateCharacterDraftCommand(request.PlayerId);
             var characterId = createDraftCommandHandler.Handle(command);
 
@@ -32,9 +34,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 DraftId = characterId
             };
 
-            var serializedResponse = JsonSerializer.Serialize(response);
-
-            return Ok(serializedResponse);
+            return StatusCode(201, response);
         }
     }
 }
