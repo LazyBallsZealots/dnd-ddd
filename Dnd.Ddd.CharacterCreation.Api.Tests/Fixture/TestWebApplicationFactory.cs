@@ -9,13 +9,13 @@ using Microsoft.Extensions.Hosting;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 {
-    internal class TestWebApplicationFactory : WebApplicationFactory<TestStartup>, IDisposable
+    internal class TestWebApplicationFactory : WebApplicationFactory<Startup>
     {
         protected override IHostBuilder CreateHostBuilder() =>
             Host.CreateDefaultBuilder()
                 .UseServiceProviderFactory(new AutofacServiceProviderFactory())
                 .UseEnvironment("Test") // TODO: class with constants
-                .ConfigureWebHost(webHostBuilder => webHostBuilder.UseStartup<TestStartup>().UseTestServer());
+                .ConfigureWebHost(webHostBuilder => webHostBuilder.UseStartup<Startup>().UseTestServer());
 
         protected override void ConfigureWebHost(IWebHostBuilder builder) => builder.ConfigureTestServices(
             services =>

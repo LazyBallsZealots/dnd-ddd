@@ -3,6 +3,9 @@ using System;
 using Autofac;
 using Autofac.Configuration;
 
+using Dnd.Ddd.Infrastructure.Database;
+using Dnd.Ddd.Infrastructure.DomainEventsDispatch;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -44,6 +47,16 @@ namespace Dnd.Ddd.CharacterCreation.Api
             var infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
             infrastructureModulesConfigurationBuilder.AddJsonFile("autofacInfrastructureModules.json");
             builder.RegisterModule(new ConfigurationModule(infrastructureModulesConfigurationBuilder.Build()));
+        }
+
+        public virtual void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            var domainModulesConfigurationBuilder = new ConfigurationBuilder();
+            domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
+
+            builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
+            builder.RegisterModule(new SqLiteAutofacModule());
+            builder.RegisterModule(new DomainEventDispatchAutofacModule());
         }
 
         /// <summary>

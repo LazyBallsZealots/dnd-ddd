@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 
 using Autofac;
@@ -47,6 +48,11 @@ namespace Dnd.Ddd.Infrastructure.Database
 
         protected virtual string HibernateConfigFilePath =>
             $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
+
+        protected IEnumerable<Assembly> MappingAssemblies => new List<Assembly>
+        {
+            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
+        };
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);
 

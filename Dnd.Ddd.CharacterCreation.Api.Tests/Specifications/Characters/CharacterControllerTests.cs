@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 {
-    [Collection(TestCollectionNames.IntegrationTestsCollection)]
+    [Collection(TestCollectionNames.IntegrationTestsCollection), Trait("Category", "Integration tests: controllers")]
     public class CharacterControllerTests
     {
         private readonly HttpClient client;

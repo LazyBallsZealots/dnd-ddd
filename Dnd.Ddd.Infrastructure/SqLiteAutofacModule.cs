@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.ModelFramework;
-using Dnd.Ddd.Infrastructure.Database;
 using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 
@@ -20,9 +19,9 @@ using NHibernate.Event;
 
 using Environment = NHibernate.Cfg.Environment;
 
-namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
+namespace Dnd.Ddd.Infrastructure.Database
 {
-    internal class TestInfrastructureAutofacModule : InfrastructureAutofacModule
+    public class SqLiteAutofacModule : InfrastructureAutofacModule
     {
         private static readonly Dictionary<string, string> ConfigurationOptions = new Dictionary<string, string>
         {
@@ -38,9 +37,9 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 
         private readonly Configuration baseConfiguration;
 
-        public TestInfrastructureAutofacModule(string connectionString, IEnumerable<Assembly> mappingAssemblies)
+        public SqLiteAutofacModule()
         {
-            baseConfiguration = BuildBaseNHibernateConfiguration(connectionString, mappingAssemblies);
+            baseConfiguration = BuildBaseNHibernateConfiguration("FullUri=file:memorydb.db?mode=memory&cache=shared", MappingAssemblies);
         }
 
         protected override ISessionFactory CreateSessionFactory(Configuration configuration) => configuration.BuildSessionFactory();

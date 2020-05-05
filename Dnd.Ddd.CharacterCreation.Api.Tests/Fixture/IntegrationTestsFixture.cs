@@ -7,7 +7,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 {
     public class IntegrationTestsFixture : IDisposable
     {
-        private readonly WebApplicationFactory<TestStartup> webApplicationFactory;
+        private readonly WebApplicationFactory<Startup> webApplicationFactory;
 
         private readonly DatabaseManager databaseManager;
 
