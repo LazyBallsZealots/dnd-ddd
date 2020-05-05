@@ -44,8 +44,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         [Fact]
         public async Task CharacterController_OnPostingInvalidCreateCharacterDraftRequest_ReturnsBadRequest()
         {
-            CreateCharacterDraftRequest request = null;
-            var requestBody = JsonSerializer.Serialize(request);
+            var requestBody = JsonSerializer.Serialize<CreateCharacterDraftRequest>(null);
 
             var response = await client.PostAsync("api/character", new StringContent(requestBody, Encoding.UTF8, "application/json"));
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
