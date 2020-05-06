@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture;
 using Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names;
-
+using Dnd.Ddd.Model.Character;
 using Xunit;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
@@ -27,7 +27,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         }
 
         [Fact]
-        public async Task CharacterController_OnPostingValidCreateCharacterDraftRequest_ReturnsValidResponse()
+        public async Task CharacterController_OnPostingValidCreateCharacterDraftRequest_SavesNewCharacterDraft()
         {
             var playerId = Guid.NewGuid();
             var request = new CreateCharacterDraftRequest
@@ -42,6 +42,12 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             var responseString = await response.Content.ReadAsStringAsync();
             var responseContent = JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
             Assert.NotEqual(Guid.Empty, responseContent.DraftId);
+
+            var savedCharacterDraftResponse = await client.GetAsync($"api/character?characterId={responseContent.DraftId}");
+
+            savedCharacterDraftResponse.EnsureSuccessStatusCode();
+            var savedCharacterDraft = JsonSerializer.Deserialize<CharacterDraft>(await savedCharacterDraftResponse.Content.ReadAsStringAsync());
+            Assert.NotNull(savedCharacterDraft);
         }
 
         [Fact]

@@ -2,6 +2,7 @@
 
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Commands;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Repository;
@@ -12,9 +13,14 @@ namespace Dnd.Ddd.Services.Commands.Handlers
     {
         private readonly ICharacterRepository repository;
 
-        public ChooseCharacterRaceCommandHandler(ICharacterRepository repository)
+        private readonly IUnitOfWork unitOfWork;
+
+        public ChooseCharacterRaceCommandHandler(
+            ICharacterRepository repository,
+            IUnitOfWork unitOfWork)
         {
             this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         public void Handle(ChooseCharacterRaceCommand command)
@@ -30,6 +36,8 @@ namespace Dnd.Ddd.Services.Commands.Handlers
             character.RegisterDomainEvent(new CharacterRaceChosen(command.Race, command.CharacterUiD));
 
             repository.Update(character);
+
+            unitOfWork.Commit();
         }
     }
 }

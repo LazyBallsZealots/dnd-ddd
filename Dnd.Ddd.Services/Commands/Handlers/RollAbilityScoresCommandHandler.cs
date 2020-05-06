@@ -2,6 +2,7 @@
 
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Commands;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Repository;
@@ -12,9 +13,12 @@ namespace Dnd.Ddd.Services.Commands.Handlers
     {
         private readonly ICharacterRepository repository;
 
-        public RollAbilityScoresCommandHandler(ICharacterRepository repository)
+        private readonly IUnitOfWork unitOfWork;
+
+        public RollAbilityScoresCommandHandler(ICharacterRepository repository, IUnitOfWork unitOfWork)
         {
             this.repository = repository;
+            this.unitOfWork = unitOfWork;
         }
 
         public void Handle(RollAbilityScoresCommand command)
@@ -43,6 +47,8 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     command.Charisma));
 
             repository.Update(characterWithRolledAbilityScores);
+
+            unitOfWork.Commit();
         }
     }
 }

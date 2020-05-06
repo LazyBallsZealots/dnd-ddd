@@ -2,8 +2,9 @@
 
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.Common.Infrastructure.Commands;
+using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Services.Commands;
-
+using Dnd.Ddd.Services.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
@@ -13,12 +14,19 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
     {
         private readonly IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler;
 
-        public CharacterController(IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler)
+        private readonly IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler;
+
+        public CharacterController(
+            IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
+            IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
+            this.getByIdQueryHandler = getByIdQueryHandler;
         }
 
-        [HttpPost, ProducesResponseType(201, Type = typeof(CreateCharacterDraftResponse)), ProducesResponseType(400, Type = typeof(string))]
+        [HttpPost]
+        [ProducesResponseType(201, Type = typeof(CreateCharacterDraftResponse))]
+        [ProducesResponseType(400, Type = typeof(string))]
         public IActionResult CreateDraft([FromBody] CreateCharacterDraftRequest request)
         {
             if (request == null || request.PlayerId == Guid.Empty)
@@ -35,6 +43,24 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             };
 
             return StatusCode(201, response);
+        }
+
+        [HttpGet]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(200, Type = typeof(Model.Character.Character))]
+        public IActionResult GetById([FromQuery] Guid characterId)
+        {
+            if (characterId == Guid.Empty)
+            {
+                return BadRequest("Not enough information provided to query Character!");
+            }
+
+            var query = new GetCharacterByIdQuery(characterId);
+
+            return getByIdQueryHandler.Handle(query) is Model.Character.Character character ?
+                (IActionResult)Ok(character) :
+                NotFound($"Character with provided Id: {characterId} was not found!");
         }
     }
 }

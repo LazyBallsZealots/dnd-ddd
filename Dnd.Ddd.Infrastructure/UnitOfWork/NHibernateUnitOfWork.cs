@@ -21,13 +21,14 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
 
         public void Dispose()
         {
-            Session.Dispose();
-            if (transaction.IsActive || !transaction.WasCommitted)
+            if (transaction.IsActive && !transaction.WasCommitted && !transaction.WasRolledBack)
             {
                 transaction.Rollback();
             }
 
             transaction?.Dispose();
+
+            Session.Dispose();
         }
 
         public void Commit()
