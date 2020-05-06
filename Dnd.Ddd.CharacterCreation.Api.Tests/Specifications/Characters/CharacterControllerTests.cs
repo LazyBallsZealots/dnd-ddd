@@ -14,9 +14,12 @@ using Xunit;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 {
-    [Collection(TestCollectionNames.IntegrationTestsCollection), Trait("Category", "Integration tests: controllers")]
+    [Trait("Category", TestCategory)]
+    [Collection(TestCollectionNames.IntegrationTestsCollection)]
     public class CharacterControllerTests : IDisposable
     {
+        private const string TestCategory = "Integration tests: controllers";
+
         private const string ApiRoot = "api/character";
 
         private const string ContentType = "application/json";
