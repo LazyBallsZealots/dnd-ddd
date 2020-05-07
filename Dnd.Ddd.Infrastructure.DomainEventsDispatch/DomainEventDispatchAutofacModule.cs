@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 using Autofac;
 using Autofac.Features.Variance;
@@ -38,18 +39,14 @@ namespace Dnd.Ddd.Infrastructure.EventBus
                 builder.RegisterType(domainEventHandlerType).AsImplementedInterfaces().InstancePerLifetimeScope();
             }
 
-            builder.Register(context => new EventStore.EventStore(context.Resolve<ISessionFactory>()))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
-
             builder.RegisterType<EventDispatcher.EventDispatcher>().As<IDomainEventDispatcher>().SingleInstance();
         }
 
         private static IEnumerable<Type> GetTypesImplementingInterface(Type @interface) =>
             AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !x.IsDynamic)
+                .Where(x => !x.IsDynamic && (x.GetName().Name?.StartsWith("Dnd") ?? false))
                 .SelectMany(
-                    assembly => assembly.GetExportedTypes()
+                    assembly => assembly.GetTypes()
                         .Where(
                             type => type.GetInterfaces()
                                         .Any(i => i == @interface || i.IsGenericType && i.GetGenericTypeDefinition() == @interface) &&
