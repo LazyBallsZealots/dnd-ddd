@@ -9,6 +9,8 @@ using Dnd.Ddd.Common.Infrastructure.Events;
 
 using MediatR;
 
+using NHibernate;
+
 namespace Dnd.Ddd.Infrastructure.EventBus
 {
     public class DomainEventDispatchAutofacModule : Module
@@ -36,20 +38,23 @@ namespace Dnd.Ddd.Infrastructure.EventBus
                 builder.RegisterType(domainEventHandlerType).AsImplementedInterfaces().InstancePerLifetimeScope();
             }
 
+            builder.Register(context => new EventStore.EventStore(context.Resolve<ISessionFactory>()))
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope();
+
             builder.RegisterType<EventDispatcher.EventDispatcher>().As<IDomainEventDispatcher>().SingleInstance();
         }
 
         private static IEnumerable<Type> GetTypesImplementingInterface(Type @interface) =>
             AppDomain.CurrentDomain.GetAssemblies()
-                .Where(x => !x.IsDynamic && (x.GetName().Name?.StartsWith("Dnd") ?? false))
+                .Where(x => !x.IsDynamic)
                 .SelectMany(
                     assembly => assembly.GetExportedTypes()
                         .Where(
                             type => type.GetInterfaces()
                                         .Any(i => i == @interface || i.IsGenericType && i.GetGenericTypeDefinition() == @interface) &&
-                                    !string.IsNullOrWhiteSpace(type.Namespace) &&
                                     !type.IsAbstract &&
-                                    type.Namespace.StartsWith("Dnd")))
+                                    type.IsInNamespace("Dnd.Ddd")))
                 .ToList();
     }
 }

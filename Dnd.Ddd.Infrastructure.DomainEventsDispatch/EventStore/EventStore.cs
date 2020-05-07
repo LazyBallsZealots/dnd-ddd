@@ -9,7 +9,7 @@ using NHibernate;
 
 namespace Dnd.Ddd.Infrastructure.EventBus.EventStore
 {
-    public class EventStore : IDomainEventHandler<BaseDomainEvent>
+    internal class EventStore : IDomainEventHandler<BaseDomainEvent>
     {
         private readonly ISessionFactory sessionFactory;
 
