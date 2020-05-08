@@ -75,7 +75,13 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             };
 
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-            var savedCharacterDto = await GetUpdatedChracter(rollAbilitiesRequestBody, responseContent.DraftId);
+
+            var putResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            putResponse.EnsureSuccessStatusCode();
+
+            Assert.Equal(HttpStatusCode.OK, putResponse.StatusCode);
+
+            var savedCharacterDto = await GetCharacterDto(responseContent.DraftId);
 
             Assert.Equal(rollAbilitiesRequest.Strength, savedCharacterDto.Strength);
             Assert.Equal(rollAbilitiesRequest.Dexterity, savedCharacterDto.Dexterity);
@@ -113,13 +119,6 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
-        }
-
-        private async Task<CharacterDto> GetUpdatedChracter(string request, Guid UiD, string putRoot = ApiRoot)
-        {
-            var putResponse = await client.PutAsync(ApiRoot, new StringContent(request, Encoding.UTF8, ContentType));
-            putResponse.EnsureSuccessStatusCode();
-            return await GetCharacterDto(UiD);
         }
 
         private async Task<CharacterDto> GetCharacterDto(Guid UiD)

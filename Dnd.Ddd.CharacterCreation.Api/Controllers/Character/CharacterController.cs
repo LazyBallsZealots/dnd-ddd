@@ -70,7 +70,8 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
         [HttpPut]
         [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(204, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult AddAbilities([FromBody] RollAbilityScoresRequest request)
         {
             if (request == null || request.DraftId == Guid.Empty)
@@ -102,7 +103,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 return BadRequest(ex.Message);
             }
 
-            return StatusCode(204);
+            return StatusCode(200);
         }
     }
 }
