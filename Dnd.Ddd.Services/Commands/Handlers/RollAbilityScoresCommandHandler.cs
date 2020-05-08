@@ -29,6 +29,11 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     !(character is CharacterDraft),
                     $"Attempting to roll ability scores on completed character with UiD: {command.CharacterUiD}!");
 
+            Guard.With<InvalidOperationException>()
+                .Against(
+                character == null,
+                "Invalid character UiD");
+
             var characterWithRolledAbilityScores = ((CharacterDraft)character).SetStrength(command.Strength)
                 .SetDexterity(command.Dexterity)
                 .SetCharisma(command.Charisma)
@@ -49,6 +54,7 @@ namespace Dnd.Ddd.Services.Commands.Handlers
             repository.Update(characterWithRolledAbilityScores);
 
             unitOfWork.Commit();
+
         }
     }
 }

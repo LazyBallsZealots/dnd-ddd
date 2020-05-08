@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.Queries;
@@ -16,12 +16,16 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
         private readonly IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler;
 
+        private readonly IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler;
+
         public CharacterController(
             IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
-            IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler)
+            IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler,
+            IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
             this.getByIdQueryHandler = getByIdQueryHandler;
+            this.rollAbilitiesScoresHandler = rollAbilitiesScoresHandler;
         }
 
         [HttpPost]
@@ -61,6 +65,39 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             return getByIdQueryHandler.Handle(query) is Model.Character.Character character ?
                 (IActionResult)Ok(character) :
                 NotFound($"Character with provided Id: {characterId} was not found!");
+        }
+
+        [HttpPut]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(204, Type = typeof(string))]
+        public IActionResult AddAbilities([FromBody] RollAbilityScoresRequest request)
+        {
+            if (request == null || request.DraftId == Guid.Empty)
+                return BadRequest("Not enough information provided to roll ability scores");
+
+            var command = new RollAbilityScoresCommand() 
+            {
+                CharacterUiD = request.DraftId,
+                Dexterity = request.Dexterity,
+                Charisma = request.Charisma,
+                Constitution = request.Constitution,
+                Intelligence = request.Intelligence,
+                Wisdom = request.Wisdom,
+                Strength = request.Strength
+            };
+
+            try
+            {
+                rollAbilitiesScoresHandler.Handle(command);
+            }
+
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+            return StatusCode(204);
         }
     }
 }

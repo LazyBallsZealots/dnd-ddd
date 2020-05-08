@@ -4,8 +4,9 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.GetCharacter;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture;
 using Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names;
 using Dnd.Ddd.Model.Character;
@@ -68,6 +69,44 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
+        // not finished
+        [Fact]
+        public async Task CharacterController_OnRequestingAbilityRollOnValidCharacterDraft_UpdatesCharacterDraft()
+        {
+            var playerId = Guid.NewGuid();
+            var createCharacterRequest = new CreateCharacterDraftRequest
+            {
+                PlayerId = playerId
+            };
+
+            var createCharacterRequestBody = JsonSerializer.Serialize(createCharacterRequest);
+            var response = await client.PostAsync(ApiRoot, new StringContent(createCharacterRequestBody, Encoding.UTF8, ContentType));
+            response.EnsureSuccessStatusCode();
+            var responseString = await response.Content.ReadAsStringAsync();
+            var responseContent = JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
+
+
+            var rollAbilitiesRequest = new RollAbilityScoresRequest
+            {
+                DraftId = responseContent.DraftId,
+                Strength = 10,
+                Wisdom = 15,
+                Intelligence = 7,
+                Charisma = 18,
+                Constitution = 14,
+                Dexterity = 15
+            };
+
+            var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
+            var rollAbilitiesResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            response.EnsureSuccessStatusCode();
+
+            var savedCharacterResponse = await client.GetAsync($"{ApiRoot}?characterId={responseContent.DraftId}");
+            savedCharacterResponse.EnsureSuccessStatusCode();
+
+        }
+
         public void Dispose() => fixture.ClearDatabase();
+
     }
 }
