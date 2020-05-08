@@ -37,24 +37,13 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         [Fact]
         public async Task CharacterController_OnPostingValidCreateCharacterDraftRequest_SavesNewCharacterDraft()
         {
-            var playerId = Guid.NewGuid();
-            var request = new CreateCharacterDraftRequest
-            {
-                PlayerId = playerId
-            };
-            var requestBody = JsonSerializer.Serialize(request);
+            var requestBody = JsonSerializer.Serialize( new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetCreateCharacterDraftResponse(requestBody);
 
-            var response = await client.PostAsync(ApiRoot, new StringContent(requestBody, Encoding.UTF8, ContentType));
-
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            var responseContent = JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
             Assert.NotEqual(Guid.Empty, responseContent.DraftId);
 
-            var savedCharacterDraftResponse = await client.GetAsync($"{ApiRoot}?characterId={responseContent.DraftId}");
+            var savedCharacterDraft = await GetCharacterDto(responseContent.DraftId);
 
-            savedCharacterDraftResponse.EnsureSuccessStatusCode();
-            var savedCharacterDraft = JsonSerializer.Deserialize<CharacterDto>(await savedCharacterDraftResponse.Content.ReadAsStringAsync());
             Assert.NotNull(savedCharacterDraft);
         }
 
@@ -68,22 +57,11 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
-        // to be refactored
         [Fact]
         public async Task CharacterController_OnRequestingAbilityRollOnValidCharacterDraft_UpdatesCharacterDraft()
         {
-            var playerId = Guid.NewGuid();
-            var createCharacterRequest = new CreateCharacterDraftRequest
-            {
-                PlayerId = playerId
-            };
-
-            var createCharacterRequestBody = JsonSerializer.Serialize(createCharacterRequest);
-            var response = await client.PostAsync(ApiRoot, new StringContent(createCharacterRequestBody, Encoding.UTF8, ContentType));
-            response.EnsureSuccessStatusCode();
-            var responseString = await response.Content.ReadAsStringAsync();
-            var responseContent = JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
-
+            var requestBody = JsonSerializer.Serialize(new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetCreateCharacterDraftResponse(requestBody);
 
             var rollAbilitiesRequest = new RollAbilityScoresRequest
             {
@@ -97,13 +75,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             };
 
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-            var rollAbilitiesResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
-            response.EnsureSuccessStatusCode();
-
-            var savedCharacterResponse = await client.GetAsync($"{ApiRoot}?characterId={responseContent.DraftId}");
-            savedCharacterResponse.EnsureSuccessStatusCode();
-
-            var savedCharacterDto = JsonSerializer.Deserialize<CharacterDto>(await savedCharacterResponse.Content.ReadAsStringAsync());
+            var savedCharacterDto = await GetUpdatedChracter(rollAbilitiesRequestBody, responseContent.DraftId);
 
             Assert.Equal(rollAbilitiesRequest.Strength, savedCharacterDto.Strength);
             Assert.Equal(rollAbilitiesRequest.Dexterity, savedCharacterDto.Dexterity);
@@ -118,38 +90,48 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         {
             var rollAbilitiesRequest = new RollAbilityScoresRequest { DraftId = Guid.NewGuid() };
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-
             var response = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
 
         [Fact]
         public async Task CharacterController_OnRequestingAbilitiesRollOnInvalidRoll_ReturnsBadRequest()
         {
-            var playerId = Guid.NewGuid();
-            var createCharacterRequest = new CreateCharacterDraftRequest
-            {
-                PlayerId = playerId
-            };
+            var requestBody = JsonSerializer.Serialize(new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetCreateCharacterDraftResponse(requestBody);
 
-            var createCharacterRequestBody = JsonSerializer.Serialize(createCharacterRequest);
-            var response = await client.PostAsync(ApiRoot, new StringContent(createCharacterRequestBody, Encoding.UTF8, ContentType));
+            var rollAbilitiesRequestBody = JsonSerializer.Serialize(new RollAbilityScoresRequest { DraftId = responseContent.DraftId });
+            var rollAbilitiesResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+
+            Assert.Equal(HttpStatusCode.BadRequest, rollAbilitiesResponse.StatusCode);
+        }
+
+        private async Task<CreateCharacterDraftResponse> GetCreateCharacterDraftResponse(string request)
+        {
+            var response = await client.PostAsync(ApiRoot, new StringContent(request, Encoding.UTF8, ContentType));
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
-            var responseContent = JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
+            return JsonSerializer.Deserialize<CreateCharacterDraftResponse>(responseString);
+        }
 
+        private async Task<CharacterDto> GetUpdatedChracter(string request, Guid UiD, string putRoot = ApiRoot)
+        {
+            var putResponse = await client.PutAsync(ApiRoot, new StringContent(request, Encoding.UTF8, ContentType));
+            putResponse.EnsureSuccessStatusCode();
+            return await GetCharacterDto(UiD);
+        }
 
-            var rollAbilitiesRequest = new RollAbilityScoresRequest
-            {
-                DraftId = responseContent.DraftId
-            };
-
-            var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-            var rollAbilitiesResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
-            Assert.Equal(HttpStatusCode.BadRequest, rollAbilitiesResponse.StatusCode);
+        private async Task<CharacterDto> GetCharacterDto(Guid UiD)
+        {
+            var savedCharacterResponse = await client.GetAsync($"{ApiRoot}?characterId={UiD}");
+            savedCharacterResponse.EnsureSuccessStatusCode();
+            return JsonSerializer.Deserialize<CharacterDto>(await savedCharacterResponse.Content.ReadAsStringAsync());
         }
 
         public void Dispose() => fixture.ClearDatabase();
 
     }
+
+
 }
