@@ -5,6 +5,7 @@ using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Services.Commands;
 using Dnd.Ddd.Services.Queries;
+using Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
@@ -14,13 +15,13 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
     {
         private readonly IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler;
 
-        private readonly IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler;
+        private readonly IQueryHandler<GetCharacterByIdQuery, CharacterDto> getByIdQueryHandler;
 
         private readonly IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler;
 
         public CharacterController(
             IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
-            IQueryHandler<GetCharacterByIdQuery, Model.Character.Character> getByIdQueryHandler,
+            IQueryHandler<GetCharacterByIdQuery, CharacterDto> getByIdQueryHandler,
             IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
@@ -62,7 +63,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
             var query = new GetCharacterByIdQuery(characterId);
 
-            return getByIdQueryHandler.Handle(query) is Model.Character.Character character ?
+            return getByIdQueryHandler.Handle(query) is CharacterDto character ?
                 (IActionResult)Ok(character) :
                 NotFound($"Character with provided Id: {characterId} was not found!");
         }
@@ -77,7 +78,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
             var command = new RollAbilityScoresCommand() 
             {
-                CharacterUiD = request.DraftId,
+                CharacterUiD = request.DraftId, 
                 Dexterity = request.Dexterity,
                 Charisma = request.Charisma,
                 Constitution = request.Constitution,
@@ -96,6 +97,10 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 return BadRequest(ex.Message);
             }
 
+            catch (ArgumentOutOfRangeException ex)
+            {
+                return BadRequest(ex.Message);
+            }
 
             return StatusCode(204);
         }

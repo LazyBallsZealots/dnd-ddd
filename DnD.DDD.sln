@@ -31,6 +31,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{FFA5C951-A87
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.Api", "Dnd.Ddd.CharacterCreation.Api\Dnd.Ddd.CharacterCreation.Api.csproj", "{7A53AC35-8017-4398-B2E1-510E0E5CF469}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dto", "Dto", "{72571052-75C7-4B3A-BA4C-1876EBF58559}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dtos", "Dtos\Dtos.csproj", "{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +77,10 @@ Global
 		{7A53AC35-8017-4398-B2E1-510E0E5CF469}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7A53AC35-8017-4398-B2E1-510E0E5CF469}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7A53AC35-8017-4398-B2E1-510E0E5CF469}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +95,7 @@ Global
 		{C74EF617-7BE9-4096-8E49-952C9CE425D0} = {EC580601-6BE3-4D67-A811-1059D72B3981}
 		{DEAD8B3F-372E-41EB-90B6-391832994D90} = {ABF4D685-69F5-4C05-AB57-75F970CF12B1}
 		{7A53AC35-8017-4398-B2E1-510E0E5CF469} = {FFA5C951-A878-41CE-B545-5C37483D59F9}
+		{31A64798-9CF0-4E16-BA3B-05F9CF8B3462} = {72571052-75C7-4B3A-BA4C-1876EBF58559}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DB047733-E73A-4552-89DC-92A0D6D484BE}

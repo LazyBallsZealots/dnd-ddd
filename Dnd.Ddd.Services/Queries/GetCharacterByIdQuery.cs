@@ -1,10 +1,11 @@
 ﻿using System;
 using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character;
+using Dtos;
 
 namespace Dnd.Ddd.Services.Queries
 {
-    public class GetCharacterByIdQuery : BaseQuery<Character>
+    public class GetCharacterByIdQuery : BaseQuery<CharacterDto>
     {
         public GetCharacterByIdQuery(Guid characterId)
         {

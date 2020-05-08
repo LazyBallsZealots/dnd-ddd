@@ -24,15 +24,16 @@ namespace Dnd.Ddd.Services.Commands.Handlers
         public void Handle(RollAbilityScoresCommand command)
         {
             var character = repository.Get(command.CharacterUiD);
+
+            Guard.With<InvalidOperationException>()
+                .Against(
+                    character == null,
+                    "Invalid character UiD");
+
             Guard.With<InvalidOperationException>()
                 .Against(
                     !(character is CharacterDraft),
                     $"Attempting to roll ability scores on completed character with UiD: {command.CharacterUiD}!");
-
-            Guard.With<InvalidOperationException>()
-                .Against(
-                character == null,
-                "Invalid character UiD");
 
             var characterWithRolledAbilityScores = ((CharacterDraft)character).SetStrength(command.Strength)
                 .SetDexterity(command.Dexterity)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 using Dnd.Ddd.Common.ModelFramework;
@@ -7,6 +8,7 @@ using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
+using Dtos;
 
 [assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
 [assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
@@ -30,6 +32,28 @@ namespace Dnd.Ddd.Model.Character
                 [nameof(Wisdom)] = bonus => Wisdom = Wisdom.Raise(bonus.AbilityScoreModifierLevel),
                 [nameof(Charisma)] = bonus => Charisma = Charisma.Raise(bonus.AbilityScoreModifierLevel)
             };
+        }
+
+        public CharacterDto ToDto()
+        {
+            var characterDto = new CharacterDto()
+            {
+                PlayerId = PlayerId.PlayerUiD,
+                UiD = UiD,
+                Charisma = Charisma?.ToInteger(),
+                Constitution = Constitution?.ToInteger(),
+                Dexterity = Dexterity?.ToInteger(),
+                Intelligence = Intelligence?.ToInteger(),
+                Wisdom = Wisdom?.ToInteger(),
+                Strength = Strength?.ToInteger(),
+                Race = Race?.ToString(),
+                Name = Name?.ToString(),
+                IsDeleted = IsDeleted,
+                Version = Version,
+                Stage = this is CharacterDraft ? typeof(CharacterDraft).Name : typeof(CompletedCharacter).Name
+            };
+
+            return characterDto;
         }
 
         internal PlayerId PlayerId { get; set; }
