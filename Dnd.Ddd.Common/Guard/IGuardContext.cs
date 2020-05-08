@@ -11,5 +11,7 @@ namespace Dnd.Ddd.Common.Guard
         /// <param name="expression">Expression to guard against.</param>
         /// <param name="message">Optional exception message.</param>
         void Against(bool expression, string message = null);
+
+        void Against(bool expression, params object[] arguments);
     }
 }

@@ -92,9 +92,19 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         }
 
         [Fact]
-        public async Task CharacterController_OnRequestingAbilitiesRollOnNonExistingDraft_ReturnsBadRequest()
+        public async Task CharacterController_OnRequestingAbilitiesRollOnNonExistingDraft_ReturnsNotFound()
         {
             var rollAbilitiesRequest = new RollAbilityScoresRequest { DraftId = Guid.NewGuid() };
+            var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
+            var response = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+
+            Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task CharacterController_OnRequestingAbilitiesRollOnWithEmptyId_ReturnsBadRequest()
+        {
+            var rollAbilitiesRequest = new RollAbilityScoresRequest { DraftId = Guid.Empty };
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
             var response = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
 

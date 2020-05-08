@@ -5,6 +5,7 @@ using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
+using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
 
 namespace Dnd.Ddd.Services.Commands.Handlers
@@ -27,8 +28,13 @@ namespace Dnd.Ddd.Services.Commands.Handlers
 
             Guard.With<InvalidOperationException>()
                 .Against(
+                command.CharacterUiD == null,
+                "UiD cannot be empty!");
+
+            Guard.With<CharacterNotFoundException>()
+                .Against(
                     character == null,
-                    "Invalid character UiD");
+                    command.CharacterUiD);
 
             Guard.With<InvalidOperationException>()
                 .Against(

@@ -3,6 +3,7 @@ using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.Queries;
+using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Services.Commands;
 using Dnd.Ddd.Services.Queries;
 using Dtos;
@@ -95,12 +96,16 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
 
             catch (ArgumentOutOfRangeException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (CharacterNotFoundException ex)
+            {
+                return NotFound(ex.Message);
             }
 
             return StatusCode(200);
