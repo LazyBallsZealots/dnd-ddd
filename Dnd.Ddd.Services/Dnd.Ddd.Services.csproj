@@ -7,7 +7,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
-    <ProjectReference Include="..\Dtos\Dtos.csproj" />
+    <ProjectReference Include="..\Dtos\Dnd.Ddd.Dtos.csproj" />
   </ItemGroup>
 
   <ItemGroup>
