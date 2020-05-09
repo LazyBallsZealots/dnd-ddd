@@ -9,7 +9,7 @@ using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture;
 using Dnd.Ddd.CharacterCreation.Api.Tests.TestsCollection.Names;
 using Dnd.Ddd.Model.Character;
-using Dtos;
+using Dnd.Ddd.Dtos;
 using Xunit;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
@@ -76,7 +76,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
 
-            var putResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            var putResponse = await client.PutAsync($"{ApiRoot}/abilityScores", new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
             putResponse.EnsureSuccessStatusCode();
 
             Assert.Equal(HttpStatusCode.OK, putResponse.StatusCode);
@@ -96,7 +96,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         {
             var rollAbilitiesRequest = new RollAbilityScoresRequest { DraftId = Guid.NewGuid() };
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-            var response = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            var response = await client.PutAsync($"{ApiRoot}/abilityScores", new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
 
             Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
         }
@@ -106,7 +106,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         {
             var rollAbilitiesRequest = new RollAbilityScoresRequest { DraftId = Guid.Empty };
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
-            var response = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            var response = await client.PutAsync($"{ApiRoot}/abilityScores", new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
 
             Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
         }
@@ -118,7 +118,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
             var responseContent = await GetCreateCharacterDraftResponse(requestBody);
 
             var rollAbilitiesRequestBody = JsonSerializer.Serialize(new RollAbilityScoresRequest { DraftId = responseContent.DraftId });
-            var rollAbilitiesResponse = await client.PutAsync(ApiRoot, new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            var rollAbilitiesResponse = await client.PutAsync($"{ApiRoot}/abilityScores", new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
 
             Assert.Equal(HttpStatusCode.BadRequest, rollAbilitiesResponse.StatusCode);
         }

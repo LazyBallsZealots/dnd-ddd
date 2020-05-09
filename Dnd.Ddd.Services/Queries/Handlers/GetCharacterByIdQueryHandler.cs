@@ -1,7 +1,7 @@
 ﻿using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.Repository;
-using Dtos;
+using Dnd.Ddd.Dtos;
 using System.ComponentModel.DataAnnotations;
 
 namespace Dnd.Ddd.Services.Queries.Handlers

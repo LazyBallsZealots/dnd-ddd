@@ -6,7 +6,7 @@ using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Services.Commands;
 using Dnd.Ddd.Services.Queries;
-using Dtos;
+using Dnd.Ddd.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
@@ -70,13 +70,16 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
         }
 
         [HttpPut]
+        [Route("abilityScores")]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
         [ProducesResponseType(200, Type = typeof(string))]
         public IActionResult AddAbilities([FromBody] RollAbilityScoresRequest request)
         {
             if (request == null || request.DraftId == Guid.Empty)
+            {
                 return BadRequest("Not enough information provided to roll ability scores");
+            }
 
             var command = new RollAbilityScoresCommand() 
             {
@@ -93,12 +96,10 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             {
                 rollAbilitiesScoresHandler.Handle(command);
             }
-
             catch (InvalidOperationException ex)
             {
                 return NotFound(ex.Message);
             }
-
             catch (ArgumentOutOfRangeException ex)
             {
                 return BadRequest(ex.Message);

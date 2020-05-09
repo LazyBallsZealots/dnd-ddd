@@ -1,7 +1,7 @@
 ﻿using System;
 using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character;
-using Dtos;
+using Dnd.Ddd.Dtos;
 
 namespace Dnd.Ddd.Services.Queries
 {

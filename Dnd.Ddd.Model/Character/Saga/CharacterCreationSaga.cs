@@ -62,7 +62,6 @@ namespace Dnd.Ddd.Model.Character.Saga
             {
                 CreateCharacterFromDraft(draft);
             }
-
             else
             {
                 TryDisposingUnitOfWork();
@@ -88,7 +87,9 @@ namespace Dnd.Ddd.Model.Character.Saga
         private void TryDisposingUnitOfWork()
         {
             if (unitOfWork is IDisposable disposableUnitOfwork)
+            {
                 disposableUnitOfwork.Dispose();
+            }
         }
 
 

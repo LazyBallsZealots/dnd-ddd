@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Dnd.Ddd.Common.ModelFramework;
 
-namespace Dtos
+namespace Dnd.Ddd.Dtos
 {
     [Serializable]
     public class CharacterDto
@@ -26,10 +26,6 @@ namespace Dtos
         public int? Wisdom { get; set; }
 
         public string Race { get; set; }
-
-        public bool IsDeleted { get; set; }
-
-        public long Version { get; set; }
 
         public string Stage { get; set; }
     }
