@@ -1,32 +1,27 @@
 ﻿using System;
+
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.Common.Infrastructure.Commands;
-using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Services.Commands;
-using Dnd.Ddd.Services.Queries;
-using Dnd.Ddd.Dtos;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 {
-    [Route("api/[controller]"), ApiController]
-    public class CharacterController : ControllerBase
+    [Route("api/character"), ApiController]
+    public class CharacterCommandController : ControllerBase
     {
         private readonly IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler;
 
-        private readonly IQueryHandler<GetCharacterByIdQuery, CharacterDto> getByIdQueryHandler;
-
         private readonly IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler;
 
-        public CharacterController(
+        public CharacterCommandController(
             IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
-            IQueryHandler<GetCharacterByIdQuery, CharacterDto> getByIdQueryHandler,
             IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
-            this.getByIdQueryHandler = getByIdQueryHandler;
             this.rollAbilitiesScoresHandler = rollAbilitiesScoresHandler;
         }
 
@@ -51,24 +46,6 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             return StatusCode(201, response);
         }
 
-        [HttpGet]
-        [ProducesResponseType(404, Type = typeof(string))]
-        [ProducesResponseType(400, Type = typeof(string))]
-        [ProducesResponseType(200, Type = typeof(Model.Character.Character))]
-        public IActionResult GetById([FromQuery] Guid characterId)
-        {
-            if (characterId == Guid.Empty)
-            {
-                return BadRequest("Not enough information provided to query Character!");
-            }
-
-            var query = new GetCharacterByIdQuery(characterId);
-
-            return getByIdQueryHandler.Handle(query) is CharacterDto character ?
-                (IActionResult)Ok(character) :
-                NotFound($"Character with provided Id: {characterId} was not found!");
-        }
-
         [HttpPut]
         [Route("abilityScores")]
         [ProducesResponseType(400, Type = typeof(string))]
@@ -81,9 +58,9 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 return BadRequest("Not enough information provided to roll ability scores");
             }
 
-            var command = new RollAbilityScoresCommand() 
+            var command = new RollAbilityScoresCommand()
             {
-                CharacterUiD = request.DraftId, 
+                CharacterUiD = request.DraftId,
                 Dexterity = request.Dexterity,
                 Charisma = request.Charisma,
                 Constitution = request.Constitution,
@@ -98,7 +75,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             }
             catch (InvalidOperationException ex)
             {
-                return NotFound(ex.Message);
+                return BadRequest(ex.Message);
             }
             catch (ArgumentOutOfRangeException ex)
             {
@@ -109,7 +86,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 return NotFound(ex.Message);
             }
 
-            return StatusCode(200);
+            return Ok();
         }
     }
 }
