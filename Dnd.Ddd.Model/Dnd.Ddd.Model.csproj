@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
-    <ProjectReference Include="..\Dtos\Dnd.Ddd.Dtos.csproj" />
   </ItemGroup>
 
 </Project>

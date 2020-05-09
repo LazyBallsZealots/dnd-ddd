@@ -26,11 +26,6 @@ namespace Dnd.Ddd.Services.Commands.Handlers
         {
             var character = repository.Get(command.CharacterUiD);
 
-            Guard.With<InvalidOperationException>()
-                .Against(
-                command.CharacterUiD == null,
-                "UiD cannot be empty!");
-
             Guard.With<CharacterNotFoundException>()
                 .Against(
                     character == null,
