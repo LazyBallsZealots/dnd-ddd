@@ -14,11 +14,6 @@ namespace Dnd.Ddd.Infrastructure.Database
 {
     public class MsSqlAutofacModule : InfrastructureAutofacModule
     {
-        private static readonly IList<Assembly> MappingAssemblies = new List<Assembly>
-        {
-            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
-        };
-
         protected override ISessionFactory CreateSessionFactory(Configuration configuration) => configuration.BuildSessionFactory();
 
         protected override Configuration BuildConfiguration(PostCommitEventListener eventListener)
@@ -32,8 +27,5 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             return configuration;
         }
-
-        protected override IDomainEventHandler<BaseDomainEvent> CreateEventStore(ISessionFactory sessionFactory) =>
-            new EventStore.EventStore(sessionFactory);
     }
 }

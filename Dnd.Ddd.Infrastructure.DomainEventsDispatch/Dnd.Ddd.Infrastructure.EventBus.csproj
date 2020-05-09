@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Dnd.Ddd.Infrastructure.EventBus</AssemblyName>
+    <RootNamespace>Dnd.Ddd.Infrastructure.EventBus</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="5.1.2" />
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="NHibernate" Version="5.2.7" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
+  </ItemGroup>
+
+</Project>

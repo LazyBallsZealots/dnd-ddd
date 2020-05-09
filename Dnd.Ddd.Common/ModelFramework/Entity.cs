@@ -61,6 +61,8 @@ namespace Dnd.Ddd.Common.ModelFramework
 
         public virtual void RegisterDomainEvent(BaseDomainEvent @event) => domainEvents.Add(@event);
 
+        public virtual void ClearDomainEvents() => domainEvents.Clear();
+
         public override bool Equals(object obj) => obj is Entity entity && obj.GetType() == GetType() && entity.UiD == UiD;
 
         public override int GetHashCode() => HashCode.Combine(UiD, GetType());

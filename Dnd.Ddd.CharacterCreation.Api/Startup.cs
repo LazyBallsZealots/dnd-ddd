@@ -1,19 +1,17 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 using Autofac;
 using Autofac.Configuration;
 
+using Dnd.Ddd.Infrastructure.Database;
+using Dnd.Ddd.Infrastructure.EventBus;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace Dnd.Ddd.CharacterCreation.Api
 {
@@ -30,11 +28,9 @@ namespace Dnd.Ddd.CharacterCreation.Api
         ///     This method gets called by the runtime. Use this method to add services to the container.
         /// </summary>
         /// <param name="services"></param>
-        public void ConfigureServices(IServiceCollection services)
-        {
+        public void ConfigureServices(IServiceCollection services) =>
             services.AddControllers(options => options.Filters.Add(new ProducesAttribute("application/json")))
                 .AddJsonOptions(jsonOptions => jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null);
-        }
 
         /// <summary>
         ///     This method gets called after ConfigureServices.
@@ -51,6 +47,16 @@ namespace Dnd.Ddd.CharacterCreation.Api
             var infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
             infrastructureModulesConfigurationBuilder.AddJsonFile("autofacInfrastructureModules.json");
             builder.RegisterModule(new ConfigurationModule(infrastructureModulesConfigurationBuilder.Build()));
+        }
+
+        public virtual void ConfigureTestContainer(ContainerBuilder builder)
+        {
+            var domainModulesConfigurationBuilder = new ConfigurationBuilder();
+            domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
+
+            builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
+            builder.RegisterModule(new DomainEventDispatchAutofacModule());
+            builder.RegisterModule(new SqLiteAutofacModule());
         }
 
         /// <summary>
@@ -73,10 +79,7 @@ namespace Dnd.Ddd.CharacterCreation.Api
 
             // app.UseAuthorization();
 
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
 
             if (!env.IsDevelopment())
             {

@@ -1,4 +1,4 @@
-﻿namespace Dnd.Ddd.Model
+﻿namespace Dnd.Ddd.Model.Character.ValueObjects.Race
 {
     public enum Races
     {

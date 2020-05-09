@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 using Autofac;
 using Autofac.Features.Variance;
@@ -9,7 +10,9 @@ using Dnd.Ddd.Common.Infrastructure.Events;
 
 using MediatR;
 
-namespace Dnd.Ddd.Infrastructure.DomainEventsDispatch
+using NHibernate;
+
+namespace Dnd.Ddd.Infrastructure.EventBus
 {
     public class DomainEventDispatchAutofacModule : Module
     {
@@ -43,13 +46,12 @@ namespace Dnd.Ddd.Infrastructure.DomainEventsDispatch
             AppDomain.CurrentDomain.GetAssemblies()
                 .Where(x => !x.IsDynamic && (x.GetName().Name?.StartsWith("Dnd") ?? false))
                 .SelectMany(
-                    assembly => assembly.GetExportedTypes()
+                    assembly => assembly.GetTypes()
                         .Where(
                             type => type.GetInterfaces()
                                         .Any(i => i == @interface || i.IsGenericType && i.GetGenericTypeDefinition() == @interface) &&
                                     !type.IsAbstract &&
-                                    !string.IsNullOrWhiteSpace(type.Namespace) &&
-                                    type.Namespace.StartsWith("Dnd")))
+                                    type.IsInNamespace("Dnd.Ddd")))
                 .ToList();
     }
 }

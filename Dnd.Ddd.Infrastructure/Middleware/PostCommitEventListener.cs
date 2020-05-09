@@ -40,6 +40,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
             }
 
             await eventDispatcher.DispatchAsync(domainEntity.DomainEvents, cancellationToken);
+            domainEntity.ClearDomainEvents();
         }
 
         private void PostCommit(object entity)
@@ -50,6 +51,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware
             }
 
             eventDispatcher.Dispatch(domainEntity.DomainEvents);
+            domainEntity.ClearDomainEvents();
         }
     }
 }

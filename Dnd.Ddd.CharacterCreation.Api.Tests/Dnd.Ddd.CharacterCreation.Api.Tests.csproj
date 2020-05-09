@@ -6,7 +6,11 @@
 
   <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
-    <PackageReference Include="NBuilder" Version="6.1.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Testing" Version="3.1.3" />
+    <PackageReference Include="Microsoft.AspNetCore.TestHost" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="3.1.3" />
     <PackageReference Include="NHibernate" Version="5.2.7" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.1" />
     <PackageReference Include="xunit" Version="2.4.1" />
@@ -18,10 +22,17 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj" />
-    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.DomainEventsDispatch.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.CharacterCreation.Api\Dnd.Ddd.CharacterCreation.Api.csproj" />
+    <ProjectReference Include="..\Dnd.Ddd.Infrastructure.DomainEventsDispatch\Dnd.Ddd.Infrastructure.EventBus.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Infrastructure\Dnd.Ddd.Infrastructure.Database.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Services\Dnd.Ddd.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="xunit.runner.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

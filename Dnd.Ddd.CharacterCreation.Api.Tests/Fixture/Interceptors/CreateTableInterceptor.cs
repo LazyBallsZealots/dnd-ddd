@@ -26,7 +26,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.Interceptors
         {
             var script = sql.ToString().Trim();
 
-            return IntegrationTestsFixture.DisallowedExpressionsDuringSchemaDeploy.Any(script.Contains) ||
+            return DatabaseManager.DisallowedExpressionsDuringSchemaDeploy.Any(script.Contains) ||
                    !script.StartsWith("create", StringComparison.InvariantCultureIgnoreCase) ?
                        sql :
                        new SqlString(Adjustments.Aggregate(script, (s, func) => func(s)));

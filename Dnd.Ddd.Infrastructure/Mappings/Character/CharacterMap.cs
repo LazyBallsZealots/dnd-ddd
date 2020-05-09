@@ -101,7 +101,9 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                 x => x.PlayerId,
                 componentMapper =>
                 {
-                    componentMapper.Property(x => x.Id, mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.PlayerId))));
+                    componentMapper.Property(
+                        x => x.PlayerUiD,
+                        mapper => mapper.Column(cm => cm.Name(nameof(Model.Character.Character.PlayerId))));
 
                     componentMapper.Insert(true);
                     componentMapper.Update(true);

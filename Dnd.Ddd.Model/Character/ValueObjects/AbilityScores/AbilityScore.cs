@@ -18,7 +18,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 
         public Modifier Modifier => Modifier.FromInteger(AbilityScoreLevel);
 
-        protected internal int AbilityScoreLevel { get; }
+        protected internal int AbilityScoreLevel { get; private set; }
 
         public int ToInteger() => AbilityScoreLevel;
 

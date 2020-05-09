@@ -7,7 +7,7 @@ using Dnd.Ddd.Common.ModelFramework;
 
 using MediatR;
 
-namespace Dnd.Ddd.Infrastructure.DomainEventsDispatch.EventDispatcher
+namespace Dnd.Ddd.Infrastructure.EventBus.EventDispatcher
 {
     internal class EventDispatcher : IDomainEventDispatcher
     {
