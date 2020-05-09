@@ -34,6 +34,22 @@ namespace Dnd.Ddd.Common.Guard
                     throw (TException)Activator.CreateInstance(typeof(TException), message ?? "Assertion failed!");
                 }
             }
+
+
+            /// <summary>
+            ///     Verifies assertion.
+            /// </summary>
+            /// <param name="expression">Boolean expression to be verified.</param>
+            /// <param name="arguments">Pass arguments to exception constructor.</param>
+            /// <remarks>If <paramref name="expression" />is true, assertion fails.</remarks>
+            /// <exception cref="TException">Thrown when assertion fails.</exception>
+            public void Against(bool expression, params object[] arguments)
+            {
+                if (expression)
+                {
+                    throw (TException)Activator.CreateInstance(typeof(TException), arguments);
+                }
+            }
         }
     }
 }

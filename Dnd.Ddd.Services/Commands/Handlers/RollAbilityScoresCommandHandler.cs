@@ -5,6 +5,7 @@ using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
+using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
 
 namespace Dnd.Ddd.Services.Commands.Handlers
@@ -24,6 +25,17 @@ namespace Dnd.Ddd.Services.Commands.Handlers
         public void Handle(RollAbilityScoresCommand command)
         {
             var character = repository.Get(command.CharacterUiD);
+
+            Guard.With<InvalidOperationException>()
+                .Against(
+                command.CharacterUiD == null,
+                "UiD cannot be empty!");
+
+            Guard.With<CharacterNotFoundException>()
+                .Against(
+                    character == null,
+                    command.CharacterUiD);
+
             Guard.With<InvalidOperationException>()
                 .Against(
                     !(character is CharacterDraft),
@@ -49,6 +61,7 @@ namespace Dnd.Ddd.Services.Commands.Handlers
             repository.Update(characterWithRolledAbilityScores);
 
             unitOfWork.Commit();
+
         }
     }
 }

@@ -62,6 +62,10 @@ namespace Dnd.Ddd.Model.Character.Saga
             {
                 CreateCharacterFromDraft(draft);
             }
+            else
+            {
+                TryDisposingUnitOfWork();
+            }
         }
 
         private bool IsComplete(CharacterDraft character)
@@ -80,6 +84,15 @@ namespace Dnd.Ddd.Model.Character.Saga
             unitOfWork.Commit();
         }
 
+        private void TryDisposingUnitOfWork()
+        {
+            if (unitOfWork is IDisposable disposableUnitOfwork)
+            {
+                disposableUnitOfwork.Dispose();
+            }
+        }
+
+
         public void Dispose()
         {
             Dispose(true);
@@ -93,5 +106,6 @@ namespace Dnd.Ddd.Model.Character.Saga
                 disposableUnitOfWork.Dispose();
             }
         }
-    }
+
+            }
 }

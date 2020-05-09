@@ -1,10 +1,12 @@
 ﻿using Dnd.Ddd.Common.Infrastructure.Queries;
 using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.Repository;
+using Dnd.Ddd.Dtos;
+using System.ComponentModel.DataAnnotations;
 
 namespace Dnd.Ddd.Services.Queries.Handlers
 {
-    internal class GetCharacterByIdQueryHandler : IQueryHandler<GetCharacterByIdQuery, Character>
+    internal class GetCharacterByIdQueryHandler : IQueryHandler<GetCharacterByIdQuery, CharacterDto>
     {
         private readonly ICharacterRepository repository;
 
@@ -13,6 +15,7 @@ namespace Dnd.Ddd.Services.Queries.Handlers
             this.repository = repository;
         }
 
-        public Character Handle(GetCharacterByIdQuery query) => repository.Get(query.CharacterId);
+        public CharacterDto Handle(GetCharacterByIdQuery query) => repository.Get(query.CharacterId).ToDto();
+
     }
 }
