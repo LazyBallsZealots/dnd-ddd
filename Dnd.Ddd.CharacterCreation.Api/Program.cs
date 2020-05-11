@@ -26,7 +26,7 @@ namespace Dnd.Ddd.CharacterCreation.Api
 
             try
             {
-                rootLogger.Debug("Startiung application...");
+                rootLogger.Debug("Starting application...");
 
                 CreateHostBuilder(args).Build().Run();
             }
