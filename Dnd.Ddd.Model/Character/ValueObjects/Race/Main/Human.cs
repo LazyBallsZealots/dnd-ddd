@@ -7,13 +7,13 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class Human : Race
     {
-        internal override Speed Speed => Speed.FromInteger(30);
-
-        internal override Size Size => Medium.New();
-
         private Human()
         {
         }
+
+        internal override Speed Speed => Speed.FromInteger(30);
+
+        internal override Size Size => Medium.New();
 
         internal override AbilityScoreBonusCollection AbilityScoreModifiers =>
             new AbilityScoreBonusCollection(

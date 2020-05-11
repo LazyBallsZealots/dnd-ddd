@@ -1,12 +1,21 @@
-﻿using Autofac;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+
+using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
+using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 using Dnd.Ddd.Infrastructure.Database.Repository.Character;
-using Dnd.Ddd.Infrastructure.Database.Repository.Character.Saga;
+using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
+using Dnd.Ddd.Model.Character.Repository;
 
 using NHibernate;
 using NHibernate.Cfg;
+
+using Module = Autofac.Module;
 
 namespace Dnd.Ddd.Infrastructure.Database
 {
@@ -26,14 +35,20 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterRepository(context.Resolve<ISession>()))
-                .AsImplementedInterfaces()
-                .InstancePerLifetimeScope();
+            builder.Register(context => new CharacterRepository(context.Resolve<IUnitOfWork>())).As<ICharacterRepository>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterCreationSagaRepository(context.Resolve<ISession>()))
+            builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
+
+        protected virtual string HibernateConfigFilePath =>
+            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
+
+        protected virtual IEnumerable<Assembly> MappingAssemblies => new List<Assembly>
+        {
+            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
+        };
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);
 

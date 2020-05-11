@@ -5,8 +5,7 @@
     /// </summary>
     /// <typeparam name="TQuery">Type of handled query.</typeparam>
     /// <typeparam name="TResult">Returned query result.</typeparam>
-    public interface IQueryHandler<in TQuery, out TResult>
-        where TQuery : BaseQuery<TResult>
+    public interface IQueryHandler<in TQuery, out TResult> where TQuery : BaseQuery<TResult>
     {
         /// <summary>
         ///     Handles given <paramref name="query" />.

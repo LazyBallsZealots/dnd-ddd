@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using Dnd.Ddd.Model.Character.Builder.Implementation;
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Tests.Collection;
 
 using Xunit;

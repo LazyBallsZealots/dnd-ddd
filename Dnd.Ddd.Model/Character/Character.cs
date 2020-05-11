@@ -11,15 +11,16 @@ using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
 [assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
 [assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
 [assembly: InternalsVisibleTo("Dnd.Ddd.Model.Tests")]
+[assembly: InternalsVisibleTo("Dnd.Ddd.Dtos")]
 
 namespace Dnd.Ddd.Model.Character
 {
-    public class Character : Entity, IAggregateRoot
+    public abstract class Character : Entity, IAggregateRoot
     {
         // TODO: refactor this to a different type
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
 
-        internal Character()
+        protected Character()
         {
             abilityScoreIncreases = new Dictionary<string, Action<AbilityScoreBonus>>
             {

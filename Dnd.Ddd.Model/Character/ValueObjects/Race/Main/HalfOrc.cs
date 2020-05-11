@@ -7,15 +7,13 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
 {
     internal class HalfOrc : Race
     {
-        internal override Speed Speed => Speed.FromInteger(30);
-
-        internal override Size Size => Medium.New();
-
         private HalfOrc()
         {
         }
 
-        public static HalfOrc New() => new HalfOrc();
+        internal override Speed Speed => Speed.FromInteger(30);
+
+        internal override Size Size => Medium.New();
 
         internal override AbilityScoreBonusCollection AbilityScoreModifiers =>
             new AbilityScoreBonusCollection(
@@ -24,5 +22,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Main
                     StrengthBonus.FromInteger(2),
                     ConstitutionBonus.FromInteger(1)
                 });
+
+        public static HalfOrc New() => new HalfOrc();
     }
 }

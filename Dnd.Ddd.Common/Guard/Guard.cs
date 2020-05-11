@@ -12,16 +12,13 @@ namespace Dnd.Ddd.Common.Guard
         /// </summary>
         /// <typeparam name="TException">Type of exception to be thrown upon assertion failure.</typeparam>
         /// <returns>Internal implementation of <see cref="IGuardContext{TException}" />, used to verify assertion.</returns>
-        public static IGuardContext<TException> With<TException>()
-            where TException : Exception =>
-            new GuardContext<TException>();
+        public static IGuardContext<TException> With<TException>() where TException : Exception => new GuardContext<TException>();
 
         /// <summary>
         ///     Verifies assertion.
         /// </summary>
         /// <typeparam name="TException">Type of exception to be thrown upon assertion failure.</typeparam>
-        private class GuardContext<TException> : IGuardContext<TException>
-            where TException : Exception
+        private class GuardContext<TException> : IGuardContext<TException> where TException : Exception
         {
             /// <summary>
             ///     Verifies assertion.
@@ -35,6 +32,22 @@ namespace Dnd.Ddd.Common.Guard
                 if (expression)
                 {
                     throw (TException)Activator.CreateInstance(typeof(TException), message ?? "Assertion failed!");
+                }
+            }
+
+
+            /// <summary>
+            ///     Verifies assertion.
+            /// </summary>
+            /// <param name="expression">Boolean expression to be verified.</param>
+            /// <param name="arguments">Pass arguments to exception constructor.</param>
+            /// <remarks>If <paramref name="expression" />is true, assertion fails.</remarks>
+            /// <exception cref="TException">Thrown when assertion fails.</exception>
+            public void Against(bool expression, params object[] arguments)
+            {
+                if (expression)
+                {
+                    throw (TException)Activator.CreateInstance(typeof(TException), arguments);
                 }
             }
         }

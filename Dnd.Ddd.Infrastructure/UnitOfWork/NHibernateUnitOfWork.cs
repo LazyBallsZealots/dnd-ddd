@@ -13,7 +13,22 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
 
         public NHibernateUnitOfWork(ISession session)
         {
+            Session = session;
             transaction = session.BeginTransaction();
+        }
+
+        internal ISession Session { get; }
+
+        public void Dispose()
+        {
+            if (transaction.IsActive && !transaction.WasCommitted && !transaction.WasRolledBack)
+            {
+                transaction.Rollback();
+            }
+
+            transaction?.Dispose();
+
+            Session.Dispose();
         }
 
         public void Commit()
@@ -22,7 +37,7 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
             {
                 transaction.Commit();
             }
-            catch 
+            catch
             {
                 transaction.Rollback();
                 throw;
@@ -45,15 +60,5 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
         public void Rollback() => transaction.Rollback();
 
         public async Task RollbackAsync() => await transaction.RollbackAsync();
-
-        public void Dispose()
-        {
-            if (transaction.IsActive)
-            {
-                transaction.Rollback();
-            }
-
-            transaction?.Dispose();
-        }
     }
 }

@@ -1,78 +1,111 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
-using Dnd.Ddd.Model.Character.Builder.Implementation;
-using Dnd.Ddd.Model.Character.DomainEvents;
+using Dnd.Ddd.Common.Infrastructure.Events;
+using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
+using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
+using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
 
 namespace Dnd.Ddd.Model.Character.Saga
 {
-    public class CharacterCreationSaga : Common.ModelFramework.Saga
+    public class CharacterCreationSaga : IDomainEventHandler<AbilityScoresRolled>,
+                                         IDomainEventHandler<CharacterRaceChosen>,
+                                         IDomainEventHandler<CharacterNameChosen>,
+                                         IDisposable
     {
-        public CharacterCreationSaga(Guid creatorId)
+        private readonly ICharacterRepository characterRepository;
+
+        private readonly IUnitOfWork unitOfWork;
+
+        public CharacterCreationSaga(ICharacterRepository characterRepository, IUnitOfWork unitOfWork)
         {
-            PlayerId = creatorId;
+            this.characterRepository = characterRepository;
+            this.unitOfWork = unitOfWork;
         }
 
-        protected CharacterCreationSaga()
+        public async Task Handle(AbilityScoresRolled notification, CancellationToken cancellationToken)
         {
+            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
+            {
+                throw new CharacterNotFoundException(notification.CharacterUiD);
+            }
+
+            CheckSagaCompletion(characterDraft);
         }
 
-        public virtual Guid PlayerId { get; protected set; }
-
-        public override bool IsComplete => AbilityScoresRolled != null && CharacterRaceChosen != null && CharacterNameChosen != null;
-
-        public virtual AbilityScoresRolled AbilityScoresRolled { get; protected set; }
-
-        public virtual CharacterRaceChosen CharacterRaceChosen { get; protected set; }
-
-        public virtual CharacterNameChosen CharacterNameChosen { get; protected set; }
-
-        protected virtual ICharacterRepository CharacterRepository { get; set; }
-
-        public virtual CharacterCreationSaga InitializeRepository(ICharacterRepository repository)
+        public async Task Handle(CharacterNameChosen notification, CancellationToken cancellationToken)
         {
-            CharacterRepository = repository;
-            return this;
+            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
+            {
+                throw new CharacterNotFoundException(notification.CharacterUiD);
+            }
+
+            CheckSagaCompletion(characterDraft);
         }
 
-        public virtual void NameCharacter(string name)
+        public async Task Handle(CharacterRaceChosen notification, CancellationToken cancellationToken)
         {
-            CharacterNameChosen = new CharacterNameChosen(name, UiD);
-            RegisterDomainEvent(CharacterNameChosen);
-            CheckForCompletion();
+            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
+            {
+                throw new CharacterNotFoundException(notification.CharacterUiD);
+            }
+
+            CheckSagaCompletion(characterDraft);
         }
 
-        public virtual void SetCharacterRace(string race)
+        private void CheckSagaCompletion(CharacterDraft draft)
         {
-            CharacterRaceChosen = new CharacterRaceChosen(race, UiD);
-            RegisterDomainEvent(CharacterRaceChosen);
-            CheckForCompletion();
+            if (IsComplete(draft))
+            {
+                CreateCharacterFromDraft(draft);
+            }
+            else
+            {
+                TryDisposingUnitOfWork();
+            }
         }
 
-        public virtual void RollAbilityScores(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma)
+        private bool IsComplete(CharacterDraft character)
         {
-            AbilityScoresRolled = new AbilityScoresRolled(UiD, strength, dexterity, constitution, intelligence, wisdom, charisma);
-            RegisterDomainEvent(AbilityScoresRolled);
-            CheckForCompletion();
+            var events = characterRepository.GetDomainEventsForCharacter(character.UiD).ToList();
+
+            return events.Any(domainEvent => domainEvent is AbilityScoresRolled) &&
+                   events.Any(domainEvent => domainEvent is CharacterNameChosen) &&
+                   events.Any(domainEvent => domainEvent is CharacterRaceChosen);
         }
 
-        protected override void Complete()
+        private void CreateCharacterFromDraft(CharacterDraft characterDraft)
         {
-            var newCharacter = BuildCharacter();
-            newCharacter.RegisterDomainEvent(new CharacterCreated(newCharacter.UiD, PlayerId));
-            CharacterRepository.Save(newCharacter);
+            var newCharacter = CompletedCharacter.FromDraft(characterDraft);
+            characterRepository.Update(newCharacter);
+            unitOfWork.Commit();
         }
 
-        private Character BuildCharacter() =>
-            new CharacterBuilder().SetStrength(AbilityScoresRolled.Strength)
-                .SetDexterity(AbilityScoresRolled.Dexterity)
-                .SetConstitution(AbilityScoresRolled.Constitution)
-                .SetIntelligence(AbilityScoresRolled.Intelligence)
-                .SetWisdom(AbilityScoresRolled.Wisdom)
-                .SetCharisma(AbilityScoresRolled.Charisma)
-                .Named(CharacterNameChosen.CharacterName)
-                .OfRace(Enum.Parse<Races>(CharacterRaceChosen.CharacterRace))
-                .ForPlayer(PlayerId)
-                .Build();
-    }
+        private void TryDisposingUnitOfWork()
+        {
+            if (unitOfWork is IDisposable disposableUnitOfwork)
+            {
+                disposableUnitOfwork.Dispose();
+            }
+        }
+
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (unitOfWork is IDisposable disposableUnitOfWork)
+            {
+                disposableUnitOfWork.Dispose();
+            }
+        }
+
+            }
 }

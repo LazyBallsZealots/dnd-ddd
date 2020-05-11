@@ -1,7 +1,7 @@
 ﻿using System;
 
-using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Common.Guard;
+using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Traits
 {
@@ -19,8 +19,11 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Race.Traits
             Guard.With<ArgumentOutOfRangeException>().Against(speed < 0, nameof(speed));
             return new Speed(speed);
         }
+
         public int ToInteger() => speedValue;
+
         protected override bool InternalEquals(Speed valueObject) => valueObject.speedValue == speedValue;
+
         protected override int InternalGetHashCode() => HashCode.Combine(GetType(), speedValue);
     }
 }

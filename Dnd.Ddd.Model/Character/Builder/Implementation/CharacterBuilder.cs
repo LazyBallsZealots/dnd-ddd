@@ -28,7 +28,7 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
 
         public Character Build()
         {
-            var character = new Character
+            var character = new CharacterDraft(playerId)
             {
                 Name = name,
                 Strength = strength,
@@ -37,11 +37,13 @@ namespace Dnd.Ddd.Model.Character.Builder.Implementation
                 Dexterity = dexterity,
                 Intelligence = intelligence,
                 Wisdom = wisdom,
-                Race = race,
-                PlayerId = playerId
+                Race = race
             };
 
-            character.IncreaseAbilityScoresBasedOnRace();
+            if (race != null)
+            {
+                character.IncreaseAbilityScoresBasedOnRace();
+            }
 
             return character;
         }

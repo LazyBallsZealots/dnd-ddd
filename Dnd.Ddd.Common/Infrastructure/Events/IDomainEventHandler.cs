@@ -8,8 +8,7 @@ namespace Dnd.Ddd.Common.Infrastructure.Events
     ///     Generic contract for all domain event handlers.
     /// </summary>
     /// <typeparam name="TDomainEvent">Type of domain event to handle.</typeparam>
-    public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent>
-        where TDomainEvent : BaseDomainEvent
+    public interface IDomainEventHandler<in TDomainEvent> : INotificationHandler<TDomainEvent> where TDomainEvent : BaseDomainEvent
     {
     }
 }
