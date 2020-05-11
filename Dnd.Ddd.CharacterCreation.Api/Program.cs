@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 using Autofac.Extensions.DependencyInjection;
@@ -16,6 +17,7 @@ using LogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Dnd.Ddd.CharacterCreation.Api
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)
