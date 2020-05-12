@@ -4,7 +4,7 @@ using System.Net.Http;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseName;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseRace;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.RollAbilityScores;
@@ -181,6 +181,57 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
 
             Assert.Equal(HttpStatusCode.BadRequest, chooseRaceResponse.StatusCode);
         }
+
+        [Fact]
+        public async Task CharacterController_OnRequestingSettingNameOnValidCharacterDraft_SetsCharactersName()
+        {
+            const string chosenName = "Beczka";
+
+            var requestBody = JsonSerializer.Serialize(new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetPostResponse<CreateCharacterDraftResponse>(ApiRoot, requestBody);
+
+            var chooseNameRequest =
+                JsonSerializer.Serialize(new ChooseNameRequest { DraftId = responseContent.DraftId, Name = chosenName });
+            var chooseNameResponse = await client.PutAsync(
+                                         $"{ApiRoot}/name",
+                                         new StringContent(chooseNameRequest, Encoding.UTF8, ContentType));
+
+            chooseNameResponse.EnsureSuccessStatusCode();
+
+            var characterDto = await GetCharacterDto(responseContent.DraftId);
+
+            Assert.Equal(chosenName, characterDto.Name);
+        }
+
+
+        [Fact]
+        public async Task CharacterController_OnRequestingSettingNameOnNonExistentCharacter_ReturnsNotFound()
+        {
+            const string chosenName = "Beczka";
+            var chooseNameRequest = JsonSerializer.Serialize(new ChooseNameRequest { DraftId = Guid.NewGuid(), Name = chosenName });
+            var chooseNameResponse = await client.PutAsync(
+                                         $"{ApiRoot}/name",
+                                         new StringContent(chooseNameRequest, Encoding.UTF8, ContentType));
+
+            Assert.Equal(HttpStatusCode.NotFound, chooseNameResponse.StatusCode);
+        }
+
+        [Fact]
+        public async Task CharacterController_OnRequestingSettingEmptyName_ReturnsBadRequest()
+        {
+            const string chosenName = "";
+
+            var requestBody = JsonSerializer.Serialize(new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetPostResponse<CreateCharacterDraftResponse>(ApiRoot, requestBody);
+
+            var chooseNameRequest = JsonSerializer.Serialize(new ChooseNameRequest { DraftId = responseContent.DraftId, Name = chosenName });
+            var chooseNameResponse = await client.PutAsync(
+                                         $"{ApiRoot}/name",
+                                         new StringContent(chooseNameRequest, Encoding.UTF8, ContentType));
+
+            Assert.Equal(HttpStatusCode.BadRequest, chooseNameResponse.StatusCode);
+        }
+
 
         private async Task<TResponse> GetPostResponse<TResponse>(string url, string request)
         {

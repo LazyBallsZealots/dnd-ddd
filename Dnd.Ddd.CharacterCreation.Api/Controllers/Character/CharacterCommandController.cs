@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseName;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseRace;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.RollAbilityScores;
@@ -20,14 +20,18 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
         private readonly IEmptyResultCommandHandler<ChooseCharacterRaceCommand> chooseCharacterRaceHandler;
 
+        private readonly IEmptyResultCommandHandler<ChooseCharacterNameCommand> chooseCharacterNameHandler;
+
         public CharacterCommandController(
             IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
             IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler,
-            IEmptyResultCommandHandler<ChooseCharacterRaceCommand> chooseCharacterRaceHandler)
+            IEmptyResultCommandHandler<ChooseCharacterRaceCommand> chooseCharacterRaceHandler,
+            IEmptyResultCommandHandler<ChooseCharacterNameCommand> chooseCharacterNameHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
             this.rollAbilitiesScoresHandler = rollAbilitiesScoresHandler;
             this.chooseCharacterRaceHandler = chooseCharacterRaceHandler;
+            this.chooseCharacterNameHandler = chooseCharacterNameHandler;
         }
 
         [HttpPost]
@@ -129,6 +133,47 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             {
                 result = BadRequest(e.Message);
             }
+
+            return result;
+        }
+
+        [HttpPut]
+        [Route("name")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public IActionResult SetName([FromBody] ChooseNameRequest request)
+        {
+            if (request == null || request.DraftId == Guid.Empty)
+            {
+                return BadRequest("Not enough information provided to add a character name");
+            }
+
+            var command = new ChooseCharacterNameCommand
+            {
+                CharacterUiD = request.DraftId,
+                Name = request.Name
+            };
+
+            IActionResult result;
+            try
+            {
+                chooseCharacterNameHandler.Handle(command);
+                result = Ok();
+            }
+            catch (CharacterNotFoundException e)
+            {
+                result = NotFound(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest(e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                result = BadRequest(e.Message);
+            }
+
 
             return result;
         }
