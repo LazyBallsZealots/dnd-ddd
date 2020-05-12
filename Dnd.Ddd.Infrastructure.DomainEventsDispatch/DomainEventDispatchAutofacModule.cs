@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 
 using Autofac;
 using Autofac.Features.Variance;
@@ -9,8 +8,6 @@ using Autofac.Features.Variance;
 using Dnd.Ddd.Common.Infrastructure.Events;
 
 using MediatR;
-
-using NHibernate;
 
 namespace Dnd.Ddd.Infrastructure.EventBus
 {

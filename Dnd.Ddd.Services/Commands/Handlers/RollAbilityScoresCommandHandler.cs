@@ -56,7 +56,6 @@ namespace Dnd.Ddd.Services.Commands.Handlers
             repository.Update(characterWithRolledAbilityScores);
 
             unitOfWork.Commit();
-
         }
     }
 }

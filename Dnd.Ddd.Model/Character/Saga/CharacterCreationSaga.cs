@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
+using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
@@ -26,6 +27,12 @@ namespace Dnd.Ddd.Model.Character.Saga
             this.unitOfWork = unitOfWork;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
         public async Task Handle(AbilityScoresRolled notification, CancellationToken cancellationToken)
         {
             if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
@@ -33,7 +40,7 @@ namespace Dnd.Ddd.Model.Character.Saga
                 throw new CharacterNotFoundException(notification.CharacterUiD);
             }
 
-            CheckSagaCompletion(characterDraft);
+            CheckSagaCompletion(characterDraft, notification);
         }
 
         public async Task Handle(CharacterNameChosen notification, CancellationToken cancellationToken)
@@ -43,7 +50,7 @@ namespace Dnd.Ddd.Model.Character.Saga
                 throw new CharacterNotFoundException(notification.CharacterUiD);
             }
 
-            CheckSagaCompletion(characterDraft);
+            CheckSagaCompletion(characterDraft, notification);
         }
 
         public async Task Handle(CharacterRaceChosen notification, CancellationToken cancellationToken)
@@ -53,50 +60,7 @@ namespace Dnd.Ddd.Model.Character.Saga
                 throw new CharacterNotFoundException(notification.CharacterUiD);
             }
 
-            CheckSagaCompletion(characterDraft);
-        }
-
-        private void CheckSagaCompletion(CharacterDraft draft)
-        {
-            if (IsComplete(draft))
-            {
-                CreateCharacterFromDraft(draft);
-            }
-            else
-            {
-                TryDisposingUnitOfWork();
-            }
-        }
-
-        private bool IsComplete(CharacterDraft character)
-        {
-            var events = characterRepository.GetDomainEventsForCharacter(character.UiD).ToList();
-
-            return events.Any(domainEvent => domainEvent is AbilityScoresRolled) &&
-                   events.Any(domainEvent => domainEvent is CharacterNameChosen) &&
-                   events.Any(domainEvent => domainEvent is CharacterRaceChosen);
-        }
-
-        private void CreateCharacterFromDraft(CharacterDraft characterDraft)
-        {
-            var newCharacter = CompletedCharacter.FromDraft(characterDraft);
-            characterRepository.Update(newCharacter);
-            unitOfWork.Commit();
-        }
-
-        private void TryDisposingUnitOfWork()
-        {
-            if (unitOfWork is IDisposable disposableUnitOfwork)
-            {
-                disposableUnitOfwork.Dispose();
-            }
-        }
-
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            CheckSagaCompletion(characterDraft, notification);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -107,5 +71,32 @@ namespace Dnd.Ddd.Model.Character.Saga
             }
         }
 
+        private void CheckSagaCompletion(CharacterDraft draft, BaseDomainEvent domainEvent)
+        {
+            if (IsComplete(draft, domainEvent))
+            {
+                CreateCharacterFromDraft(draft);
             }
+            else
+            {
+                unitOfWork.Rollback();
+            }
+        }
+
+        private bool IsComplete(CharacterDraft character, BaseDomainEvent domainEvent)
+        {
+            var events = characterRepository.GetDomainEventsForCharacter(character.UiD).Append(domainEvent).ToList();
+
+            return events.Any(e => e is AbilityScoresRolled) &&
+                   events.Any(e => e is CharacterNameChosen) &&
+                   events.Any(e => e is CharacterRaceChosen);
+        }
+
+        private void CreateCharacterFromDraft(CharacterDraft characterDraft)
+        {
+            var newCharacter = CompletedCharacter.FromDraft(characterDraft);
+            characterRepository.Update(newCharacter);
+            unitOfWork.Commit();
+        }
+    }
 }

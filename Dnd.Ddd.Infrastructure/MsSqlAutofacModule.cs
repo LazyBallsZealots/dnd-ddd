@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reflection;
-
-using Dnd.Ddd.Common.Infrastructure.Events;
-using Dnd.Ddd.Common.ModelFramework;
-using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
+﻿using Dnd.Ddd.Infrastructure.Database.Common.Extensions;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 
 using NHibernate;

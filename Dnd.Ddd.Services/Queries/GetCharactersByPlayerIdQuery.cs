@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 
 using Dnd.Ddd.Common.Infrastructure.Queries;
-using Dnd.Ddd.Model.Character;
+using Dnd.Ddd.Dtos;
 
 namespace Dnd.Ddd.Services.Queries
 {
-    public class GetCharactersByPlayerIdQuery : BaseQuery<IList<Character>>
+    public class GetCharactersByPlayerIdQuery : BaseQuery<IList<CharacterDto>>
     {
         public GetCharactersByPlayerIdQuery(Guid playerId)
         {

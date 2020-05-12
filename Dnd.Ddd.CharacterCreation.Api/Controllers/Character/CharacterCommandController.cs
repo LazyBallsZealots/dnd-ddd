@@ -1,7 +1,8 @@
 ﻿using System;
-
-using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities;
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseName;
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.ChooseRace;
 using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.CreateCharacterDraft;
+using Dnd.Ddd.CharacterCreation.Api.Controllers.Character.RollAbilityScores;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Services.Commands;
@@ -17,12 +18,20 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
 
         private readonly IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler;
 
+        private readonly IEmptyResultCommandHandler<ChooseCharacterRaceCommand> chooseCharacterRaceHandler;
+
+        private readonly IEmptyResultCommandHandler<ChooseCharacterNameCommand> chooseCharacterNameHandler;
+
         public CharacterCommandController(
             IIdResultCommandHandler<CreateCharacterDraftCommand> createDraftCommandHandler,
-            IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler)
+            IEmptyResultCommandHandler<RollAbilityScoresCommand> rollAbilitiesScoresHandler,
+            IEmptyResultCommandHandler<ChooseCharacterRaceCommand> chooseCharacterRaceHandler,
+            IEmptyResultCommandHandler<ChooseCharacterNameCommand> chooseCharacterNameHandler)
         {
             this.createDraftCommandHandler = createDraftCommandHandler;
             this.rollAbilitiesScoresHandler = rollAbilitiesScoresHandler;
+            this.chooseCharacterRaceHandler = chooseCharacterRaceHandler;
+            this.chooseCharacterNameHandler = chooseCharacterNameHandler;
         }
 
         [HttpPost]
@@ -50,7 +59,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
         [Route("abilityScores")]
         [ProducesResponseType(400, Type = typeof(string))]
         [ProducesResponseType(404, Type = typeof(string))]
-        [ProducesResponseType(200, Type = typeof(string))]
+        [ProducesResponseType(200)]
         public IActionResult AddAbilities([FromBody] RollAbilityScoresRequest request)
         {
             if (request == null || request.DraftId == Guid.Empty)
@@ -58,7 +67,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 return BadRequest("Not enough information provided to roll ability scores");
             }
 
-            var command = new RollAbilityScoresCommand()
+            var command = new RollAbilityScoresCommand
             {
                 CharacterUiD = request.DraftId,
                 Dexterity = request.Dexterity,
@@ -69,24 +78,104 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 Strength = request.Strength
             };
 
+            IActionResult result;
+
             try
             {
                 rollAbilitiesScoresHandler.Handle(command);
+                result = Ok();
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(ex.Message);
+                result = BadRequest(ex.Message);
             }
             catch (ArgumentOutOfRangeException ex)
             {
-                return BadRequest(ex.Message);
+                result = BadRequest(ex.Message);
             }
             catch (CharacterNotFoundException ex)
             {
-                return NotFound(ex.Message);
+                result = NotFound(ex.Message);
             }
 
-            return Ok();
+            return result;
+        }
+
+        [HttpPut]
+        [Route("race")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public IActionResult SetRace([FromBody] ChooseRaceRequest request)
+        {
+            if (request == null || request.DraftId == Guid.Empty)
+            {
+                return BadRequest("Not enough information provided to choose character race");
+            }
+
+            var command = new ChooseCharacterRaceCommand
+            {
+                CharacterUiD = request.DraftId,
+                Race = request.Race
+            };
+
+            IActionResult result;
+            try
+            {
+                chooseCharacterRaceHandler.Handle(command);
+                result = Ok();
+            }
+            catch (CharacterNotFoundException e)
+            {
+                result = NotFound(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest(e.Message);
+            }
+
+            return result;
+        }
+
+        [HttpPut]
+        [Route("name")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400, Type = typeof(string))]
+        [ProducesResponseType(404, Type = typeof(string))]
+        public IActionResult SetName([FromBody] ChooseNameRequest request)
+        {
+            if (request == null || request.DraftId == Guid.Empty)
+            {
+                return BadRequest("Not enough information provided to add a character name");
+            }
+
+            var command = new ChooseCharacterNameCommand
+            {
+                CharacterUiD = request.DraftId,
+                Name = request.Name
+            };
+
+            IActionResult result;
+            try
+            {
+                chooseCharacterNameHandler.Handle(command);
+                result = Ok();
+            }
+            catch (CharacterNotFoundException e)
+            {
+                result = NotFound(e.Message);
+            }
+            catch (ArgumentException e)
+            {
+                result = BadRequest(e.Message);
+            }
+            catch (InvalidOperationException e)
+            {
+                result = BadRequest(e.Message);
+            }
+
+
+            return result;
         }
     }
 }

@@ -22,6 +22,8 @@ namespace Dnd.Ddd.Model.Character
             Charisma = characterDraft.Charisma;
             Race = characterDraft.Race;
             UiD = characterDraft.UiD;
+
+            IncreaseAbilityScoresBasedOnRace();
         }
 
         public static CompletedCharacter FromDraft(CharacterDraft draft)

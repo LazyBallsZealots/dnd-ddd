@@ -2,12 +2,13 @@
 using System.Linq;
 
 using Dnd.Ddd.Common.Infrastructure.Queries;
-using Dnd.Ddd.Model.Character;
+using Dnd.Ddd.Dtos;
+using Dnd.Ddd.Dtos.Extensions;
 using Dnd.Ddd.Model.Character.Repository;
 
 namespace Dnd.Ddd.Services.Queries.Handlers
 {
-    internal class GetCharactersByPlayerIdQueryHandler : IQueryHandler<GetCharactersByPlayerIdQuery, IList<Character>>
+    internal class GetCharactersByPlayerIdQueryHandler : IQueryHandler<GetCharactersByPlayerIdQuery, IList<CharacterDto>>
     {
         private readonly ICharacterRepository repository;
 
@@ -16,6 +17,7 @@ namespace Dnd.Ddd.Services.Queries.Handlers
             this.repository = repository;
         }
 
-        public IList<Character> Handle(GetCharactersByPlayerIdQuery query) => repository.GetByPlayerId(query.PlayerId).ToList();
+        public IList<CharacterDto> Handle(GetCharactersByPlayerIdQuery query) =>
+            repository.GetByPlayerId(query.PlayerId).Select(character => character.ToDto()).ToList();
     }
 }

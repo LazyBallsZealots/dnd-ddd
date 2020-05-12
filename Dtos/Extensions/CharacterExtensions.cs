@@ -5,7 +5,7 @@ namespace Dnd.Ddd.Dtos.Extensions
     public static class CharacterExtensions
     {
         public static CharacterDto ToDto(this Character character) =>
-            new CharacterDto()
+            new CharacterDto
             {
                 PlayerId = character.PlayerId.PlayerUiD,
                 UiD = character.UiD,

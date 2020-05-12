@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Transactions;
 
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 
 using NHibernate;
+
+using IsolationLevel = System.Data.IsolationLevel;
 
 namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
 {
@@ -14,7 +17,7 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
         public NHibernateUnitOfWork(ISession session)
         {
             Session = session;
-            transaction = session.BeginTransaction();
+            transaction = session.BeginTransaction(IsolationLevel.ReadCommitted);
         }
 
         internal ISession Session { get; }
@@ -57,7 +60,13 @@ namespace Dnd.Ddd.Infrastructure.Database.UnitOfWork
             }
         }
 
-        public void Rollback() => transaction.Rollback();
+        public void Rollback()
+        {
+            if (transaction.IsActive && !transaction.WasRolledBack)
+            {
+                transaction.Rollback();
+            }
+        }
 
         public async Task RollbackAsync() => await transaction.RollbackAsync();
     }
