@@ -55,8 +55,10 @@ namespace Dnd.Ddd.CharacterCreation.Api
             domainModulesConfigurationBuilder.AddJsonFile("autofacDomainModules.json");
 
             builder.RegisterModule(new ConfigurationModule(domainModulesConfigurationBuilder.Build()));
-            builder.RegisterModule(new DomainEventDispatchAutofacModule());
-            builder.RegisterModule(new SqLiteAutofacModule());
+
+            var infrastructureModulesConfigurationBuilder = new ConfigurationBuilder();
+            infrastructureModulesConfigurationBuilder.AddJsonFile("testAutofacInfrastructureModules.json");
+            builder.RegisterModule(new ConfigurationModule(infrastructureModulesConfigurationBuilder.Build()));
         }
 
         /// <summary>

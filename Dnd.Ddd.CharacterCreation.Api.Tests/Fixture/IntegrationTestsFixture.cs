@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Net.Http;
-
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 
 using Microsoft.AspNetCore.Mvc.Testing;
+using NHibernate;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 {
@@ -17,7 +18,8 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
         {
             webApplicationFactory = new TestWebApplicationFactory();
             var lifetimeScope = webApplicationFactory.Services.GetAutofacRoot();
-            databaseManager = new DatabaseManager(lifetimeScope);
+            var connectionString = lifetimeScope.Resolve<ISessionFactory>().OpenSession().Connection.ConnectionString;
+            databaseManager = new DatabaseManager(lifetimeScope, connectionString);
         }
 
         public void Dispose()

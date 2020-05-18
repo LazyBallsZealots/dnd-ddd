@@ -233,6 +233,47 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Specifications.Characters
         }
 
 
+        // [Fact]
+        public async Task CharacterController_AfterCompletingCharacterDetails_CompletesCharacter()
+        {
+            var requestBody = JsonSerializer.Serialize(new CreateCharacterDraftRequest { PlayerId = Guid.NewGuid() });
+            var responseContent = await GetPostResponse<CreateCharacterDraftResponse>(ApiRoot, requestBody);
+
+            var rollAbilitiesRequest = new RollAbilityScoresRequest
+            {
+                DraftId = responseContent.DraftId,
+                Strength = 10,
+                Wisdom = 15,
+                Intelligence = 7,
+                Charisma = 18,
+                Constitution = 14,
+                Dexterity = 15
+            };
+
+            var rollAbilitiesRequestBody = JsonSerializer.Serialize(rollAbilitiesRequest);
+            var chooseRaceRequest = JsonSerializer.Serialize(new ChooseRaceRequest { DraftId = responseContent.DraftId, Race = "Dwarf" });
+            var chooseNameRequest = JsonSerializer.Serialize(new ChooseNameRequest { DraftId = responseContent.DraftId, Name = "Beczka" });
+
+            var abilityScoresResponse = await client.PutAsync(
+                               $"{ApiRoot}/abilityScores",
+                               new StringContent(rollAbilitiesRequestBody, Encoding.UTF8, ContentType));
+            abilityScoresResponse.EnsureSuccessStatusCode();
+
+            var raceChosenResponse = await client.PutAsync(
+                               $"{ApiRoot}/race",
+                               new StringContent(chooseRaceRequest, Encoding.UTF8, ContentType));
+            raceChosenResponse.EnsureSuccessStatusCode();
+
+            var nameChosenResponse = await client.PutAsync(
+                       $"{ApiRoot}/name",
+                       new StringContent(chooseNameRequest, Encoding.UTF8, ContentType));
+            nameChosenResponse.EnsureSuccessStatusCode();
+
+            var characterDto = await GetCharacterDto(responseContent.DraftId);
+
+            Assert.Equal("CompletedCharacter", characterDto.Stage);
+        }
+
         private async Task<TResponse> GetPostResponse<TResponse>(string url, string request)
         {
             var response = await client.PostAsync(url, new StringContent(request, Encoding.UTF8, ContentType));

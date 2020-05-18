@@ -3,11 +3,11 @@
     {
       "type": "Dnd.Ddd.Infrastructure.Database.MsSqlAutofacModule, Dnd.Ddd.Infrastructure.Database",
       "parameters": {
-        "connectionString": "Server=localhost;Database=DndCharacterCreation;Integrated Security=SSPI;"
+        "connectionString": "Server=localhost;Database=TestDndCharacterCreation;Integrated Security=SSPI;"
       }
     },
     {
       "type": "Dnd.Ddd.Infrastructure.EventBus.DomainEventDispatchAutofacModule, Dnd.Ddd.Infrastructure.EventBus"
     }
-  ] 
+  ]
 }
