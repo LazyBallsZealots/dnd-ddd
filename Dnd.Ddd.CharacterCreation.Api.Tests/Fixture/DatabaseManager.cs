@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SQLite;
+using System.Data.SqlClient;
 using System.Linq;
-
+using System.Threading;
 using Autofac;
-
-using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.Interceptors;
-using Dnd.Ddd.CharacterCreation.Api.Tests.Fixture.SqlScriptAdjustments;
 
 using NHibernate;
 using NHibernate.Cfg;
@@ -15,14 +12,13 @@ using NHibernate.Tool.hbm2ddl;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 {
-    public class DatabaseManager : IDisposable
+    internal sealed class DatabaseManager : IDisposable
     {
-        internal static readonly ICollection<string> DisallowedExpressionsDuringSchemaDeploy = new List<string>
-        {
-            "drop", "PRAGMA", "create index", "ALTER"
-        };
+        private const string LocalDbInstanceConnectionString = @"Server=(localdb)\DndDdd";
 
-        private const string DefaultConnectionString = "FullUri=file:memorydb.db?mode=memory&cache=shared";
+        private const string DefaultConnectionString = "Server=(localdb)\\DndDdd;Database=TestDndCharacterCreation;Integrated Security=SSPI;";
+
+        private const int DbCreationTimeoutInMilliseconds = 15000;
 
         private IDbConnection connection;
 
@@ -30,37 +26,64 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
         {
             using var nestedLifetimeScope = lifetimeScope.BeginLifetimeScope();
 
-            connection = CreateAndOpenSqLiteConnection();
+            CreateDatabaseIfNecessary();
+
+            using var session = nestedLifetimeScope.Resolve<ISession>();
+
+            connection = CreateAndOpenSqlConnection(session.Connection.ConnectionString);
 
             GenerateDatabaseSchema(nestedLifetimeScope);
         }
-
-        public void Dispose()
-        {
-            connection.Dispose();
-            connection = null;
-        }
+        
+        public void Dispose() => connection.Dispose();
 
         public void ClearDatabase()
         {
-            var command = connection.CreateCommand();
-            command.CommandText = "select name from sqlite_master where type = 'table'";
-            var reader = command.ExecuteReader();
+            using var command = connection.CreateCommand();
+            command.CommandText = "exec sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'; " +
+                "exec sp_msforeachtable 'DELETE FROM ?';" +
+                "exec sp_msforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'";
+            _ = command.ExecuteNonQuery();
+        }
 
-            while (reader.Read())
+        private static IDbConnection CreateAndOpenSqlConnection(string connectionString)
+        {
+            var dbConnection = new SqlConnection(connectionString);
+            dbConnection.Open();
+            return dbConnection;
+        }
+
+        private void CreateDatabaseIfNecessary()
+        {
+            try
             {
-                var tableName = reader.GetString(0);
-                var dropCommand = connection.CreateCommand();
-                dropCommand.CommandText = $"delete from {tableName}";
-                dropCommand.ExecuteNonQuery();
+                using var dbConnection = CreateAndOpenSqlConnection(DefaultConnectionString);
+            }
+            catch (SqlException)
+            {
+                using var localDbConnection = CreateAndOpenSqlConnection(LocalDbInstanceConnectionString);
+                using var command = localDbConnection.CreateCommand();
+                command.CommandText = "create database TestDndCharacterCreation;";
+                _ = command.ExecuteNonQuery();
+
+                WaitForDatabaseToBeCreated();
             }
         }
 
-        private static IDbConnection CreateAndOpenSqLiteConnection()
+        private static void WaitForDatabaseToBeCreated()
         {
-            var dbConnection = new SQLiteConnection(DefaultConnectionString);
-            dbConnection.Open();
-            return dbConnection;
+            for (var i = 0; i < DbCreationTimeoutInMilliseconds; i++)
+            {
+                try
+                {
+                    using var dbConnection = CreateAndOpenSqlConnection(DefaultConnectionString);
+                    break;
+                }
+                catch (SqlException)
+                {
+                    Thread.Sleep(1);
+                }
+            }
         }
 
         private static IEnumerable<string> GenerateSchemaCreationScripts(ILifetimeScope lifetimeScope)
@@ -68,27 +91,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
             var generateSchemaScripts = new List<string>();
 
             new SchemaExport(lifetimeScope.Resolve<Configuration>()).Execute(
-                script =>
-                {
-                    if (script.TrimStart().StartsWith("create", StringComparison.CurrentCultureIgnoreCase) &&
-                        !DisallowedExpressionsDuringSchemaDeploy.Any(script.TrimStart().StartsWith))
-                    {
-                        generateSchemaScripts.Add(script);
-                        return;
-                    }
-
-                    if (!script.StartsWith("ALTER", StringComparison.CurrentCultureIgnoreCase))
-                    {
-                        return;
-                    }
-
-                    var tableName = SqLiteScriptAdjustments.GetTableNameFromAlterStatement(script);
-                    var creationScript = generateSchemaScripts.First(statement => statement.Contains($"create table {tableName}"));
-                    var newCreationScript = SqLiteScriptAdjustments.GetTableCreationScriptWithAlterStatement(creationScript, script);
-
-                    generateSchemaScripts.Remove(creationScript);
-                    generateSchemaScripts.Add(newCreationScript);
-                },
+                script => generateSchemaScripts.Add(script),
                 false,
                 false,
                 null);
@@ -100,11 +103,12 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
         {
             var generatedSchemaScripts = GenerateSchemaCreationScripts(lifetimeScope);
 
-            using var schemaDeploySession = lifetimeScope.Resolve<ISessionFactory>()
-                .WithOptions()
-                .Interceptor(new CreateTableInterceptor())
-                .OpenSession();
-            generatedSchemaScripts.ToList().ForEach(schemaScript => schemaDeploySession.CreateSQLQuery(schemaScript).ExecuteUpdate());
+            using var schemaDeploySession = lifetimeScope.Resolve<ISessionFactory>().OpenSession();
+
+            generatedSchemaScripts.ToList()
+                .ForEach(schemaScript => schemaDeploySession
+                    .CreateSQLQuery(schemaScript)
+                    .ExecuteUpdate());
         }
     }
 }

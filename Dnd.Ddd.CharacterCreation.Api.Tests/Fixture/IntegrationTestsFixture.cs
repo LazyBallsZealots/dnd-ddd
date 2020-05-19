@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http;
-
 using Autofac.Extensions.DependencyInjection;
 
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -35,10 +34,6 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
                     AllowAutoRedirect = false
                 });
 
-        protected virtual void Dispose(bool disposing)
-        {
-            webApplicationFactory.Dispose();
-            databaseManager.Dispose();
-        }
+        protected virtual void Dispose(bool disposing) => webApplicationFactory.Dispose();
     }
 }
