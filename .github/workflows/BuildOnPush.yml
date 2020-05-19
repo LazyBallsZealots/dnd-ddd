@@ -22,5 +22,5 @@ jobs:
       run: dotnet test --no-restore --verbosity normal
     - name: Stop LocalDB
       run: SqlLocalDb stop DndDdd
-    -name: LocalDB cleanup
+    - name: Remove LocalDB instance
       run: SqlLocalDb delete DndDdd
