@@ -10,10 +10,12 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup LocalDB
+    - name: Setup LocalDB named instance
       run: SqlLocalDb create DndDdd
-    - name: Start LocalDB
+    - name: Start LocalDB instance
       run: SqlLocalDb start DndDdd
+    - name: Share LocalDB instance
+      run: SqlLocalDb share DndDdd DndDdd
     - name: Install dependencies
       run: dotnet restore
     - name: Build
