@@ -6,6 +6,7 @@ using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.CharacterStates;
 using Dnd.Ddd.Model.Character.CharacterStates.Contract;
+using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
@@ -128,6 +129,7 @@ namespace Dnd.Ddd.Model.Character
             Guard.With<ArgumentNullException>().Against(Charisma == null, nameof(Charisma));
             Guard.With<ArgumentNullException>().Against(Name == null, nameof(Name));
             Guard.With<ArgumentNullException>().Against(Race == null, nameof(Race));
+            Guard.With<InvalidCharacterStateException>().Against(IsCompleted(), UiD);
 
             IncreaseAbilityScoresBasedOnRace();
 
