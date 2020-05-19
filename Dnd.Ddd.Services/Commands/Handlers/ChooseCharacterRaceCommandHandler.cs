@@ -30,10 +30,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
             Guard.With<CharacterNotFoundException>().Against(character is null, command.CharacterUiD);
             Guard.With<InvalidOperationException>()
                 .Against(
-                    !(character is CharacterDraft),
+                    character.IsCompleted(),
                     $"Attempting to change race on a completed character with UiD: {command.CharacterUiD}!");
 
-            ((CharacterDraft)character).SetRace(command.Race);
+            character.SetRace(command.Race);
 
             character.RegisterDomainEvent(new CharacterRaceChosen(command.Race, command.CharacterUiD));
 

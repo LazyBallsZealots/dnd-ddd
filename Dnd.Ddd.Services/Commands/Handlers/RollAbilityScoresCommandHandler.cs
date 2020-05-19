@@ -33,10 +33,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
 
             Guard.With<InvalidOperationException>()
                 .Against(
-                    !(character is CharacterDraft),
+                    character.IsCompleted(),
                     $"Attempting to roll ability scores on completed character with UiD: {command.CharacterUiD}!");
 
-            var characterWithRolledAbilityScores = ((CharacterDraft)character).SetStrength(command.Strength)
+            var characterWithRolledAbilityScores = character.SetStrength(command.Strength)
                 .SetDexterity(command.Dexterity)
                 .SetCharisma(command.Charisma)
                 .SetWisdom(command.Wisdom)

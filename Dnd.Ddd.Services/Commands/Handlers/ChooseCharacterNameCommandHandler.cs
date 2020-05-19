@@ -34,10 +34,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
 
             Guard.With<InvalidOperationException>()
                 .Against(
-                    !(character is CharacterDraft),
+                    character.IsCompleted(),
                     $"Attempting to change name on a completed character with UiD: {command.CharacterUiD}!");
 
-            ((CharacterDraft)character).SetName(command.Name);
+            character.SetName(command.Name);
 
             character.RegisterDomainEvent(new CharacterNameChosen(command.Name, command.CharacterUiD));
 

@@ -24,7 +24,7 @@ namespace Dnd.Ddd.Model.Tests
         {
             const string Name = "Argh";
 
-            var character = new CharacterDraft(PlayerId.FromUiD(Guid.NewGuid())).SetStrength(abilityScores[0])
+            var character = Character.Character.ForPlayer(Guid.NewGuid()).SetStrength(abilityScores[0])
                 .SetDexterity(abilityScores[1])
                 .SetConstitution(abilityScores[2])
                 .SetIntelligence(abilityScores[3])
@@ -33,11 +33,10 @@ namespace Dnd.Ddd.Model.Tests
 
             character.SetName(Name);
             character.SetRace(race);
+            character.Complete();
 
-            var completedChar = CompletedCharacter.FromDraft(character);
-
-            Assert.True(testResult(completedChar));
-            Assert.Equal(completedChar.Name, Character.ValueObjects.Name.FromString(Name));
+            Assert.True(testResult(character));
+            Assert.Equal(character.Name, Character.ValueObjects.Name.FromString(Name));
         }
     }
 }

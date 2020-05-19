@@ -1,5 +1,5 @@
 ﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Entities;
-using Dnd.Ddd.Infrastructure.Database.Middleware;
+using Dnd.Ddd.Infrastructure.Database.Middleware.UserTypes;
 using Dnd.Ddd.Model.Character;
 
 using NHibernate.Mapping.ByCode;
@@ -13,12 +13,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
         {
             Lazy(false);
             Id(x => x.UiD, map => map.Generator(Generators.Assigned));
-            Discriminator(
-                x =>
-                {
-                    x.Force(true);
-                    x.Column("CharacterType");
-                });
+            Property(x => x.State, pm => pm.Type<CharacterStateType>());
             Component(
                 x => x.Strength,
                 componentMapper =>
@@ -108,24 +103,6 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
                     componentMapper.Insert(true);
                     componentMapper.Update(true);
                 });
-        }
-
-        public class CharacterDraftMap : SubclassMapping<CharacterDraft>
-        {
-            public CharacterDraftMap()
-            {
-                Lazy(false);
-                DiscriminatorValue(nameof(CharacterDraft));
-            }
-        }
-
-        public class CompletedCharacterMap : SubclassMapping<CompletedCharacter>
-        {
-            public CompletedCharacterMap()
-            {
-                Lazy(false);
-                DiscriminatorValue(nameof(CompletedCharacter));
-            }
         }
     }
 }
