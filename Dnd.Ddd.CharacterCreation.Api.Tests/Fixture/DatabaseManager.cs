@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
@@ -12,28 +11,23 @@ using NHibernate.Tool.hbm2ddl;
 
 namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 {
-    internal class DatabaseManager : IDisposable
+    internal sealed class DatabaseManager
     {
         private IDbConnection connection;
 
-        public DatabaseManager(ILifetimeScope lifetimeScope, string connectionString)
+        public DatabaseManager(ILifetimeScope lifetimeScope)
         {
             using var nestedLifetimeScope = lifetimeScope.BeginLifetimeScope();
+            using var session = nestedLifetimeScope.Resolve<ISession>();
 
-            connection = CreateAndOpenSqlConnection(connectionString);
+            connection = CreateAndOpenSqlConnection(session.Connection.ConnectionString);
 
             GenerateDatabaseSchema(nestedLifetimeScope);
-        }
-
-        public void Dispose()
-        {
-            connection.Dispose();
-            connection = null;
-        }
+        }            
 
         public void ClearDatabase()
         {
-            var command = connection.CreateCommand();
+            using var command = connection.CreateCommand();
             command.CommandText = "exec sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL'; " +
                 "exec sp_msforeachtable 'DELETE FROM ?';" +
                 "exec sp_msforeachtable 'ALTER TABLE ? CHECK CONSTRAINT ALL'";

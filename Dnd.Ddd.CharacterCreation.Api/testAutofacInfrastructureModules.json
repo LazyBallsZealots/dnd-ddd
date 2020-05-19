@@ -3,7 +3,7 @@
     {
       "type": "Dnd.Ddd.Infrastructure.Database.MsSqlAutofacModule, Dnd.Ddd.Infrastructure.Database",
       "parameters": {
-        "connectionString": "Server=localhost;Database=TestDndCharacterCreation;Integrated Security=SSPI;"
+        "connectionString": "Server=(localdb)\\DndDdd;Database=TestDndCharacterCreation;Integrated Security=SSPI;"
       }
     },
     {
