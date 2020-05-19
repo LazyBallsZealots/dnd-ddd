@@ -12,6 +12,7 @@ jobs:
 
     - name: Setup LocalDB
       run: SqlLocalDb create DndDdd
+    - name: Start LocalDB
       run: SqlLocalDb start DndDdd
     - name: Install dependencies
       run: dotnet restore
@@ -19,6 +20,7 @@ jobs:
       run: dotnet build --configuration Release --no-restore
     - name: Test
       run: dotnet test --no-restore --verbosity normal
-    - name: Test cleanup
+    - name: Stop LocalDB
       run: SqlLocalDb stop DndDdd
+    -name: LocalDB cleanup
       run: SqlLocalDb delete DndDdd
