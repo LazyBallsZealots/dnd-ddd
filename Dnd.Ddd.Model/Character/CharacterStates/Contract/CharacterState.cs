@@ -8,7 +8,7 @@ namespace Dnd.Ddd.Model.Character.CharacterStates.Contract
 {
     internal abstract class CharacterState
     {
-        private static readonly IDictionary<CharacterStates, CharacterState> StatesFactoryMethods = new Dictionary<CharacterStates, CharacterState>
+        private static readonly IDictionary<CharacterStates, CharacterState> StatesInstances = new Dictionary<CharacterStates, CharacterState>
         {
             [CharacterStates.Completed] = new Completed(),
             [CharacterStates.Draft] = new Draft()
@@ -16,8 +16,8 @@ namespace Dnd.Ddd.Model.Character.CharacterStates.Contract
 
         public static CharacterState FromEnumeration(CharacterStates state)
         {
-            Guard.With<ArgumentOutOfRangeException>().Against(!StatesFactoryMethods.ContainsKey(state), nameof(state));
-            return StatesFactoryMethods[state];
+            Guard.With<ArgumentOutOfRangeException>().Against(!StatesInstances.ContainsKey(state), nameof(state));
+            return StatesInstances[state];
         }
 
         internal abstract void SetStrength(Character character, int strength);

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Security.Cryptography;
+
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.CharacterStates;
