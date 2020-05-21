@@ -32,10 +32,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     character == null,
                     command.CharacterUiD);
 
-            Guard.With<InvalidOperationException>()
+            Guard.With<InvalidCharacterStateException>()
                 .Against(
                     character.IsCompleted(),
-                    $"Attempting to change name on a completed character with UiD: {command.CharacterUiD}!");
+                    command.CharacterUiD);
 
             character.SetName(command.Name);
 

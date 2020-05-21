@@ -97,6 +97,10 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
             {
                 result = NotFound(ex.Message);
             }
+            catch (InvalidCharacterStateException ex)
+            {
+                result = BadRequest(ex.Message);
+            }
 
             return result;
         }
@@ -125,13 +129,17 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 chooseCharacterRaceHandler.Handle(command);
                 result = Ok();
             }
-            catch (CharacterNotFoundException e)
+            catch (CharacterNotFoundException ex)
             {
-                result = NotFound(e.Message);
+                result = NotFound(ex.Message);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException ex)
             {
-                result = BadRequest(e.Message);
+                result = BadRequest(ex.Message);
+            }
+            catch (InvalidCharacterStateException ex)
+            {
+                result = BadRequest(ex.Message);
             }
 
             return result;
@@ -161,19 +169,22 @@ namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character
                 chooseCharacterNameHandler.Handle(command);
                 result = Ok();
             }
-            catch (CharacterNotFoundException e)
+            catch (CharacterNotFoundException ex)
             {
-                result = NotFound(e.Message);
+                result = NotFound(ex.Message);
             }
-            catch (ArgumentException e)
+            catch (ArgumentException ex)
             {
-                result = BadRequest(e.Message);
+                result = BadRequest(ex.Message);
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException ex)
             {
-                result = BadRequest(e.Message);
+                result = BadRequest(ex.Message);
             }
-
+            catch (InvalidCharacterStateException ex)
+            {
+                result = BadRequest(ex.Message);
+            }
 
             return result;
         }

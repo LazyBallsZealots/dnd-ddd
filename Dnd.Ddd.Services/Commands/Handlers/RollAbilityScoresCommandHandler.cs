@@ -31,10 +31,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     character == null,
                     command.CharacterUiD);
 
-            Guard.With<InvalidOperationException>()
+            Guard.With<InvalidCharacterStateException>()
                 .Against(
                     character.IsCompleted(),
-                    $"Attempting to roll ability scores on completed character with UiD: {command.CharacterUiD}!");
+                    command.CharacterUiD);
 
             var characterWithRolledAbilityScores = character.SetStrength(command.Strength)
                 .SetDexterity(command.Dexterity)

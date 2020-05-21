@@ -1,9 +1,7 @@
-﻿using System;
-
-using Dnd.Ddd.Common.Guard;
+﻿using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
-using Dnd.Ddd.Model.Character;
+
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
@@ -28,10 +26,10 @@ namespace Dnd.Ddd.Services.Commands.Handlers
         {
             var character = repository.Get(command.CharacterUiD);
             Guard.With<CharacterNotFoundException>().Against(character is null, command.CharacterUiD);
-            Guard.With<InvalidOperationException>()
+            Guard.With<InvalidCharacterStateException>()
                 .Against(
                     character.IsCompleted(),
-                    $"Attempting to change race on a completed character with UiD: {command.CharacterUiD}!");
+                    command.CharacterUiD);
 
             character.SetRace(command.Race);
 
