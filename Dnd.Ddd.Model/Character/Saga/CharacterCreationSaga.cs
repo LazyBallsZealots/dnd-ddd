@@ -67,10 +67,8 @@ namespace Dnd.Ddd.Model.Character.Saga
 
         private async Task<Character> GetCharacter(CharacterEvent notification, CancellationToken cancellation)
         {
-            var character = await characterRepository.GetAsync(notification.CharacterUiD, cancellation) ?? 
-                throw new CharacterNotFoundException(notification.CharacterUiD);
-
-            return character;
+            return await characterRepository.GetAsync(notification.CharacterUiD, cancellation) ??
+                   throw new CharacterNotFoundException(notification.CharacterUiD);
         }
 
         private void CheckSagaCompletion(Character draft, BaseDomainEvent domainEvent)
