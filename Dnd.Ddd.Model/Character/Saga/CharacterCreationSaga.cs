@@ -2,10 +2,12 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 using Dnd.Ddd.Common.ModelFramework;
+using Dnd.Ddd.Model.Character.CharacterStates;
+using Dnd.Ddd.Model.Character.DomainEvents;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;
@@ -35,32 +37,17 @@ namespace Dnd.Ddd.Model.Character.Saga
 
         public async Task Handle(AbilityScoresRolled notification, CancellationToken cancellationToken)
         {
-            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
-            {
-                throw new CharacterNotFoundException(notification.CharacterUiD);
-            }
-
-            CheckSagaCompletion(characterDraft, notification);
+            await HandleNotification(notification, cancellationToken);
         }
 
         public async Task Handle(CharacterNameChosen notification, CancellationToken cancellationToken)
         {
-            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
-            {
-                throw new CharacterNotFoundException(notification.CharacterUiD);
-            }
-
-            CheckSagaCompletion(characterDraft, notification);
+            await HandleNotification(notification, cancellationToken);
         }
 
         public async Task Handle(CharacterRaceChosen notification, CancellationToken cancellationToken)
         {
-            if (!(await characterRepository.GetAsync(notification.CharacterUiD, cancellationToken) is CharacterDraft characterDraft))
-            {
-                throw new CharacterNotFoundException(notification.CharacterUiD);
-            }
-
-            CheckSagaCompletion(characterDraft, notification);
+            await HandleNotification(notification, cancellationToken);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -71,7 +58,20 @@ namespace Dnd.Ddd.Model.Character.Saga
             }
         }
 
-        private void CheckSagaCompletion(CharacterDraft draft, BaseDomainEvent domainEvent)
+        private async Task HandleNotification(CharacterEvent notification, CancellationToken cancellationToken)
+        {
+            var character = await GetCharacter(notification, cancellationToken);
+            Guard.With<InvalidCharacterStateException>().Against(character.State is Completed, notification.CharacterUiD);
+            CheckSagaCompletion(character, notification);
+        }
+
+        private async Task<Character> GetCharacter(CharacterEvent notification, CancellationToken cancellation)
+        {
+            return await characterRepository.GetAsync(notification.CharacterUiD, cancellation) ??
+                   throw new CharacterNotFoundException(notification.CharacterUiD);
+        }
+
+        private void CheckSagaCompletion(Character draft, BaseDomainEvent domainEvent)
         {
             if (IsComplete(draft, domainEvent))
             {
@@ -83,7 +83,7 @@ namespace Dnd.Ddd.Model.Character.Saga
             }
         }
 
-        private bool IsComplete(CharacterDraft character, BaseDomainEvent domainEvent)
+        private bool IsComplete(Character character, BaseDomainEvent domainEvent)
         {
             var events = characterRepository.GetDomainEventsForCharacter(character.UiD).Append(domainEvent).ToList();
 
@@ -92,10 +92,10 @@ namespace Dnd.Ddd.Model.Character.Saga
                    events.Any(e => e is CharacterRaceChosen);
         }
 
-        private void CreateCharacterFromDraft(CharacterDraft characterDraft)
+        private void CreateCharacterFromDraft(Character characterDraft)
         {
-            var newCharacter = CompletedCharacter.FromDraft(characterDraft);
-            characterRepository.Update(newCharacter);
+            characterDraft.Complete();
+            characterRepository.Update(characterDraft);
             unitOfWork.Commit();
         }
     }

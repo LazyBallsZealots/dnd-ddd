@@ -31,12 +31,12 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     character == null,
                     command.CharacterUiD);
 
-            Guard.With<InvalidOperationException>()
+            Guard.With<InvalidCharacterStateException>()
                 .Against(
-                    !(character is CharacterDraft),
-                    $"Attempting to roll ability scores on completed character with UiD: {command.CharacterUiD}!");
+                    character.IsCompleted(),
+                    command.CharacterUiD);
 
-            var characterWithRolledAbilityScores = ((CharacterDraft)character).SetStrength(command.Strength)
+            var characterWithRolledAbilityScores = character.SetStrength(command.Strength)
                 .SetDexterity(command.Dexterity)
                 .SetCharisma(command.Charisma)
                 .SetWisdom(command.Wisdom)

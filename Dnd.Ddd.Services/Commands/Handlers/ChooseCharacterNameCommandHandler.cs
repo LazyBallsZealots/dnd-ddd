@@ -32,12 +32,12 @@ namespace Dnd.Ddd.Services.Commands.Handlers
                     character == null,
                     command.CharacterUiD);
 
-            Guard.With<InvalidOperationException>()
+            Guard.With<InvalidCharacterStateException>()
                 .Against(
-                    !(character is CharacterDraft),
-                    $"Attempting to change name on a completed character with UiD: {command.CharacterUiD}!");
+                    character.IsCompleted(),
+                    command.CharacterUiD);
 
-            ((CharacterDraft)character).SetName(command.Name);
+            character.SetName(command.Name);
 
             character.RegisterDomainEvent(new CharacterNameChosen(command.Name, command.CharacterUiD));
 
