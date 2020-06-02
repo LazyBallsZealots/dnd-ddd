@@ -1,9 +1,7 @@
 ﻿using Dnd.Ddd.Infrastructure.Database.Mappings.Entities;
 using Dnd.Ddd.Infrastructure.Database.Middleware.UserTypes;
-using Dnd.Ddd.Model.Character;
 
 using NHibernate.Mapping.ByCode;
-using NHibernate.Mapping.ByCode.Conformist;
 
 namespace Dnd.Ddd.Infrastructure.Database.Mappings.Character
 {

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Threading.Tasks;
-using System.Transactions;
 
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
 

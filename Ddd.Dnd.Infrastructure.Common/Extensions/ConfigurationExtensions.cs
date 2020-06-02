@@ -21,7 +21,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Common.Extensions
 
             return configuration;
         }
-                
+
         private static bool AssemblyContainsMappingTypes(Assembly assembly) =>
             GetConformistMappingTypes(assembly).Any();
 

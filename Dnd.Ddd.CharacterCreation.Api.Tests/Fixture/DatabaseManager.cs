@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading;
+
 using Autofac;
 
 using NHibernate;
@@ -20,7 +21,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 
         private const int DbCreationTimeoutInMilliseconds = 15000;
 
-        private IDbConnection connection;
+        private readonly IDbConnection connection;
 
         public DatabaseManager(ILifetimeScope lifetimeScope)
         {
@@ -34,7 +35,7 @@ namespace Dnd.Ddd.CharacterCreation.Api.Tests.Fixture
 
             GenerateDatabaseSchema(nestedLifetimeScope);
         }
-        
+
         public void Dispose() => connection.Dispose();
 
         public void ClearDatabase()

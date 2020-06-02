@@ -1,8 +1,6 @@
-﻿using System;
-using Dnd.Ddd.Common.Guard;
+﻿using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Commands;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
-using Dnd.Ddd.Model.Character;
 using Dnd.Ddd.Model.Character.DomainEvents.CharacterCreationEvents;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.Repository;

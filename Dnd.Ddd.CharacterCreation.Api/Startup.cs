@@ -3,9 +3,6 @@ using System;
 using Autofac;
 using Autofac.Configuration;
 
-using Dnd.Ddd.Infrastructure.Database;
-using Dnd.Ddd.Infrastructure.EventBus;
-
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
