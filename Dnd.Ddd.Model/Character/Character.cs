@@ -8,6 +8,7 @@ using Dnd.Ddd.Model.Character.CharacterStates.Contract;
 using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
+using Dnd.Ddd.Model.Character.ValueObjects.Feature;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
 
@@ -16,6 +17,8 @@ namespace Dnd.Ddd.Model.Character
     public class Character : Entity, IAggregateRoot
     {
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
+
+        internal readonly IEnumerable<Feature> features;
 
         protected Character()
         {
