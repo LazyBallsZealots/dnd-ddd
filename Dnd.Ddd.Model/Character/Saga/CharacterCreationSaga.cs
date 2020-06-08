@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
@@ -35,20 +36,11 @@ namespace Dnd.Ddd.Model.Character.Saga
             GC.SuppressFinalize(this);
         }
 
-        public async Task Handle(AbilityScoresRolled notification, CancellationToken cancellationToken)
-        {
-            await HandleNotification(notification, cancellationToken);
-        }
+        public async Task Handle(AbilityScoresRolled notification, CancellationToken cancellationToken) => await HandleNotification(notification, cancellationToken);
 
-        public async Task Handle(CharacterNameChosen notification, CancellationToken cancellationToken)
-        {
-            await HandleNotification(notification, cancellationToken);
-        }
+        public async Task Handle(CharacterNameChosen notification, CancellationToken cancellationToken) => await HandleNotification(notification, cancellationToken);
 
-        public async Task Handle(CharacterRaceChosen notification, CancellationToken cancellationToken)
-        {
-            await HandleNotification(notification, cancellationToken);
-        }
+        public async Task Handle(CharacterRaceChosen notification, CancellationToken cancellationToken) => await HandleNotification(notification, cancellationToken);
 
         protected virtual void Dispose(bool disposing)
         {
@@ -65,11 +57,8 @@ namespace Dnd.Ddd.Model.Character.Saga
             CheckSagaCompletion(character, notification);
         }
 
-        private async Task<Character> GetCharacter(CharacterEvent notification, CancellationToken cancellation)
-        {
-            return await characterRepository.GetAsync(notification.CharacterUiD, cancellation) ??
+        private async Task<Character> GetCharacter(CharacterEvent notification, CancellationToken cancellation) => await characterRepository.GetAsync(notification.CharacterUiD, cancellation) ??
                    throw new CharacterNotFoundException(notification.CharacterUiD);
-        }
 
         private void CheckSagaCompletion(Character draft, BaseDomainEvent domainEvent)
         {

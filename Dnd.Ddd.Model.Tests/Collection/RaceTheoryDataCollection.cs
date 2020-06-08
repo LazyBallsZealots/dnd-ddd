@@ -1,7 +1,8 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 using Xunit;
 

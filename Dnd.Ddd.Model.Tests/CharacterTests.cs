@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 
-using Dnd.Ddd.Model.Character;
-using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Tests.Collection;
 
 using Xunit;

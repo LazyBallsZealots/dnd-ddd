@@ -4,7 +4,6 @@ using System.Data.Common;
 
 using NHibernate;
 using NHibernate.Engine;
-using NHibernate.SqlCommand;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
@@ -39,7 +38,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware.UserTypes.EnumBase
             !string.IsNullOrWhiteSpace(enumName) &&
             Enum.TryParse(typeof(TEnumType), enumName, false, out var enumObject) &&
             enumObject is TEnumType enumMember ?
-                (object)factoryMethod(enumMember) :
+                factoryMethod(enumMember) :
                 null;
 
         public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)

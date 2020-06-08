@@ -2,7 +2,7 @@
 {
     public enum CharacterStates
     {
-        Completed, 
+        Completed,
         Draft
     }
 }

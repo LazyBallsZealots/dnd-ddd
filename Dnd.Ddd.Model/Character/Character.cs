@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
@@ -11,11 +10,6 @@ using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Race;
 using Dnd.Ddd.Model.Character.ValueObjects.Race.AbilityScoreBonuses;
-
-[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Database")]
-[assembly: InternalsVisibleTo("Dnd.Ddd.Infrastructure.Tests")]
-[assembly: InternalsVisibleTo("Dnd.Ddd.Model.Tests")]
-[assembly: InternalsVisibleTo("Dnd.Ddd.Dtos")]
 
 namespace Dnd.Ddd.Model.Character
 {
@@ -37,7 +31,7 @@ namespace Dnd.Ddd.Model.Character
             };
         }
 
-        internal Character(PlayerId playerId) 
+        internal Character(PlayerId playerId)
             : this()
         {
             PlayerId = playerId;
