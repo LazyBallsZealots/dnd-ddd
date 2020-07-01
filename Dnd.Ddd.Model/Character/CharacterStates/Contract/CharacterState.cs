@@ -35,5 +35,7 @@ namespace Dnd.Ddd.Model.Character.CharacterStates.Contract
         internal abstract void SetRace(Character character, string race);
 
         internal abstract void SetName(Character character, string name);
+
+        internal abstract bool CanAdvance(Character character);
     }
 }
