@@ -140,7 +140,7 @@ namespace Dnd.Ddd.Model.Character
 
         private void CheckCharacterCompletion()
         {
-            if (State.CanAdvance(this))
+            if (State.CanChangeState(this))
             {
                 Complete();
             }

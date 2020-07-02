@@ -36,6 +36,6 @@ namespace Dnd.Ddd.Model.Character.CharacterStates.Contract
 
         internal abstract void SetName(Character character, string name);
 
-        internal abstract bool CanAdvance(Character character);
+        internal abstract bool CanChangeState(Character character);
     }
 }

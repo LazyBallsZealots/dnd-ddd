@@ -30,7 +30,7 @@ namespace Dnd.Ddd.Model.Character.CharacterStates
             character.Race = Race.FromEnumeration(Enum.Parse<Races>(race));
         }
 
-        internal override bool CanAdvance(Character character)
+        internal override bool CanChangeState(Character character)
         {
             return character.Strength != null &&
                 character.Dexterity != null &&
