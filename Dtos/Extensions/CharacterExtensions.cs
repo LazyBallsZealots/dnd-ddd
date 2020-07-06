@@ -17,7 +17,7 @@ namespace Dnd.Ddd.Dtos.Extensions
                 Strength = character.Strength?.ToInteger(),
                 Race = character.Race?.ToString(),
                 Name = character.Name?.ToString(),
-                Stage = character.GetType().Name
+                Stage = character.State.GetType().Name
             };
     }
 }

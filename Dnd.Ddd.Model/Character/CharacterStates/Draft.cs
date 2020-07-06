@@ -29,5 +29,14 @@ namespace Dnd.Ddd.Model.Character.CharacterStates
             Guard.With<ArgumentOutOfRangeException>().Against(!Enum.TryParse(typeof(Races), race, out _), nameof(race));
             character.Race = Race.FromEnumeration(Enum.Parse<Races>(race));
         }
+
+        internal override bool CanChangeState(Character character) => character.Strength != null &&
+                character.Dexterity != null &&
+                character.Constitution != null &&
+                character.Intelligence != null &&
+                character.Wisdom != null &&
+                character.Charisma != null &&
+                character.Name != null &&
+                character.Race != null;
     }
 }

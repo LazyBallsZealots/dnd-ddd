@@ -12,6 +12,6 @@ namespace Dnd.Ddd.Infrastructure.Database.Middleware.UserTypes
         {
         }
 
-        public override bool IsMutable => false;
+        public override bool IsMutable => true;
     }
 }

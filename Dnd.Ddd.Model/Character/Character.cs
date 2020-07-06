@@ -15,7 +15,6 @@ namespace Dnd.Ddd.Model.Character
 {
     public class Character : Entity, IAggregateRoot
     {
-        // TODO: refactor this to a different type
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
 
         protected Character()
@@ -72,36 +71,42 @@ namespace Dnd.Ddd.Model.Character
         public Character SetStrength(int strength)
         {
             State.SetStrength(this, strength);
+            CheckCharacterCompletion();
             return this;
         }
 
         public Character SetDexterity(int dexterity)
         {
             State.SetDexterity(this, dexterity);
+            CheckCharacterCompletion();
             return this;
         }
 
         public Character SetCharisma(int charisma)
         {
             State.SetCharisma(this, charisma);
+            CheckCharacterCompletion();
             return this;
         }
 
         public Character SetWisdom(int wisdom)
         {
             State.SetWisdom(this, wisdom);
+            CheckCharacterCompletion();
             return this;
         }
 
         public Character SetConstitution(int constitution)
         {
             State.SetConstitution(this, constitution);
+            CheckCharacterCompletion();
             return this;
         }
 
         public Character SetIntelligence(int intelligence)
         {
             State.SetIntelligence(this, intelligence);
+            CheckCharacterCompletion();
             return this;
         }
 
@@ -109,22 +114,17 @@ namespace Dnd.Ddd.Model.Character
         {
             Guard.With<ArgumentOutOfRangeException>().Against(!Enum.TryParse(typeof(Races), race, out _), nameof(race));
             State.SetRace(this, race);
+            CheckCharacterCompletion();
         }
 
-        public void SetName(string name) => State.SetName(this, name);
+        public void SetName(string name)
+        {
+            State.SetName(this, name);
+            CheckCharacterCompletion();
+        }
 
         public void Complete()
         {
-            Guard.With<ArgumentNullException>().Against(Strength == null, nameof(Strength));
-            Guard.With<ArgumentNullException>().Against(Dexterity == null, nameof(Dexterity));
-            Guard.With<ArgumentNullException>().Against(Constitution == null, nameof(Constitution));
-            Guard.With<ArgumentNullException>().Against(Wisdom == null, nameof(Wisdom));
-            Guard.With<ArgumentNullException>().Against(Intelligence == null, nameof(Intelligence));
-            Guard.With<ArgumentNullException>().Against(Charisma == null, nameof(Charisma));
-            Guard.With<ArgumentNullException>().Against(Name == null, nameof(Name));
-            Guard.With<ArgumentNullException>().Against(Race == null, nameof(Race));
-            Guard.With<InvalidCharacterStateException>().Against(IsCompleted(), UiD);
-
             IncreaseAbilityScoresBasedOnRace();
 
             State = new Completed();
@@ -135,6 +135,14 @@ namespace Dnd.Ddd.Model.Character
             foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
             {
                 abilityScoreIncreases[raceAbilityScoreModifier.AbilityScoreName](raceAbilityScoreModifier);
+            }
+        }
+
+        private void CheckCharacterCompletion()
+        {
+            if (State.CanChangeState(this))
+            {
+                Complete();
             }
         }
     }

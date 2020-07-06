@@ -15,7 +15,7 @@ namespace Dnd.Ddd.Model.Tests
         private const string CharacterTestsCategory = "Unit tests: Character";
 
         [Theory, MemberData(nameof(RacesData))]
-        public void Character_OnChoosingRace_HasCorrectRaceSetIfAbilityScoresAreSet(
+        public void Character_OnCompletingCharacter_HasCorrectRaceSetIfAbilityScoresAreSet(
             string race,
             IList<int> abilityScores,
             Func<Character.Character, bool> testResult)
@@ -31,7 +31,6 @@ namespace Dnd.Ddd.Model.Tests
 
             character.SetName(Name);
             character.SetRace(race);
-            character.Complete();
 
             Assert.True(testResult(character));
             Assert.Equal(character.Name, Character.ValueObjects.Name.FromString(Name));

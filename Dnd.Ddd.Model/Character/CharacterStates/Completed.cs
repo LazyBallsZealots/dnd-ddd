@@ -20,5 +20,7 @@ namespace Dnd.Ddd.Model.Character.CharacterStates
         internal override void SetStrength(Character character, int strength) => throw new InvalidCharacterStateException(character.UiD);
 
         internal override void SetWisdom(Character character, int wisdom) => throw new InvalidCharacterStateException(character.UiD);
+
+        internal override bool CanChangeState(Character character) => false;
     }
 }
