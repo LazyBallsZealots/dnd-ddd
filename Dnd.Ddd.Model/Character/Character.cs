@@ -5,7 +5,6 @@ using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.CharacterStates;
 using Dnd.Ddd.Model.Character.CharacterStates.Contract;
-using Dnd.Ddd.Model.Character.Exceptions;
 using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
 using Dnd.Ddd.Model.Character.ValueObjects.Feature;
@@ -17,8 +16,6 @@ namespace Dnd.Ddd.Model.Character
     public class Character : Entity, IAggregateRoot
     {
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
-
-        internal ICollection<Feature> Features { get; private set; }
 
         protected Character()
         {
@@ -38,6 +35,8 @@ namespace Dnd.Ddd.Model.Character
         {
             PlayerId = playerId;
         }
+
+        internal ICollection<Feature> Features { get; private set; }
 
         internal CharacterState State { get; private set; }
 
