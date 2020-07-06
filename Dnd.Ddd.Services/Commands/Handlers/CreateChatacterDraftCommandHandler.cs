@@ -22,7 +22,7 @@ namespace Dnd.Ddd.Services.Commands.Handlers
 
         public Guid Handle(CreateCharacterDraftCommand command)
         {
-            var characterDraft = CharacterDraft.ForPlayer(command.PlayerId);
+            var characterDraft = Character.ForPlayer(command.PlayerId);
 
             characterDraft.RegisterDomainEvent(new CharacterDraftCreated(command.PlayerId));
 

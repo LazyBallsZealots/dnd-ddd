@@ -6,7 +6,6 @@ using Autofac;
 
 using Dnd.Ddd.Common.Infrastructure.Events;
 using Dnd.Ddd.Common.Infrastructure.UnitOfWork;
-using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Infrastructure.Database.Middleware;
 using Dnd.Ddd.Infrastructure.Database.Repository.Character;
 using Dnd.Ddd.Infrastructure.Database.UnitOfWork;
@@ -21,6 +20,15 @@ namespace Dnd.Ddd.Infrastructure.Database
 {
     public abstract class InfrastructureAutofacModule : Module
     {
+        protected virtual string HibernateConfigFilePath =>
+            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
+
+        protected virtual IEnumerable<Assembly> MappingAssemblies =>
+            new List<Assembly>
+            {
+                Assembly.Load("Dnd.Ddd.Infrastructure.Database")
+            };
+
         protected override void Load(ContainerBuilder builder)
         {
             builder.Register(context => new PostCommitEventListener(context.Resolve<IDomainEventDispatcher>()))
@@ -35,20 +43,14 @@ namespace Dnd.Ddd.Infrastructure.Database
 
             builder.Register(context => context.Resolve<ISessionFactory>().OpenSession()).As<ISession>().InstancePerLifetimeScope();
 
-            builder.Register(context => new CharacterRepository(context.Resolve<IUnitOfWork>())).As<ICharacterRepository>().InstancePerLifetimeScope();
+            builder.Register(context => new CharacterRepository(context.Resolve<IUnitOfWork>()))
+                .As<ICharacterRepository>()
+                .InstancePerLifetimeScope();
 
             builder.Register(context => new NHibernateUnitOfWork(context.Resolve<ISession>()))
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
         }
-
-        protected virtual string HibernateConfigFilePath =>
-            $"{Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location)}/hibernate.cfg.xml";
-
-        protected virtual IEnumerable<Assembly> MappingAssemblies => new List<Assembly>
-        {
-            Assembly.Load("Dnd.Ddd.Infrastructure.Database")
-        };
 
         protected abstract ISessionFactory CreateSessionFactory(Configuration configuration);
 

@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character.AddAbilities
+namespace Dnd.Ddd.CharacterCreation.Api.Controllers.Character.RollAbilityScores
 {
     public class RollAbilityScoresRequest
     {

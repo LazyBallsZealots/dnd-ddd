@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Dtos
 {
@@ -12,7 +10,7 @@ namespace Dnd.Ddd.Dtos
         public Guid UiD { get; set; }
 
         public string Name { get; set; }
-  
+
         public int? Strength { get; set; }
 
         public int? Dexterity { get; set; }

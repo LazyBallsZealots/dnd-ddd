@@ -1,13 +1,14 @@
-﻿using Dnd.Ddd.Model.Character.ValueObjects.Race;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+
+using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 using Xunit;
 
 namespace Dnd.Ddd.Model.Tests.Collection
 {
-    public class RaceTheoryDataCollection : TheoryData<Races, IList<int>, Func<Character.Character, bool>>
+    public class RaceTheoryDataCollection : TheoryData<string, IList<int>, Func<Character.Character, bool>>
     {
         private static readonly IDictionary<Races, Func<IList<int>, IList<int>>> AbilityScoresModifications =
             new Dictionary<Races, Func<IList<int>, IList<int>>>
@@ -42,7 +43,7 @@ namespace Dnd.Ddd.Model.Tests.Collection
             var stats = Enumerable.Range(1, 6).Select(index => random.Next(3, 19)).ToArray();
             foreach (Races race in Enum.GetValues(typeof(Races)))
             {
-                Add(race, stats, character => CheckStats(character, AbilityScoresModifications[race](stats), RaceSizes[race]));
+                Add(race.ToString(), stats, character => CheckStats(character, AbilityScoresModifications[race](stats), RaceSizes[race]));
             }
         }
 

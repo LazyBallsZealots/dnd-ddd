@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="hibernate.cfg.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="5.1.2" />
     <PackageReference Include="MediatR" Version="8.0.1" />
     <PackageReference Include="NHibernate" Version="5.2.7" />
@@ -14,6 +18,12 @@
     <ProjectReference Include="..\Ddd.Dnd.Infrastructure.Common\Dnd.Ddd.Infrastructure.Database.Common.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Common\Dnd.Ddd.Common.csproj" />
     <ProjectReference Include="..\Dnd.Ddd.Model\Dnd.Ddd.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="hibernate.cfg.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

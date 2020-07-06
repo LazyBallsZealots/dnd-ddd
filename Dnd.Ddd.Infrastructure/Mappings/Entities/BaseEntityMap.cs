@@ -11,7 +11,7 @@ namespace Dnd.Ddd.Infrastructure.Database.Mappings.Entities
         protected BaseEntityMap()
         {
             OptimisticLock(OptimisticLockMode.Version);
-            DynamicUpdate(true);
+            DynamicUpdate(false);
             Id(x => x.UiD, mapper => mapper.Generator(Generators.Assigned));
             Version(
                 x => x.Version,

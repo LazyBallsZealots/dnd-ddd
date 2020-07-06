@@ -5,7 +5,7 @@ namespace Dnd.Ddd.Dtos.Extensions
     public static class CharacterExtensions
     {
         public static CharacterDto ToDto(this Character character) =>
-            new CharacterDto()
+            new CharacterDto
             {
                 PlayerId = character.PlayerId.PlayerUiD,
                 UiD = character.UiD,
@@ -17,7 +17,7 @@ namespace Dnd.Ddd.Dtos.Extensions
                 Strength = character.Strength?.ToInteger(),
                 Race = character.Race?.ToString(),
                 Name = character.Name?.ToString(),
-                Stage = character.GetType().Name
+                Stage = character.State.GetType().Name
             };
     }
 }

@@ -1,41 +1,52 @@
 ﻿using System;
 using System.Data;
 using System.Data.Common;
-using Dnd.Ddd.Model.Character.ValueObjects.Race;
 
 using NHibernate;
 using NHibernate.Engine;
 using NHibernate.SqlTypes;
 using NHibernate.UserTypes;
 
-namespace Dnd.Ddd.Infrastructure.Database.Middleware
+namespace Dnd.Ddd.Infrastructure.Database.Middleware.UserTypes.EnumBase
 {
-    internal class RaceType : IUserType
+    internal abstract class StringEnumType<TEnumType, TResultType> : IUserType
+        where TEnumType : struct
+        where TResultType : class
     {
+        private readonly Func<TEnumType, TResultType> factoryMethod;
+
+        private readonly Func<TResultType, string> valueSelector;
+
+        protected StringEnumType(Func<TEnumType, TResultType> factoryMethod, Func<TResultType, string> valueSelector)
+        {
+            this.factoryMethod = factoryMethod;
+            this.valueSelector = valueSelector;
+        }
+
         public SqlType[] SqlTypes => new[] { NHibernateUtil.String.SqlType };
 
-        public Type ReturnedType => typeof(Race);
+        public Type ReturnedType => typeof(TResultType);
 
-        public bool IsMutable => false;
+        public abstract bool IsMutable { get; }
 
         public new bool Equals(object x, object y) => (x == null && y == null) ^ !(x == null || y == null) ^ x?.Equals(y) ?? false;
 
         public int GetHashCode(object x) => x.GetHashCode();
 
         public object NullSafeGet(DbDataReader rs, string[] names, ISessionImplementor session, object owner) =>
-            NHibernateUtil.String.NullSafeGet(rs, names, session) is string raceName &&
-            !string.IsNullOrWhiteSpace(raceName) &&
-            Enum.TryParse(typeof(Races), raceName, false, out var raceObject) &&
-            raceObject is Races race ?
-                Race.FromEnumeration(race) :
+            NHibernateUtil.String.NullSafeGet(rs, names, session) is string enumName &&
+            !string.IsNullOrWhiteSpace(enumName) &&
+            Enum.TryParse(typeof(TEnumType), enumName, false, out var enumObject) &&
+            enumObject is TEnumType enumMember ?
+                factoryMethod(enumMember) :
                 null;
 
         public void NullSafeSet(DbCommand cmd, object value, int index, ISessionImplementor session)
         {
             var parameter = (IDataParameter)cmd.Parameters[index];
-            if (value is Race race)
+            if (value is TResultType resultType)
             {
-                parameter.Value = race.RaceName;
+                parameter.Value = valueSelector(resultType);
             }
             else
             {
