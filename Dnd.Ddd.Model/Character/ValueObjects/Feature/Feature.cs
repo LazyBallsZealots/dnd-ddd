@@ -1,15 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
 
 using Dnd.Ddd.Common.ModelFramework;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Feature
 {
-    public abstract class Feature : ValueObject<Feature>
+    internal abstract class Feature : ValueObject<Feature>
     {
-        internal string FeatureName { get; set; }
+        protected Feature(string name, string description)
+        {
+            FeatureName = name;
+            FeatureDescription = description;
+        }
 
-        internal string FeatureDescription { get; set; }
+        protected Feature()
+        {
+        }
+
+        internal string FeatureName { get; private set; }
+
+        internal string FeatureDescription { get; private set; }
 
         protected override bool InternalEquals(Feature valueObject) => valueObject.GetType() == GetType();
 
