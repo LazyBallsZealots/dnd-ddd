@@ -7,9 +7,9 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Feature
 {
     public abstract class Feature : ValueObject<Feature>
     {
-        internal abstract string FeatureName { get; }
+        internal string FeatureName { get; set; }
 
-        internal abstract string FeatureDescription { get; }
+        internal string FeatureDescription { get; set; }
 
         protected override bool InternalEquals(Feature valueObject) => valueObject.GetType() == GetType();
 

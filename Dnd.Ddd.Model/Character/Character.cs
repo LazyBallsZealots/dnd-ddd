@@ -18,7 +18,7 @@ namespace Dnd.Ddd.Model.Character
     {
         private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
 
-        internal readonly IEnumerable<Feature> features;
+        internal ICollection<Feature> features;
 
         protected Character()
         {

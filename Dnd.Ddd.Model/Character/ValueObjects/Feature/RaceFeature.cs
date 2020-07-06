@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Feature
 {
-    public abstract class RaceFeature : Feature
+    public class RaceFeature : Feature
     {
     }
 }

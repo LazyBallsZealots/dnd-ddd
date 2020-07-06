@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Dnd.Ddd.Model.Character.ValueObjects.Feature
 {
-    class BackgroundFeature
+    class BackgroundFeature : Feature
     {
     }
 }
