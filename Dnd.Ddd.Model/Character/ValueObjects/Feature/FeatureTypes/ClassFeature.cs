@@ -6,7 +6,7 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.Feature.FeatureTypes
 {
     internal class ClassFeature : Feature
     {
-        private ClassFeature(string name, string description) 
+        private ClassFeature(string name, string description)
             : base(name, description)
         {
         }
