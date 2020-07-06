@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Dnd.Ddd.Common.Guard;
 using Dnd.Ddd.Common.ModelFramework;
 using Dnd.Ddd.Model.Character.CharacterStates;
+using Dnd.Ddd.Model.Character.CharacterStates.Collections;
 using Dnd.Ddd.Model.Character.CharacterStates.Contract;
 using Dnd.Ddd.Model.Character.ValueObjects;
 using Dnd.Ddd.Model.Character.ValueObjects.AbilityScores.Values;
@@ -15,19 +16,11 @@ namespace Dnd.Ddd.Model.Character
 {
     public class Character : Entity, IAggregateRoot
     {
-        private readonly IDictionary<string, Action<AbilityScoreBonus>> abilityScoreIncreases;
+        private readonly AbilityScoreIncreasesCollection abilityScoreIncreases;
 
         protected Character()
         {
-            abilityScoreIncreases = new Dictionary<string, Action<AbilityScoreBonus>>
-            {
-                [nameof(Strength)] = bonus => Strength = Strength.Raise(bonus.AbilityScoreModifierLevel),
-                [nameof(Dexterity)] = bonus => Dexterity = Dexterity.Raise(bonus.AbilityScoreModifierLevel),
-                [nameof(Constitution)] = bonus => Constitution = Constitution.Raise(bonus.AbilityScoreModifierLevel),
-                [nameof(Intelligence)] = bonus => Intelligence = Intelligence.Raise(bonus.AbilityScoreModifierLevel),
-                [nameof(Wisdom)] = bonus => Wisdom = Wisdom.Raise(bonus.AbilityScoreModifierLevel),
-                [nameof(Charisma)] = bonus => Charisma = Charisma.Raise(bonus.AbilityScoreModifierLevel)
-            };
+            abilityScoreIncreases = new AbilityScoreIncreasesCollection(this);
         }
 
         internal Character(PlayerId playerId)
@@ -136,7 +129,7 @@ namespace Dnd.Ddd.Model.Character
         {
             foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
             {
-                abilityScoreIncreases[raceAbilityScoreModifier.AbilityScoreName](raceAbilityScoreModifier);
+                abilityScoreIncreases.IncreaseAbilityScore(raceAbilityScoreModifier);
             }
         }
 
