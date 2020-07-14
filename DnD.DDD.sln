@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.CharacterCreation.A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Dto", "Dto", "{72571052-75C7-4B3A-BA4C-1876EBF58559}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Dtos", "Dtos\Dnd.Ddd.Dtos.csproj", "{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dnd.Ddd.Dtos", "Dnd.Ddd.Dtos\Dnd.Ddd.Dtos.csproj", "{31A64798-9CF0-4E16-BA3B-05F9CF8B3462}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
