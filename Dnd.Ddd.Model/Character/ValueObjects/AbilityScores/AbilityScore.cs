@@ -22,6 +22,8 @@ namespace Dnd.Ddd.Model.Character.ValueObjects.AbilityScores
 
         public int ToInteger() => AbilityScoreLevel;
 
+        public override string ToString() => $"{GetType().Name}: {AbilityScoreLevel}";
+
         internal abstract TAbilityScore Raise(int abilityScoreImprovement);
 
         protected override bool InternalEquals(AbilityScore<TAbilityScore> valueObject) =>
