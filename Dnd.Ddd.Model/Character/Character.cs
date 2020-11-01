@@ -125,6 +125,8 @@ namespace Dnd.Ddd.Model.Character
             State = new Completed();
         }
 
+        public override string ToString() => $"{Name}, {Race}.";
+
         protected internal void IncreaseAbilityScoresBasedOnRace()
         {
             foreach (var raceAbilityScoreModifier in Race.AbilityScoreModifiers)
